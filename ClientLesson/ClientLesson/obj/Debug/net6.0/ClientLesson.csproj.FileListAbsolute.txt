@@ -1,0 +1,15 @@
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\bin\Debug\net6.0\ClientLesson.exe
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\bin\Debug\net6.0\ClientLesson.deps.json
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\bin\Debug\net6.0\ClientLesson.runtimeconfig.json
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\bin\Debug\net6.0\ClientLesson.dll
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\bin\Debug\net6.0\ClientLesson.pdb
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.csproj.AssemblyReference.cache
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.GeneratedMSBuildEditorConfig.editorconfig
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.AssemblyInfoInputs.cache
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.AssemblyInfo.cs
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.csproj.CoreCompileInputs.cache
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.dll
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\refint\ClientLesson.dll
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.pdb
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ClientLesson.genruntimeconfig.cache
+D:\HKU\Jaar2\NetworkProgramming\ClientLesson\ClientLesson\obj\Debug\net6.0\ref\ClientLesson.dll
