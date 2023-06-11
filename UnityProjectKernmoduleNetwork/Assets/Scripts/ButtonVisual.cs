@@ -21,7 +21,6 @@ public class ButtonVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         for (int i = 0; i < loginButtonSliders.Length; i++)
         {
             loginButtonSliders[i].value = 0;
-            smoothVelocities[i] = 0;
         }
     }
 
