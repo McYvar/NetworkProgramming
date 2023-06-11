@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private ConnectionHandler connectionHandler;
+    [SerializeField] private ResultRequest resultRequest;
+    [SerializeField] private ServerRequest selectServer;
     [SerializeField] private TMP_InputField usernameInput;
     [SerializeField] private Slider usernameValidationSlider;
     private float usernameValidationVelocity = 0;
@@ -54,7 +55,7 @@ public class UIController : MonoBehaviour
         }
 
         if (!valid) return;
-        StartCoroutine(connectionHandler.GetResultRequest($"https://studenthome.hku.nl/~yvar.toorop/php/user_login?username={usernameInput.text}&password={passwordInput.text}"));
+        StartCoroutine(resultRequest.GetResultRequest($"https://studenthome.hku.nl/~yvar.toorop/php/user_login?username={usernameInput.text}&password={passwordInput.text}"));
     }
 
     public void OnEditUsername()
@@ -80,7 +81,7 @@ public class UIController : MonoBehaviour
     public IEnumerator UpdateServerList()
     {
         updatingList = true;
-        connectionHandler.UpdateServerList();
+        selectServer.UpdateServerList();
         yield return new WaitForSecondsRealtime(3);
 
         while (serverPrefabs.Count > 0)
@@ -89,19 +90,19 @@ public class UIController : MonoBehaviour
             serverPrefabs.RemoveAt(0);
         }
 
-        for (int i = 0; i < connectionHandler.servers.Count; i++)
+        for (int i = 0; i < selectServer.servers.Count; i++)
         {
             GameObject serverPrefab = Instantiate(serverListItemPrefab, scrollViewContent.transform);
-            serverPrefab.GetComponent<TMP_Text>().text = $"SERVER {connectionHandler.servers[i].id}";
+            serverPrefab.GetComponent<TMP_Text>().text = $"SERVER {selectServer.servers[i].server_id}";
             RectTransform rect = serverPrefab.GetComponent<RectTransform>();
             rect.pivot = new Vector2(0, 1);
             rect.localPosition = new Vector2(0, 0 - i * serverListGap);
             ServerSelectButton serverSelectButton = serverPrefab.GetComponent<ServerSelectButton>();
-            int id = connectionHandler.servers[i].id;
+            int id = selectServer.servers[i].server_id;
             serverSelectButton.OnClickButton += () =>
             {
                 Debug.Log(i);
-                connectionHandler.SetServer(id);
+                selectServer.SetServer(id);
             };
             serverPrefabs.Add(serverPrefab);
         }
@@ -120,5 +121,15 @@ public class UIController : MonoBehaviour
             rect.localPosition = new Vector2(0, 0 - i * serverListGap);
         }
         scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, serverPrefabs.Count * serverListGap);
+    }
+
+    public void OpenNew(GameObject newWindow)
+    {
+        newWindow.SetActive(true);
+    }
+
+    public void CloseOld(GameObject oldWindow)
+    {
+        oldWindow.SetActive(false);
     }
 }

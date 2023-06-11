@@ -4,20 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ConnectionHandler : MonoBehaviour
+public class ResultRequest : MonoBehaviour
 {
     private Queue<string> disconnectRequest = new Queue<string>();
 
     private Results result;
-    public List<ServerId> servers = new List<ServerId>();
+
+    private bool requesting;
 
     private void Start()
     {
-        disconnectRequest.Enqueue("https://studenthome.hku.nl/~yvar.toorop/php/user_logout");
-        disconnectRequest.Enqueue("https://studenthome.hku.nl/~yvar.toorop/php/server_logout");
-        
+        StartCoroutine(DisconnectOld());
         StartCoroutine(GetResultRequest(disconnectRequest.Dequeue()));
-        UpdateServerList();
     }
 
     private void OnApplicationQuit()
@@ -27,8 +25,20 @@ public class ConnectionHandler : MonoBehaviour
         InstantRequest("https://studenthome.hku.nl/~yvar.toorop/php/server_logout");
     }
 
+    private IEnumerator DisconnectOld()
+    {
+        disconnectRequest.Enqueue("https://studenthome.hku.nl/~yvar.toorop/php/user_logout");
+        disconnectRequest.Enqueue("https://studenthome.hku.nl/~yvar.toorop/php/server_logout");
+        yield return new WaitUntil(() => !requesting);
+        if (disconnectRequest.Count > 0)
+        {
+            StartCoroutine(GetResultRequest(disconnectRequest.Dequeue()));
+        }
+    }
+
     public IEnumerator GetResultRequest(string uri)
     {
+        requesting = true;
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
         {
             yield return webRequest.SendWebRequest();
@@ -59,11 +69,7 @@ public class ConnectionHandler : MonoBehaviour
                     break;
             }
         }
-
-        if (disconnectRequest.Count > 0)
-        {
-            StartCoroutine(GetResultRequest(disconnectRequest.Dequeue()));
-        }
+        requesting = false;
     }
 
     private void InstantRequest(string uri)
@@ -72,50 +78,6 @@ public class ConnectionHandler : MonoBehaviour
         {
             webRequest.SendWebRequest();
         }
-    }
-
-    public void UpdateServerList()
-    {
-        StartCoroutine(GetServersRequest("https://studenthome.hku.nl/~yvar.toorop/php/server_get_all_servers"));
-    }
-
-
-    private IEnumerator GetServersRequest(string uri)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
-        {
-            yield return webRequest.SendWebRequest();
-            switch (webRequest.result)
-            {
-                case UnityWebRequest.Result.ConnectionError:
-                    Debug.Log("connection error");
-                    break;
-                case UnityWebRequest.Result.DataProcessingError:
-                    Debug.Log("dat processing error");
-
-                    break;
-                case UnityWebRequest.Result.ProtocolError:
-                    Debug.Log("protocol error");
-
-                    break;
-                case UnityWebRequest.Result.Success:
-                    Debug.Log(webRequest.downloadHandler.text);
-                    try
-                    {
-                        servers = JsonUtility.FromJson<ServerList>(webRequest.downloadHandler.text).servers;
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogWarning(e);
-                    }
-                    break;
-            }
-        }
-    }
-
-    public void SetServer(int serverId)
-    {
-        StartCoroutine(GetResultRequest($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?server_id={serverId}&password=password"));
     }
 
 }
@@ -151,16 +113,3 @@ public class Result
         return $"code: {code}, session_id: {session_id}, server_id: {server_id}, user_id: {user_id}, email: {email}, username: {username}";
     }
 }
-
-[System.Serializable]
-public class ServerList
-{
-    public List<ServerId> servers;
-}
-
-[System.Serializable]
-public class ServerId
-{
-    public int id;
-}
-

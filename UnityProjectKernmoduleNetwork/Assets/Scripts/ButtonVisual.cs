@@ -14,6 +14,17 @@ public class ButtonVisual : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private bool hover = false;
 
+    private void OnEnable()
+    {
+        filling = 0;
+        hover = false;
+        for (int i = 0; i < loginButtonSliders.Length; i++)
+        {
+            loginButtonSliders[i].value = 0;
+            smoothVelocities[i] = 0;
+        }
+    }
+
     private void Start()
     {
         smoothVelocities = new float[loginButtonSliders.Length];
