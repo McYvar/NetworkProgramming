@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ServerList : MonoBehaviour
 {
@@ -12,13 +14,22 @@ public class ServerList : MonoBehaviour
     [SerializeField] private GameObject serverListItemPrefab;
     [SerializeField] private RectTransform scrollViewContent;
 
+    [SerializeField] private GameObject serverLogin;
+    [SerializeField] private TMP_InputField passwordInputField;
+    [SerializeField] private TMP_Text loginText;
+    [SerializeField] private ButtonAction OnClickConnectButton;
+
+    [SerializeField] private GameObject baseClientPrefab;
+
     private Server myServer = new Server();
     private Result mySession = new Result();
 
     private void Start()
     {
+        passwordInputField.contentType = TMP_InputField.ContentType.Password;
+
         // make sure the client is disconnected from everything on startup
-        StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
+        StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
             (request) =>
             {
                 if (request != null)
@@ -26,13 +37,14 @@ public class ServerList : MonoBehaviour
                     Debug.Log(request.ToString());
                 }
 
-                StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
+                StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
                     (request) =>
                     {
                         if (request != null)
                         {
                             Debug.Log(request.ToString());
                         }
+
                     }));
             }));
 
@@ -82,23 +94,43 @@ public class ServerList : MonoBehaviour
         for (int i = 0; i < servers.servers.Count; i++)
         {
             GameObject serverPrefab = Instantiate(serverListItemPrefab, scrollViewContent.transform);
-            serverPrefab.GetComponent<TMP_Text>().text = $"SERVER {servers.servers[i].id}";
+            serverPrefab.GetComponent<TMP_Text>().text = $"SERVER {servers.servers[i].server_name}";
             RectTransform rect = serverPrefab.GetComponent<RectTransform>();
             rect.pivot = new Vector2(0, 1);
             rect.localPosition = new Vector2(0, 0 - i * serverListGap);
-            ServerSelectButton serverSelectButton = serverPrefab.GetComponent<ServerSelectButton>();
-            int id = servers.servers[i].id;
+            ButtonAction serverSelectButton = serverPrefab.GetComponent<ButtonAction>();
+            int id = servers.servers[i].server_id;
+            string serverName = servers.servers[i].server_name;
             serverSelectButton.OnClickButton += () =>
             {
-                StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?server_id={id}&password=password",
-                    (request) =>
-                    {
-                        if (request != null)
+                passwordInputField.text = "";
+                serverLogin.SetActive(true);
+                loginText.text = $"LOGIN {serverName}";
+                OnClickConnectButton.OnClickButton = () =>
+                {
+                    StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?server_id={id}&password={passwordInputField.text}",
+                        (request) =>
                         {
-                            Debug.Log(request.ToString());
-                            if (request.servers.Count > 0) this.SetServer(request.servers[0]);
-                        }
-                    }));
+                            if (request != null)
+                            {
+                                Debug.Log(request.ToString());
+                                if (request.servers.Count > 0)
+                                {
+                                    bool predicate = Convert.ToBoolean(request.servers[0].code);
+                                    if (predicate)
+                                    {
+                                        BaseClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseClient>();
+                                        client.ip = request.servers[0].ip;
+                                        client.port = (ushort)Convert.ToInt16(request.servers[0].port);
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
+                            }
+                        }));
+                };
             };
             serverPrefabs.Add(serverPrefab);
         }

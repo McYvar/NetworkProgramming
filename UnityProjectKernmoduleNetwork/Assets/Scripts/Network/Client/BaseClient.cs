@@ -14,6 +14,9 @@ public class BaseClient : MonoBehaviour
     private void OnDestroy() => Shutdown();
     private void Update() => UpdateServer();
 
+    public string ip = "";
+    public ushort port = 9000;
+
     public virtual void Init()
     {
         DontDestroyOnLoad(this);
@@ -22,7 +25,7 @@ public class BaseClient : MonoBehaviour
         driver = NetworkDriver.Create();
         connection = default(NetworkConnection);
 
-        NetworkEndPoint endpoint = NetworkEndPoint.LoopbackIpv4;
+        NetworkEndPoint endpoint = NetworkEndPoint.Parse(ip, port);
         endpoint.Port = 9000;
         connection = driver.Connect(endpoint);
     }

@@ -3,16 +3,19 @@
 [System.Serializable]
 public class Results
 {
-    public List<Result> result;
+    public List<Result> results;
 
     public override string ToString()
     {
-        string message = "";
-        foreach (var item in result)
+        string result = "";
+        if (results != null)
         {
-            message += item.ToString() + "\n";
+            foreach (var item in results)
+            {
+                result += item.ToString() + "\n";
+            }
         }
-        return message;
+        return result;
     }
 }
 

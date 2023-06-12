@@ -27,6 +27,7 @@ public class WebRequest : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     try
                     {
+                        Debug.Log($"{uri}\n{webRequest.downloadHandler.text}");
                         result = JsonUtility.FromJson<T>(webRequest.downloadHandler.text);
                     }
                     catch (Exception e)
