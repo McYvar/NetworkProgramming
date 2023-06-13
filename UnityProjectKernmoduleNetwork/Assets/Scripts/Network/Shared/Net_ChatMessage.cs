@@ -7,15 +7,24 @@ public class Net_ChatMessage : NetMessage
     // 0 - 8 bits reserved for OpCode
     // 8 - 128 bits for string msg
     public FixedString128Bytes chatMessage { get; set; }
+    private ChatBehaviour chatBehaviour;
 
     public Net_ChatMessage()
     {
         Code = OpCode.CHAT_MESSAGE;
     }
+
     public Net_ChatMessage(DataStreamReader reader)
     {
         Code = OpCode.CHAT_MESSAGE;
         Deserialize(reader);
+    }
+
+    public Net_ChatMessage(DataStreamReader reader, ChatBehaviour chatBehaviour)
+    {
+        Code = OpCode.CHAT_MESSAGE;
+        Deserialize(reader);
+        this.chatBehaviour = chatBehaviour;
     }
 
     public Net_ChatMessage(string msg) 
@@ -45,5 +54,6 @@ public class Net_ChatMessage : NetMessage
     public override void ReceivedOnClient()
     {
         Debug.Log($"CLIENT: {chatMessage}");
+        chatBehaviour.SendChatMessage(chatMessage.ToString());
     }
 }

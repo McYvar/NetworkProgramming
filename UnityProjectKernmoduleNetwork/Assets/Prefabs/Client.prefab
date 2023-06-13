@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4760871854477706500}
-  - component: {fileID: 5767286836852629199}
+  - component: {fileID: 3536414913005610637}
   m_Layer: 0
   m_Name: Client
   m_TagString: Untagged
@@ -30,9 +30,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5767286836852629199
+--- !u!114 &3536414913005610637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1938792803689949035}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 379cf558cf1ad3c4d965cdfcd169cf38, type: 3}
+  m_Script: {fileID: 11500000, guid: c009c2a978e38724a91855d979a75054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.2.8
+  ip: 127.0.0.1
   port: 9000
+  chatBehaviour: {fileID: 0}

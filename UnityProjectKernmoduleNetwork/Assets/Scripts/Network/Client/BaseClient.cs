@@ -3,39 +3,33 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Networking.Transport;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class BaseClient : MonoBehaviour
 {
     public NetworkDriver driver;
     protected NetworkConnection connection;
 
-    private void Start() => Init();
-    private void OnDestroy() => Shutdown();
-    private void Update() => UpdateServer();
-
-    public string ip = "";
+    public string ip = "127.0.0.1";
     public ushort port = 9000;
 
-    public virtual void Init()
+    private void Start()
     {
-        DontDestroyOnLoad(this);
-
+        DontDestroyOnLoad(gameObject);
         // init driver
         driver = NetworkDriver.Create();
         connection = default(NetworkConnection);
 
-        NetworkEndPoint endpoint = NetworkEndPoint.Parse(ip, port);
-        endpoint.Port = 9000;
+        var endpoint = NetworkEndPoint.Parse(ip, port); 
+        endpoint.Port = port;
         connection = driver.Connect(endpoint);
     }
 
-    public virtual void Shutdown()
+    private void OnDestroy()
     {
         driver.Dispose();
     }
 
-    public virtual void UpdateServer()
+    private void Update()
     {
         driver.ScheduleUpdate().Complete();
         CheckAlive();
@@ -75,20 +69,6 @@ public class BaseClient : MonoBehaviour
 
     public virtual void OnData(DataStreamReader stream)
     {
-        NetMessage msg = null;
-        var opCode = (OpCode)stream.ReadByte();
-
-        switch (opCode)
-        {
-            case OpCode.CHAT_MESSAGE:
-                msg = new Net_ChatMessage(stream);
-                break;
-            default:
-                Debug.Log("Message recieved had no OpCode");
-                break;
-        }
-
-        msg.ReceivedOnClient();
     }
 
     public virtual void SendToServer(NetMessage msg)

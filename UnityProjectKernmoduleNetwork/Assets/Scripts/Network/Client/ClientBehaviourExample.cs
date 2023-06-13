@@ -15,8 +15,7 @@ public class ClientBehaviourExample : MonoBehaviour
         driver = NetworkDriver.Create();
         connection = default(NetworkConnection);
 
-        var enpoint = NetworkEndPoint.LoopbackIpv4;
-        enpoint.Port = 9000;
+        var enpoint = NetworkEndPoint.Parse("192.168.2.30", 25566);
         connection = driver.Connect(enpoint);
     }
 

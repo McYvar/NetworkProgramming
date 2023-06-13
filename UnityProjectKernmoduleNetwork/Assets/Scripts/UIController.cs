@@ -6,30 +6,29 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private WebRequest webRequest;
+    // login
     [SerializeField] private TMP_InputField usernameInputField;
-    [SerializeField] private Slider usernameValidationSlider;
-    private float usernameValidationVelocity = 0;
-    private float usernameSliderTarget = 0;
+    [SerializeField] private ValidationMessage usernameValidation;
     [SerializeField] private TMP_InputField passwordInputField;
-    [SerializeField] private Slider passwordValidationSlider;
-    private float passwordValidationVelocity = 0;
-    private float passwordSliderTarget = 0;
-    [SerializeField] private float smoothTime;
-
+    [SerializeField] private ValidationMessage passwordValidation;
     [SerializeField] private ButtonAction onClickLoginButton;
+    // sign up
+    [SerializeField] private TMP_InputField signUpUsernameInputField;
+    [SerializeField] private ValidationMessage signUpUsernameValidation;
+    [SerializeField] private TMP_InputField signUpPasswordInputField;
+    [SerializeField] private ValidationMessage signUpPasswordValidation;
+    [SerializeField] private TMP_InputField signUpEmailInputField;
+    [SerializeField] private ValidationMessage signUpEmailValidation;
+    [SerializeField] private ButtonAction onClickSignUpButton;
+
 
     private void Start()
     {
         passwordInputField.contentType = TMP_InputField.ContentType.Password;
-        SetScrollViewContent();
+        signUpPasswordInputField.contentType = TMP_InputField.ContentType.Password;
 
         onClickLoginButton.OnClickButton += OnClickLogin;
-    }
-
-    private void Update()
-    {
-        usernameValidationSlider.value = Mathf.SmoothDamp(usernameValidationSlider.value, usernameSliderTarget, ref usernameValidationVelocity, smoothTime);
-        passwordValidationSlider.value = Mathf.SmoothDamp(passwordValidationSlider.value, passwordSliderTarget, ref passwordValidationVelocity, smoothTime);
+        onClickSignUpButton.OnClickButton += OnClickSignUp;
     }
 
     public void OnClickLogin()
@@ -37,16 +36,16 @@ public class UIController : MonoBehaviour
         bool valid = true;
         if (usernameInputField.text.Length == 0)
         {
-            SetSliderTarget(out usernameSliderTarget, 1);
+            usernameValidation.ActivateMessage();
             valid = false;
         }
         if (passwordInputField.text.Length == 0)
         {
-            SetSliderTarget(out passwordSliderTarget, 1);
+            passwordValidation.ActivateMessage();
             valid = false;
         }
-
         if (!valid) return;
+        
         StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_login?username={usernameInputField.text}&password={passwordInputField.text}",
             (request) =>
             {
@@ -54,33 +53,113 @@ public class UIController : MonoBehaviour
                 {
                     if (request.results.Count > 0)
                     {
-                        onClickLoginButton.PredicateAction(Convert.ToBoolean(request.results[0].code));
+                        bool predicate = Convert.ToBoolean(request.results[0].code);
+                        if (predicate)
+                        {
+                            SessionVariables.SetPlayerId(request.results[0].user_id);
+                        }
+
+
+                        onClickLoginButton.PredicateAction(predicate);
                     }
                 }
             }
         ));
     }
 
-    public void OnEditUsername()
+    public void OnClickSignUp()
     {
-        SetSliderTarget(out usernameSliderTarget, 0);
+        bool valid = true;
+        if (signUpUsernameInputField.text.Length == 0)
+        {
+            signUpUsernameValidation.ActivateMessage();
+            valid = false;
+        }
+        if (signUpPasswordInputField.text.Length == 0)
+        {
+            signUpPasswordValidation.ActivateMessage();
+            valid = false;
+        }
+        if (signUpEmailInputField.text.Length == 0)
+        {
+            signUpEmailValidation.ActivateMessage();
+            valid = false;
+        }
+        if (!valid) return;
+
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_add_user?email={signUpEmailInputField.text}&username={signUpUsernameInputField.text}&password={signUpPasswordInputField.text}",
+            (request) =>
+            {
+                if (request != null)
+                {
+                    if (request.results.Count > 0)
+                    {
+                        bool predicate = Convert.ToBoolean(request.results[0].code);
+                        if (predicate)
+                        {
+                            SessionVariables.SetPlayerId(request.results[0].user_id);
+                        }
+
+
+                        onClickSignUpButton.PredicateAction(predicate);
+                    }
+                }
+            }
+        ));
     }
 
-    public void OnEditPassword()
+    public void OnClickUserLogout()
     {
-        SetSliderTarget(out passwordSliderTarget, 0);
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
+            (request) =>
+            {
+                if (request != null)
+                {
+                    if (request.results.Count > 0)
+                    {
+                        //onClickSignUpButton.PredicateAction(predicate);
+                    }
+                }
+            }
+        ));
     }
 
-    private void SetSliderTarget(out float target, float newTarget)
+    public void OnClickServerLogout()
     {
-        target = newTarget;
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
+            (request) =>
+            {
+                if (request != null)
+                {
+                    if (request.results.Count > 0)
+                    {
+                        //onClickSignUpButton.PredicateAction(predicate);
+                    }
+                }
+            }
+        ));
     }
 
-    private void SetScrollViewContent()
+    public void OnClickCompleteLogout()
     {
-
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
+            (request) =>
+            {
+                StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
+                    (request) =>
+                    {
+                        if (request != null)
+                        {
+                            if (request.results.Count > 0)
+                            {
+                                //onClickSignUpButton.PredicateAction(predicate);
+                            }
+                        }
+                    }
+                ));
+            }
+        ));
     }
-
 
     public void OpenNew(GameObject newWindow)
     {

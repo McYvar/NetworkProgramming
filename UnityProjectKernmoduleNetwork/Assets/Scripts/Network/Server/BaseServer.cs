@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using Unity.Collections;
 using Unity.Networking.Transport;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 public class BaseServer : MonoBehaviour
@@ -13,28 +10,20 @@ public class BaseServer : MonoBehaviour
     public NetworkDriver driver;
     protected NativeList<NetworkConnection> connections;
 
-    private void Start() => Init();
-    private void OnDestroy() => Shutdown();
-    private void Update() => UpdateServer();
-
-    public string ip = "";
-    public ushort port = 9000;
-
-    public virtual void Init()
+    private void Start()
     {
-        DontDestroyOnLoad(this);
-
+        DontDestroyOnLoad(gameObject);
         // init driver
         driver = NetworkDriver.Create();
-        NetworkEndPoint endpoint = NetworkEndPoint.Parse(ip, port);
+        NetworkEndPoint endpoint = NetworkEndPoint.AnyIpv4;
+        endpoint.Port = port;
         if (driver.Bind(endpoint) != 0) Debug.Log($"Error binding to port: {port}");
         else driver.Listen();
 
         // init connection list
         connections = new NativeList<NetworkConnection>(initialCapacity, Allocator.Persistent);
     }
-
-    public virtual void Shutdown()
+    private void OnDestroy()
     {
         if (driver.IsCreated)
         {
@@ -42,14 +31,15 @@ public class BaseServer : MonoBehaviour
             connections.Dispose();
         }
     }
-
-    public virtual void UpdateServer()
+    private void Update()
     {
         driver.ScheduleUpdate().Complete(); // note to self, learn job system...
         CleanupConnections();
         AcceptNewConnections();
         UpdateMessagePump();
     }
+
+    public ushort port = 9000;
 
     private void CleanupConnections()
     {
@@ -106,11 +96,11 @@ public class BaseServer : MonoBehaviour
                 msg = new Net_ChatMessage(stream);
                 break;
             default:
-                Debug.Log("Message recieved had no OpCode");
+                Debug.Log("Message recieved had no existing OpCode");
                 break;
         }
 
-        msg.ReceivedOnServer(this);
+        msg?.ReceivedOnServer(this);
     }
 
     public virtual void BroadCast(NetMessage msg)

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ServerList : MonoBehaviour
 {
@@ -17,12 +16,11 @@ public class ServerList : MonoBehaviour
     [SerializeField] private GameObject serverLogin;
     [SerializeField] private TMP_InputField passwordInputField;
     [SerializeField] private TMP_Text loginText;
-    [SerializeField] private ButtonAction OnClickConnectButton;
+    [SerializeField] private ButtonAction onClickRefreshButton;
 
     [SerializeField] private GameObject baseClientPrefab;
 
-    private Server myServer = new Server();
-    private Result mySession = new Result();
+    [SerializeField] private ButtonAction onClickConnectButton;
 
     private void Start()
     {
@@ -49,6 +47,8 @@ public class ServerList : MonoBehaviour
             }));
 
         StartCoroutine(UpdateServerList());
+
+        onClickRefreshButton.OnClickButton += () => StartCoroutine(UpdateServerList());
     }
 
     private void OnApplicationQuit()
@@ -94,7 +94,7 @@ public class ServerList : MonoBehaviour
         for (int i = 0; i < servers.servers.Count; i++)
         {
             GameObject serverPrefab = Instantiate(serverListItemPrefab, scrollViewContent.transform);
-            serverPrefab.GetComponent<TMP_Text>().text = $"SERVER {servers.servers[i].server_name}";
+            serverPrefab.GetComponent<TMP_Text>().text = $"Server: {servers.servers[i].server_name}";
             RectTransform rect = serverPrefab.GetComponent<RectTransform>();
             rect.pivot = new Vector2(0, 1);
             rect.localPosition = new Vector2(0, 0 - i * serverListGap);
@@ -106,7 +106,7 @@ public class ServerList : MonoBehaviour
                 passwordInputField.text = "";
                 serverLogin.SetActive(true);
                 loginText.text = $"LOGIN {serverName}";
-                OnClickConnectButton.OnClickButton = () =>
+                onClickConnectButton.OnClickButton = () =>
                 {
                     StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?server_id={id}&password={passwordInputField.text}",
                         (request) =>
@@ -119,14 +119,16 @@ public class ServerList : MonoBehaviour
                                     bool predicate = Convert.ToBoolean(request.servers[0].code);
                                     if (predicate)
                                     {
+                                        // create client
                                         BaseClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseClient>();
                                         client.ip = request.servers[0].ip;
                                         client.port = (ushort)Convert.ToInt16(request.servers[0].port);
-                                    }
-                                    else
-                                    {
+                                        Debug.Log($"{client.ip}.{client.port}!");
 
+                                        // set server id
+                                        SessionVariables.SetServerId(request.servers[0].server_id);
                                     }
+                                    onClickConnectButton.PredicateAction(predicate);
                                 }
                             }
                         }));
@@ -149,16 +151,5 @@ public class ServerList : MonoBehaviour
             rect.localPosition = new Vector2(0, 0 - i * serverListGap);
         }
         scrollViewContent.sizeDelta = new Vector2(scrollViewContent.sizeDelta.x, serverPrefabs.Count * serverListGap);
-    }
-
-
-    // TO DO: Replace methods with global place to set client session and server connection values
-    public void SetSession(Result newSession)
-    {
-        mySession = newSession;
-    }
-    public void SetServer(Server newServer)
-    {
-        myServer = newServer;
     }
 }

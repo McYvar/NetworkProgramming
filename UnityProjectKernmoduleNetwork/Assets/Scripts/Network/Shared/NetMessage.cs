@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Networking.Transport;
@@ -19,4 +20,9 @@ public class NetMessage
     {
 
     }
+}
+
+public enum OpCode
+{
+    CHAT_MESSAGE = 1,
 }

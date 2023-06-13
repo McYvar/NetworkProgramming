@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -46,6 +45,6 @@ public class Server
 
     public override string ToString()
     {
-        return $"code: {code}, server_id: {server_id}, server_name: {server_name}, ip: {ip}, local: {local}";
+        return $"code: {code}, server_id: {server_id}, port: {port}, server_name: {server_name}, ip: {ip}, local: {local}";
     }
 }

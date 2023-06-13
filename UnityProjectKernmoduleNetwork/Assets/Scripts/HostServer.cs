@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 using System;
 
 public class HostServer : MonoBehaviour
@@ -41,13 +40,17 @@ public class HostServer : MonoBehaviour
                         bool predicate = Convert.ToBoolean(request.servers[0].code);
                         if (predicate)
                         {
+                            // create server
                             BaseServer server = Instantiate(baseServerPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseServer>();
-                            server.ip = ipInputField.text;
                             server.port = (ushort)Convert.ToInt16(portInputField.text);
 
-                            BaseClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseClient>();
+                            // create client
+                            GameClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<GameClient>();
                             client.ip = ipInputField.text;
                             client.port = (ushort)Convert.ToInt16(portInputField.text);
+
+                            // set server variables
+                            SessionVariables.SetServerId(request.servers[0].server_id);
                         }
 
                         onHostButtonClick.PredicateAction(predicate);
