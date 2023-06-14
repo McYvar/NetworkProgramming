@@ -71,7 +71,7 @@ public class BaseClient : MonoBehaviour
     {
     }
 
-    public virtual void SendToServer(NetMessage msg)
+    public void SendToServer(NetMessage msg)
     {
         driver.BeginSend(connection, out var writer);
         msg.Serialize(ref writer);

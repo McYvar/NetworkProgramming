@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class GameClient : BaseClient
 {
-    public ChatBehaviour chatBehaviour;
+    public static SessionVariables mySession = new SessionVariables();
     public Dictionary<int, GameObject> playerDictionary = new Dictionary<int, GameObject>(); // player id, player
 
-    private void Awake()
-    {
-        SessionVariables.gameClient = this;
-    }
+    public static ChatBehaviour chatBehaviour;
 
     public override void OnData(DataStreamReader stream)
     {

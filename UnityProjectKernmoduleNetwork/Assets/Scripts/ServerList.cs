@@ -18,7 +18,7 @@ public class ServerList : MonoBehaviour
     [SerializeField] private TMP_Text loginText;
     [SerializeField] private ButtonAction onClickRefreshButton;
 
-    [SerializeField] private GameObject baseClientPrefab;
+    [SerializeField] private GameObject gameClientPrefab;
 
     [SerializeField] private ButtonAction onClickConnectButton;
 
@@ -120,13 +120,14 @@ public class ServerList : MonoBehaviour
                                     if (predicate)
                                     {
                                         // create client
-                                        BaseClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseClient>();
+                                        GameClient client = Instantiate(gameClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<GameClient>();
                                         client.ip = request.servers[0].ip;
                                         client.port = (ushort)Convert.ToInt16(request.servers[0].port);
                                         Debug.Log($"{client.ip}.{client.port}!");
 
                                         // set server id
-                                        SessionVariables.SetServerId(request.servers[0].server_id);
+                                        SessionVariables.gameClient = client;
+                                        SessionVariables.serverId = request.servers[0].server_id;
                                     }
                                     onClickConnectButton.PredicateAction(predicate);
                                 }

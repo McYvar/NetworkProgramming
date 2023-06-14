@@ -10,16 +10,20 @@ public class BaseServer : MonoBehaviour
     public NetworkDriver driver;
     protected NativeList<NetworkConnection> connections;
 
+    public ushort port = 9000;
+    public string ip = "0.0.0.0";
+
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
         // init driver
         driver = NetworkDriver.Create();
-        NetworkEndPoint endpoint = NetworkEndPoint.AnyIpv4;
+        //NetworkEndPoint endpoint = NetworkEndPoint.AnyIpv4;
+        var endpoint = NetworkEndPoint.Parse(ip, port);
         endpoint.Port = port;
         if (driver.Bind(endpoint) != 0) Debug.Log($"Error binding to port: {port}");
         else driver.Listen();
-
+        Debug.Log(endpoint);
         // init connection list
         connections = new NativeList<NetworkConnection>(initialCapacity, Allocator.Persistent);
     }
@@ -38,8 +42,6 @@ public class BaseServer : MonoBehaviour
         AcceptNewConnections();
         UpdateMessagePump();
     }
-
-    public ushort port = 9000;
 
     private void CleanupConnections()
     {
@@ -111,7 +113,7 @@ public class BaseServer : MonoBehaviour
         }
     }
 
-    public virtual void SendToClient(NetworkConnection connection, NetMessage msg)
+    public void SendToClient(NetworkConnection connection, NetMessage msg)
     {
         driver.BeginSend(connection, out var writer);
         msg.Serialize(ref writer);

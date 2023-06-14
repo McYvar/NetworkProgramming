@@ -2,25 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SessionVariables : MonoBehaviour
+public class SessionVariables
 {
     public static GameClient gameClient;
+    public static BaseServer server;
 
-    private static int serverId;
-    private static int playerId;
-
-    private void Start()
-    {
-        DontDestroyOnLoad(this);
-    }
-
-    public static void SetServerId(int newServerId)
-    {
-        serverId = newServerId;
-    }
-
-    public static void SetPlayerId(int newPlayerId)
-    {
-        playerId = newPlayerId;
-    }
+    public static int serverId;
+    public static int playerId;
+    public static string playerName;
 }

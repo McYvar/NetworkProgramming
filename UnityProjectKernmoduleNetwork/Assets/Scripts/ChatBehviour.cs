@@ -15,7 +15,7 @@ public class ChatBehaviour : MonoBehaviour
 
     private void Start()
     {
-        SessionVariables.gameClient.chatBehaviour = this;
+        GameClient.chatBehaviour = this;
     }
 
     private void Update()
@@ -25,8 +25,8 @@ public class ChatBehaviour : MonoBehaviour
         {
             if (chatInput.text.Length > 0)
             {
-                //SendChatMessage(chatInput.text);
-                SessionVariables.gameClient.SendToServer(new Net_ChatMessage(chatInput.text));
+                string text = $"{SessionVariables.playerName}: {chatInput.text}";
+                SessionVariables.gameClient.SendToServer(new Net_ChatMessage(text));
                 chatInput.text = "";
             }
         }
