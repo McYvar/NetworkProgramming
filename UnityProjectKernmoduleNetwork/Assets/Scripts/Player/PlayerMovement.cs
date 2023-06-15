@@ -19,6 +19,8 @@ public class PlayerMovement : BaseState, IGravity
     protected static MovingPlatform platform;
     protected InputHandler inputHandler;
 
+    private float smoothVelocity = 0;
+
     public override void Init()
     {
         rb = GetComponent<Rigidbody>();
@@ -62,13 +64,14 @@ public class PlayerMovement : BaseState, IGravity
         rb.AddForce(transform.rotation * rotatedInputVelocity, ForceMode.VelocityChange);
     }
 
-    protected void ReduceToMaxSpeed(float maxSpeed)
+    protected void ReduceToMaxSpeed(float maxSpeed, float smoothTime)
     {
         Vector3 rotatedVelocity = Quaternion.Inverse(transform.rotation) * rb.velocity;
 
         if (new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude > maxSpeed)
         {
-            Vector3 speedReductor = new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).normalized * maxSpeed + new Vector3(0, rotatedVelocity.y, 0);
+            float newMagnitude = Mathf.SmoothDamp(new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude, maxSpeed, ref smoothVelocity, smoothTime);
+            Vector3 speedReductor = new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).normalized * newMagnitude + new Vector3(0, rotatedVelocity.y, 0);
             rb.velocity = transform.rotation * speedReductor;
         }
     }
@@ -85,8 +88,6 @@ public class PlayerMovement : BaseState, IGravity
 
         // switch to air state
         stateManager.SwitchState(typeof(InAir));
-
-        Debug.Log("jumping");
     }
 
     private void GroundDetection()

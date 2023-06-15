@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 998dbd2661db25f48a591bedea36d40c, type: 3}
   m_Name: PlayerSheet
   m_EditorClassIdentifier: 
-  jumpStrength: 0
-  groundForce: 1
-  groundMaxSpeed: 1
-  airForce: 0
-  airMaxSpeed: 0
+  jumpStrength: 8
+  groundForce: 0.52
+  groundMaxSpeed: 5
+  groundSmoothTime: 0.1
+  airForce: 0.3
+  airMaxSpeed: 5
+  airSmoothTime: 0.1
   sensitivity: 1

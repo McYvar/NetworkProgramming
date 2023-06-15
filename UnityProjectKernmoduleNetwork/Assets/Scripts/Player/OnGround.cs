@@ -20,6 +20,6 @@
     {
         base.OnFixedUpdate();
         Movement(playerSheet.groundForce);
-        ReduceToMaxSpeed(playerSheet.groundMaxSpeed);
+        ReduceToMaxSpeed(playerSheet.groundMaxSpeed, playerSheet.groundSmoothTime);
     }
 }

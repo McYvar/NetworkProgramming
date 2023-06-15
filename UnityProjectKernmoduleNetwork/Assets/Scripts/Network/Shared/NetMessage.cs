@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class NetMessage
 {
-    public OpCode Code { set; get; }
+    public OpCode code { set; get; }
 
     public virtual void Serialize(ref DataStreamWriter writer) { }
 
@@ -20,9 +20,4 @@ public class NetMessage
     {
 
     }
-}
-
-public enum OpCode
-{
-    CHAT_MESSAGE = 1,
 }

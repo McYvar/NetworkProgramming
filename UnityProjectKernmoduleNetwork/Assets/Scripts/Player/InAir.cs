@@ -10,6 +10,6 @@
     {
         base.OnFixedUpdate();
         Movement(playerSheet.airForce);
-        ReduceToMaxSpeed(playerSheet.airMaxSpeed);
+        ReduceToMaxSpeed(playerSheet.airMaxSpeed, playerSheet.airSmoothTime);
     }
 }

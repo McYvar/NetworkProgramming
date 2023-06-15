@@ -87,23 +87,7 @@ public class BaseServer : MonoBehaviour
         }
     }
 
-    public virtual void OnData(DataStreamReader stream)
-    {
-        NetMessage msg = null;
-        var opCode = (OpCode)stream.ReadByte();
-
-        switch (opCode)
-        {
-            case OpCode.CHAT_MESSAGE:
-                msg = new Net_ChatMessage(stream);
-                break;
-            default:
-                Debug.Log("Message recieved had no existing OpCode");
-                break;
-        }
-
-        msg?.ReceivedOnServer(this);
-    }
+    public virtual void OnData(DataStreamReader stream) { }
 
     public virtual void BroadCast(NetMessage msg)
     {
@@ -115,6 +99,7 @@ public class BaseServer : MonoBehaviour
 
     public void SendToClient(NetworkConnection connection, NetMessage msg)
     {
+        Debug.Log($"trying to send to client {msg.GetType()}");
         driver.BeginSend(connection, out var writer);
         msg.Serialize(ref writer);
         driver.EndSend(writer);

@@ -17,9 +17,9 @@ public class HostServer : MonoBehaviour
     [SerializeField] private Toggle hostLocalToggle;
     private ushort hostLocal = 1; // 0 false, 1 true
 
-    [SerializeField] private GameObject baseServerPrefab;
-    [SerializeField] private GameObject baseClientPrefab;
     [SerializeField] private ButtonAction onHostButtonClick;
+    [SerializeField] private CreateServer createServer;
+    [SerializeField] private CreateClient createClient;
 
     private void Start()
     {
@@ -43,18 +43,12 @@ public class HostServer : MonoBehaviour
                         if (predicate)
                         {
                             // create server
-                            BaseServer server = Instantiate(baseServerPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseServer>();
-                            server.ip = localIpInputField.text;
-                            server.port = (ushort)Convert.ToInt16(portInputField.text);
+                            createServer.CreateServerObject(localIpInputField.text, (ushort)Convert.ToInt16(portInputField.text));
                             // create client
-                            GameClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<GameClient>();
-                            client.ip = localIpInputField.text;
-                            client.port = (ushort)Convert.ToInt16(portInputField.text);
+                            createClient.CreateClientObject(localIpInputField.text, (ushort)Convert.ToInt16(portInputField.text));
 
                             // set server variables
-                            SessionVariables.server = server;
-                            SessionVariables.gameClient = client;
-                            SessionVariables.serverId = request.servers[0].server_id;
+                            SessionVariables.instance.serverId = request.servers[0].server_id;
                         }
 
                         onHostButtonClick.PredicateAction(predicate);

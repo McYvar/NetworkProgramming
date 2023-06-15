@@ -11,31 +11,31 @@ public class Net_ChatMessage : NetMessage
 
     public Net_ChatMessage()
     {
-        Code = OpCode.CHAT_MESSAGE;
+        code = OpCode.CHAT_MESSAGE;
     }
 
     public Net_ChatMessage(DataStreamReader reader)
     {
-        Code = OpCode.CHAT_MESSAGE;
+        code = OpCode.CHAT_MESSAGE;
         Deserialize(reader);
     }
 
     public Net_ChatMessage(DataStreamReader reader, ChatBehaviour chatBehaviour)
     {
-        Code = OpCode.CHAT_MESSAGE;
-        Deserialize(reader);
+        code = OpCode.CHAT_MESSAGE;
         this.chatBehaviour = chatBehaviour;
+        Deserialize(reader);
     }
 
     public Net_ChatMessage(string msg) 
     {
-        Code = OpCode.CHAT_MESSAGE;
+        code = OpCode.CHAT_MESSAGE;
         chatMessage = msg;
     }
 
     public override void Serialize(ref DataStreamWriter writer)
     {
-        writer.WriteByte((byte) Code);
+        writer.WriteByte((byte) code);
         writer.WriteFixedString128(chatMessage);
     }
 

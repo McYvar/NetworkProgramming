@@ -2,12 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SessionVariables
+public class SessionVariables : MonoBehaviour
 {
-    public static GameClient gameClient;
-    public static BaseServer server;
+    public Dictionary<int, GameObject> playerDictionary = new Dictionary<int, GameObject>(); // player id, player
+    public GameClient gameClient;
+    public BaseServer server;
 
-    public static int serverId;
-    public static int playerId;
-    public static string playerName;
+    public int serverId;
+    public int playerId;
+    public string playerName;
+
+
+    public static SessionVariables instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        
+        DontDestroyOnLoad(this);
+        instance = this;
+    }
 }
