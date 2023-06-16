@@ -148,6 +148,12 @@ public class Net_ReachedGoal : NetMessage
         code = OpCode.REACHED_GOAL;
     }
 
+    public Net_ReachedGoal(int playerId)
+    {
+        code = OpCode.REACHED_GOAL;
+        this.playerId = playerId;
+    }
+
     public Net_ReachedGoal(DataStreamReader reader)
     {
         code = OpCode.REACHED_GOAL;

@@ -40,6 +40,9 @@ public class GameServer : BaseServer
                 break;
             case OpCode.CLOSE_BARRIERS:
                 break;
+            case OpCode.REACHED_GOAL:
+                msg = new Net_ReachedGoal(stream, deathRunGameLoop);
+                break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");
                 break;

@@ -173,10 +173,6 @@ public class DeathRunGameLoop : MonoBehaviour
                 EndRound();
             }
         }
-        else
-        {
-            SessionVariables.instance.myGameClient.SendToServer(new Net_ReachedGoal());
-        }
     }
 
     private IEnumerator WaitForNextTurn(float waitTime)
