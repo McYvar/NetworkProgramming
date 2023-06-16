@@ -99,7 +99,7 @@ public class DeathRunGameLoop : MonoBehaviour
     {
         // stage reset
         roundTime = Time.time;
-        SessionVariables.instance.server.BroadCast(new Net_OpenBarriers());
+        if (SessionVariables.instance.server != null) SessionVariables.instance.server.BroadCast(new Net_OpenBarriers());
     }
 
     public void OpenBarriers()
