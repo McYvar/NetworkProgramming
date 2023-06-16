@@ -42,16 +42,38 @@ public class HostServer : MonoBehaviour
                         bool predicate = Convert.ToBoolean(request.servers[0].code);
                         if (predicate)
                         {
-                            // create server
-                            createServer.CreateServerObject(localIpInputField.text, (ushort)Convert.ToInt16(portInputField.text));
-                            // create client
-                            createClient.CreateClientObject(localIpInputField.text, (ushort)Convert.ToInt16(portInputField.text));
-
-                            // set server variables
                             SessionVariables.instance.serverId = request.servers[0].server_id;
-                        }
+                            StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?server_id={request.servers[0].server_id}", (request2) =>
+                            {
+                                if (request != null)
+                                {
+                                    if (request2.results.Count > 0)
+                                    {
+                                        bool predicate = Convert.ToBoolean(request2.results[0].code);
+                                        if (predicate)
+                                        {
+                                            foreach (var result in request2.results)
+                                            {
+                                                Player player = new Player(result.user_id, result.username);
+                                                SessionVariables.instance.playerDictionary.Add(result.user_id, player);
+                                            }
+                                            // create server
+                                            createServer.CreateServerObject(localIpInputField.text, (ushort)Convert.ToInt16(portInputField.text));
+                                            // create client
+                                            createClient.CreateClientObject(request.servers[0].ip, (ushort)Convert.ToInt16(request.servers[0].port));
+                                            SessionVariables.instance.serverId = request.servers[0].server_id;
+                                            onHostButtonClick.PredicateAction(true);
+                                        }
+                                        else
+                                        {
+                                            StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout", null));
+                                        }
 
-                        onHostButtonClick.PredicateAction(predicate);
+                                    }
+                                }
+                            }));
+                        }
+                        else onHostButtonClick.PredicateAction(false);
                     }
                 }
             }));

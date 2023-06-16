@@ -54,6 +54,7 @@ public class BaseClient : MonoBehaviour
             if (cmd == NetworkEvent.Type.Connect)
             {
                 Debug.Log("We are now connected to the server");
+                SessionVariables.instance.connected = true;
             }
             else if (cmd == NetworkEvent.Type.Data)
             {

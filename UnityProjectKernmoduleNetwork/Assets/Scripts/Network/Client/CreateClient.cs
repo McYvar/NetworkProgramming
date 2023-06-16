@@ -12,6 +12,6 @@ public class CreateClient : MonoBehaviour
         GameClient client = Instantiate(baseClientPrefab, Vector3.zero, Quaternion.identity).GetComponent<GameClient>();
         client.ip = ip;
         client.port = port;
-        SessionVariables.instance.gameClient = client;
+        SessionVariables.instance.myGameClient = client;
     }
 }

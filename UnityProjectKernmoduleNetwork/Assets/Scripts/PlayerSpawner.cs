@@ -5,15 +5,25 @@ using UnityEngine;
 public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject playerPrefabNonControlable;
 
     private void Start()
     {
-        SessionVariables.instance.gameClient.playerSpawner = this;
+        SessionVariables.instance.myGameClient.playerSpawner = this;
     }
 
-    public void SpawnPlayer(Vector3 spawnLocation)
+    public void SpawnPlayer(int playerId, string playerName, Vector3 spawnLocation)
     {
-        GameObject newPlayer = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
-        newPlayer.name = $"{SessionVariables.instance.playerName} (ID: {SessionVariables.instance.playerId})";
+        GameObject newPlayerObject;
+        if (playerId == SessionVariables.instance.myPlayerId) newPlayerObject = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
+        else newPlayerObject = Instantiate(playerPrefabNonControlable, spawnLocation, Quaternion.identity);
+        newPlayerObject.name = $"{playerName} (ID: {playerId})";
+        if (!SessionVariables.instance.playerDictionary.ContainsKey(playerId))
+        {
+            Player newPlayer = new Player(playerId, playerName);
+            newPlayer.playerObject = newPlayerObject;
+            SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
+        }
+        else SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;
     }
 }

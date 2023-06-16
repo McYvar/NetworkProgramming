@@ -56,8 +56,8 @@ public class UIController : MonoBehaviour
                         bool predicate = Convert.ToBoolean(request.results[0].code);
                         if (predicate)
                         {
-                            SessionVariables.instance.playerId = request.results[0].user_id;
-                            SessionVariables.instance.playerName = request.results[0].username;
+                            SessionVariables.instance.myPlayerId = request.results[0].user_id;
+                            SessionVariables.instance.myPlayerName = request.results[0].username;
                         }
 
 
@@ -98,8 +98,8 @@ public class UIController : MonoBehaviour
                         bool predicate = Convert.ToBoolean(request.results[0].code);
                         if (predicate)
                         {
-                            SessionVariables.instance.playerId = request.results[0].user_id;
-                            SessionVariables.instance.playerName = request.results[0].username;
+                            SessionVariables.instance.myPlayerId = request.results[0].user_id;
+                            SessionVariables.instance.myPlayerName = request.results[0].username;
                         }
 
 

@@ -37,6 +37,6 @@ public class WebRequest : MonoBehaviour
                     break;
             }
         }
-        callback(result);
+        callback?.Invoke(result);
     }
 }

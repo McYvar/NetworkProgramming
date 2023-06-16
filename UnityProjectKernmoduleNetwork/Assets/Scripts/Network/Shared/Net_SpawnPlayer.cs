@@ -1,9 +1,12 @@
-﻿using Unity.Networking.Transport;
+﻿using Unity.Collections;
+using Unity.Networking.Transport;
+using UnityEditor;
 using UnityEngine;
 
 public class Net_SpawnPlayer : NetMessage
 {
     public int playerId { get; set; }
+    public FixedString128Bytes playerName { get; set; }
     public float xPos { get; set; }
     public float yPos { get; set; }
     public float zPos { get; set; }
@@ -14,10 +17,11 @@ public class Net_SpawnPlayer : NetMessage
         code = OpCode.SPAWN_PLAYER;
     }
 
-    public Net_SpawnPlayer(int playerId, float xPos, float yPos, float zPos)
+    public Net_SpawnPlayer(int playerId, string playerName, float xPos, float yPos, float zPos)
     {
         code = OpCode.SPAWN_PLAYER;
         this.playerId = playerId;
+        this.playerName = playerName;
         this.xPos = xPos;
         this.yPos = yPos;
         this.zPos = zPos;
@@ -40,6 +44,7 @@ public class Net_SpawnPlayer : NetMessage
     {
         writer.WriteByte((byte)code);
         writer.WriteInt(playerId);
+        writer.WriteFixedString128(playerName);
         writer.WriteFloat(xPos);
         writer.WriteFloat(yPos);
         writer.WriteFloat(zPos);
@@ -48,6 +53,7 @@ public class Net_SpawnPlayer : NetMessage
     public override void Deserialize(DataStreamReader reader)
     {
         playerId = reader.ReadInt();
+        playerName = reader.ReadFixedString128();
         xPos = reader.ReadFloat();
         yPos = reader.ReadFloat();
         zPos = reader.ReadFloat();
@@ -62,6 +68,6 @@ public class Net_SpawnPlayer : NetMessage
     public override void ReceivedOnClient()
     {
         Debug.Log($"CLIENT: {playerId}, {xPos}, {yPos}, {zPos}");
-        playerSpawner.SpawnPlayer(new Vector3(xPos, yPos, zPos));
+        playerSpawner.SpawnPlayer(playerId, playerName.ToString(), new Vector3(xPos, yPos, zPos));
     }
 }

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class GameServer : BaseServer
 {
-    [SerializeField] private GameObject PlayerPrefab;
-
     public override void OnData(DataStreamReader stream)
     {
         Debug.Log("Received package on server!");
@@ -18,6 +16,9 @@ public class GameServer : BaseServer
                 break;
             case OpCode.SPAWN_PLAYER:
                 msg = new Net_SpawnPlayer(stream);
+                break;
+            case OpCode.PLAYER_TRANSFORM:
+                msg = new Net_PlayerTransform(stream);
                 break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");
