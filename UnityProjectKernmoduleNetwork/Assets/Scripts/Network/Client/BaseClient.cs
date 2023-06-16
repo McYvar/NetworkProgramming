@@ -74,7 +74,6 @@ public class BaseClient : MonoBehaviour
 
     public void SendToServer(NetMessage msg)
     {
-        Debug.Log($"trying to send to server {msg.GetType()}");
         driver.BeginSend(connection, out var writer);
         msg.Serialize(ref writer);
         driver.EndSend(writer);

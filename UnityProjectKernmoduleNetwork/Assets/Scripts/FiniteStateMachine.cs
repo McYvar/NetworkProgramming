@@ -7,6 +7,7 @@ public class FiniteStateMachine
     private Dictionary<System.Type, BaseState> stateDictionary = new Dictionary<System.Type, BaseState>();
 
     private BaseState currentState;
+    private BaseState lastState;
 
     public FiniteStateMachine(BaseState startState, BaseState[] states)
     {
@@ -38,6 +39,7 @@ public class FiniteStateMachine
     public void SwitchState(System.Type newStateStype)
     {
         currentState?.OnExit();
+        lastState = currentState;
         currentState = stateDictionary[newStateStype];
         currentState?.OnEnter();
     }
@@ -45,5 +47,10 @@ public class FiniteStateMachine
     public void DebugCurrentState()
     {
         Debug.Log(currentState);
+    }
+
+    public BaseState GetLastState()
+    {
+        return lastState;
     }
 }

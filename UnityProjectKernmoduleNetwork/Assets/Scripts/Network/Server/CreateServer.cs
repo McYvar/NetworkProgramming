@@ -9,7 +9,7 @@ public class CreateServer : MonoBehaviour
 
     public void CreateServerObject(string ip, ushort port)
     {
-        BaseServer server = Instantiate(baseServerPrefab, Vector3.zero, Quaternion.identity).GetComponent<BaseServer>();
+        GameServer server = Instantiate(baseServerPrefab, Vector3.zero, Quaternion.identity).GetComponent<GameServer>();
         server.ip = ip;
         server.port = port;
         SessionVariables.instance.server = server;

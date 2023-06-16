@@ -21,7 +21,7 @@ public class PlayerSpawner : MonoBehaviour
         if (!SessionVariables.instance.playerDictionary.ContainsKey(playerId))
         {
             Player newPlayer = new Player(playerId, playerName);
-            newPlayer.playerObject = newPlayerObject;
+            newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
             SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
         }
         else SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;

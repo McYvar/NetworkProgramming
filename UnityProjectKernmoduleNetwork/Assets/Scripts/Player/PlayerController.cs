@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     private FiniteStateMachine fsm;
     private BaseState[] states;
     [SerializeField] private BaseState startState;
-    [SerializeField] private SessionVariables mySession;
 
     private void Awake()
     {

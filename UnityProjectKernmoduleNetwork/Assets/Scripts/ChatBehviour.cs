@@ -2,33 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEditor;
 
 public class ChatBehaviour : MonoBehaviour
 {
     [SerializeField] private RectTransform content;
+    [SerializeField] private GameObject scrollView;
+    [SerializeField] private EventSystem eventSystem;
     [SerializeField] private GameObject messagePrefab;
     [SerializeField] private int maxMessageCount = 10; // Maximum number of messages in the chat
+    [SerializeField] private float messagesFadoutTimer;
+    private float timer;
     private LinkedList<RectTransform> messageList = new LinkedList<RectTransform>();
 
     [SerializeField] private TMP_InputField chatInput;
     [SerializeField] private float gapSize;
+
+    private bool active = false;
 
     private void Start()
     {
         SessionVariables.instance.myGameClient.chatBehaviour = this;
     }
 
-    private void Update()
+    public void SendMessageToServer()
     {
-        // Check for input or conditions to send a new message
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (chatInput.text.Length > 0)
         {
-            if (chatInput.text.Length > 0)
-            {
-                string text = $"{SessionVariables.instance.myPlayerName}: {chatInput.text}";
-                SessionVariables.instance.myGameClient.SendToServer(new Net_ChatMessage(text));
-                chatInput.text = "";
-            }
+            string text = $"{SessionVariables.instance.myPlayerName}: {chatInput.text}";
+            SessionVariables.instance.myGameClient.SendToServer(new Net_ChatMessage(text));
+            chatInput.text = "";
         }
     }
 
@@ -80,5 +85,31 @@ public class ChatBehaviour : MonoBehaviour
         }
 
         content.sizeDelta = new Vector2(content.sizeDelta.x, currentHeight);
+    }
+
+    public void OpenChat()
+    {
+        scrollView.SetActive(true);
+        eventSystem.SetSelectedGameObject(chatInput.gameObject);
+        active = true;
+    }
+
+    public void CloseChat()
+    {
+        eventSystem.SetSelectedGameObject(null);
+        timer = messagesFadoutTimer;
+        active = false;
+    }
+
+    private void Update()
+    {
+        if (!active)
+        {
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+            }
+            else scrollView.SetActive(false);
+        }
     }
 }

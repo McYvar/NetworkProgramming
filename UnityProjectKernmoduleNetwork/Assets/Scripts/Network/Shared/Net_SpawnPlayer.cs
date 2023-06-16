@@ -61,13 +61,11 @@ public class Net_SpawnPlayer : NetMessage
 
     public override void ReceivedOnServer(BaseServer server)
     {
-        Debug.Log($"SERVER: {playerId}, {xPos}, {yPos}, {zPos}");
         server.BroadCast(this);
     }
 
     public override void ReceivedOnClient()
     {
-        Debug.Log($"CLIENT: {playerId}, {xPos}, {yPos}, {zPos}");
         playerSpawner.SpawnPlayer(playerId, playerName.ToString(), new Vector3(xPos, yPos, zPos));
     }
 }

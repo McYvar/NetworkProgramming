@@ -28,9 +28,15 @@ public class PlayerMovement : BaseState, IGravity
         inputHandler = GetComponent<InputHandler>();
     }
 
-    public override void OnEnter() { }
+    public override void OnEnter() 
+    {
+        inputHandler.pressOpenChatFirst += OpenChat;
+    }
 
-    public override void OnExit() { }
+    public override void OnExit() 
+    {
+        inputHandler.pressOpenChatFirst -= OpenChat;
+    }
 
     public override void OnFixedUpdate() { }
 
@@ -90,7 +96,7 @@ public class PlayerMovement : BaseState, IGravity
         stateManager.SwitchState(typeof(InAir));
     }
 
-    private void GroundDetection()
+    protected void GroundDetection()
     {
         Ray ray = new Ray(transform.position, -transform.up);
         float sphereRadius = 0.9f;
@@ -160,10 +166,15 @@ public class PlayerMovement : BaseState, IGravity
         return transform.position;
     }
 
-    private void RotateTowardsGravity(Vector3 direction)
+    protected void RotateTowardsGravity(Vector3 direction)
     {
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.FromToRotation(Vector3.down, direction),
             slerpSpeed);
+    }
+
+    private void OpenChat()
+    {
+        stateManager.SwitchState(typeof(InChat));
     }
 }

@@ -143,7 +143,7 @@ public class InputHandler : MonoBehaviour
     private void OnPressMouseRight()
     {
         isPressedMouseRight = true;
-        pressMouseRightValue = 0;
+        pressMouseRightValue = 1;
         pressMouseRightFirst?.Invoke();
     }
     private void OnReleaseMouseRight()
@@ -151,6 +151,57 @@ public class InputHandler : MonoBehaviour
         isPressedMouseRight = false;
         pressMouseRightValue = 0;
         pressMouseRightLast?.Invoke();
+    }
+
+    public bool isPressedOpenChat;
+    public int pressOpenChatValue;
+    public Action pressOpenChatFirst;
+    public Action pressOpenChatLast;
+    private void OnPressOpenChat()
+    {
+        isPressedOpenChat = true;
+        pressOpenChatValue = 1;
+        pressOpenChatFirst?.Invoke();
+    }
+    private void OnReleaseOpenChat()
+    {
+        isPressedOpenChat = false;
+        pressOpenChatValue = 0;
+        pressOpenChatLast?.Invoke();
+    }
+
+    public bool isPressedEscape;
+    public int pressEscapeValue;
+    public Action pressEscapeFirst;
+    public Action pressEscapeLast;
+    private void OnPressEscape()
+    {
+        isPressedEscape = true;
+        pressEscapeValue = 1;
+        pressEscapeFirst?.Invoke();
+    }
+    private void OnReleaseEscape()
+    {
+        isPressedEscape = false;
+        pressEscapeValue = 0;
+        pressEscapeLast?.Invoke();
+    }
+
+    public bool isPressedInteract;
+    public int pressInteractValue;
+    public Action pressInteractFirst;
+    public Action pressInteractLast;
+    private void OnPressInteract()
+    {
+        isPressedInteract = true;
+        pressInteractValue = 1;
+        pressInteractFirst?.Invoke();
+    }
+    private void OnReleaseInteract()
+    {
+        isPressedInteract = false;
+        pressInteractValue = 0;
+        pressInteractLast?.Invoke();
     }
 
     public Vector2 mouseDelta;

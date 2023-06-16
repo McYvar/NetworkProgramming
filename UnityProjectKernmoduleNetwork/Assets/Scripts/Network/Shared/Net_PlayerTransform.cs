@@ -69,7 +69,6 @@ public class Net_PlayerTransform : NetMessage
 
     public override void ReceivedOnServer(BaseServer server)
     {
-        Debug.Log($"Server: player with {playerId} to: {xPos}, {yPos}, {zPos}");
         server.BroadCast(this);
     }
 

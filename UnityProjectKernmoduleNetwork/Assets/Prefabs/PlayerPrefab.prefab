@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 4265083858042504470}
   - component: {fileID: 2855596271291776271}
   - component: {fileID: 5487392833224406887}
+  - component: {fileID: 5261158972560270855}
   - component: {fileID: 8631429702681643307}
   m_Layer: 7
   m_Name: PlayerController
@@ -483,6 +484,10 @@ MonoBehaviour:
   pressMouseLeftValue: 0
   isPressedMouseRight: 0
   pressMouseRightValue: 0
+  isPressedOpenChat: 0
+  pressOpenChatValue: 0
+  isPressedEscape: 0
+  pressEscapeValue: 0
   mouseDelta: {x: 0, y: 0}
 --- !u!114 &4265083858042504470
 MonoBehaviour:
@@ -538,6 +543,27 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 768
+--- !u!114 &5261158972560270855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5569706899670070386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ca29e1fcb759d4c939b5117a8d64ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSheet: {fileID: 11400000, guid: c4d314b571cc4e74d8d5c9d9640694bb, type: 2}
+  cameraPivot: {fileID: 6123317160625252122}
+  mainCamera: {fileID: 1588699752264636000}
+  head: {fileID: 1249994340886646398}
+  slerpSpeed: 0.008
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  chatBehaviour: {fileID: 0}
 --- !u!114 &8631429702681643307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,7 +576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35345b9a6c6a5446a67c80f723fac8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sendInterval: 0.5
+  sendInterval: 0.1
 --- !u!1 &6815253861526478284
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class SessionVariables : MonoBehaviour
 {
     public Dictionary<int, Player> playerDictionary = new Dictionary<int, Player>(); // player id, playername
     public GameClient myGameClient;
-    public BaseServer server;
+    public GameServer server;
 
     public bool connected = false;
 

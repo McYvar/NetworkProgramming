@@ -99,7 +99,6 @@ public class BaseServer : MonoBehaviour
 
     public void SendToClient(NetworkConnection connection, NetMessage msg)
     {
-        Debug.Log($"trying to send to client {msg.GetType()}");
         driver.BeginSend(connection, out var writer);
         msg.Serialize(ref writer);
         driver.EndSend(writer);
