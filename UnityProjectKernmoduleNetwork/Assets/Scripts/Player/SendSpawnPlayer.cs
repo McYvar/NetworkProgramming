@@ -7,6 +7,8 @@ public class SendSpawnPlayer : MonoBehaviour
     [SerializeField] private bool debugMode;
     [SerializeField] private int debugId;
     [SerializeField] private string debugName;
+    [SerializeField] private int debugId2;
+    [SerializeField] private string debugName2;
 
     private void Start()
     {
@@ -20,6 +22,7 @@ public class SendSpawnPlayer : MonoBehaviour
         if (debugMode)
         {
             SessionVariables.instance.playerDictionary.Add(debugId, new Player(debugId, debugName));
+            SessionVariables.instance.playerDictionary.Add(debugId2, new Player(debugId2, debugName2));
         }
 
         yield return new WaitUntil(() => SessionVariables.instance.connected);
