@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1259,6 +1259,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Server
       objectReference: {fileID: 0}
+    - target: {fileID: 6590672135043698833, guid: 1d17af74f03c88842b13ea66ef4dcf04,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1600,8 +1605,8 @@ MonoBehaviour:
   server: {fileID: 529087678}
   connected: 0
   serverId: 0
-  myPlayerId: 17
-  myPlayerName: Mac
+  myPlayerId: 15
+  myPlayerName: McYvar
 --- !u!4 &619178260
 Transform:
   m_ObjectHideFlags: 0
