@@ -52,7 +52,7 @@ public class DeathRunGameLoop : MonoBehaviour
         playerScore.Clear();
         foreach (int player in players)
         {
-            playersWhoNotPlayedDeathThisSession[player] = player;
+            playersWhoNotPlayedDeathThisSession.Add(player);
             playerScore.Add(new Score(player, 0));
         }
         playersReachedGoal = 0;
