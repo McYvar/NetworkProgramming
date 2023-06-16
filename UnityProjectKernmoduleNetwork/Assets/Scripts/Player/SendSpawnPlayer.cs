@@ -4,6 +4,7 @@ using UnityEngine;
 public class SendSpawnPlayer : MonoBehaviour
 {
     [SerializeField] private PlayerSpawner playerSpawner;
+    [SerializeField] private bool debugMode;
 
     private void Start()
     {
@@ -13,6 +14,12 @@ public class SendSpawnPlayer : MonoBehaviour
 
     IEnumerator SpawnWhenConnected()
     {
+
+        if (debugMode)
+        {
+            SessionVariables.instance.playerDictionary.Add(17, new Player(17, "Mac"));
+        }
+
         yield return new WaitUntil(() => SessionVariables.instance.connected);
 
         // spawn all other players
@@ -21,7 +28,6 @@ public class SendSpawnPlayer : MonoBehaviour
             if (player.playerId == SessionVariables.instance.myPlayerId) continue;
             playerSpawner.SpawnPlayer(player.playerId, player.playerName, player.position);
         }
-
         // then spawn self with a request
         int myPlayerId = SessionVariables.instance.myPlayerId;
         Net_SpawnPlayer spawnPlayer = new Net_SpawnPlayer(myPlayerId, SessionVariables.instance.playerDictionary[myPlayerId].playerName,

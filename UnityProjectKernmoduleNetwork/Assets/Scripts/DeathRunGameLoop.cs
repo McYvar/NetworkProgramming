@@ -56,11 +56,14 @@ public class DeathRunGameLoop : MonoBehaviour
             playerScore.Add(new Score(player, 0));
         }
         playersReachedGoal = 0;
-        webRequest.Request<Game>("https://studenthome.hku.nl/~yvar.toorop/php/history_add_game", (request) =>
+        StartCoroutine(webRequest.Request<Game>("https://studenthome.hku.nl/~yvar.toorop/php/history_add_game", (request) =>
         {
-            if (request != null) gameId = request.game_id;
-        });
-        NextPlayer();
+            if (request != null)
+            {
+                gameId = request.game_id;
+                NextPlayer();
+            }
+        }));
     }
 
     private int FindNextPlayer()
@@ -133,7 +136,7 @@ public class DeathRunGameLoop : MonoBehaviour
 
         foreach (var score in playerScore)
         {
-            webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={score.playerId}", null);
+            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={score.playerId}", null));
         }
 
         Score firstPlace = playerScore[0];
@@ -155,7 +158,7 @@ public class DeathRunGameLoop : MonoBehaviour
             }
         }
 
-        webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null);
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
     }
 
     public void ReachedGoal(int playerId)
@@ -216,6 +219,7 @@ public class DeathRunGameLoop : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class Score
 {
     public int playerId;
@@ -233,6 +237,7 @@ public class Score
     }
 }
 
+[System.Serializable]
 public class Game
 {
     public int game_id;

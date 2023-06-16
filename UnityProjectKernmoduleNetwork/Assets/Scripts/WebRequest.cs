@@ -7,6 +7,7 @@ public class WebRequest : MonoBehaviour
 {
     public IEnumerator Request<T>(string uri, Action<T> callback)
     {
+        Debug.Log("Requesting");
         T result = default(T);
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
         {
