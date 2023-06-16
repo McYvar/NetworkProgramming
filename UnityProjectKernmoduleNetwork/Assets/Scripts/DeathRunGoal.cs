@@ -9,7 +9,14 @@ public class DeathRunGoal : MonoBehaviour
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
-            deathRunGameLoop.ReachedGoal(SessionVariables.instance.myPlayerId);
+            foreach (var player in SessionVariables.instance.playerDictionary.Values)
+            {
+                if (player.playerObject == other.gameObject)
+                {
+                    deathRunGameLoop.ReachedGoal(player.playerId);
+                    return;
+                }
+            }
         }
     }
 }
