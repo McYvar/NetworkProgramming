@@ -23,6 +23,7 @@ public class Net_TeleportPlayer : NetMessage
     public Net_TeleportPlayer(DataStreamReader reader, PlayerTeleporter playerTeleporter)
     {
         code = OpCode.TELEPORT_PLAYER;
+        this.playerTeleporter = playerTeleporter;
         Deserialize(reader);
     }
 
