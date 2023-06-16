@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Networking.Transport;
+using UnityEngine;
 
 public class Net_StartGame : NetMessage
 {
@@ -180,6 +181,7 @@ public class Net_ReachedGoal : NetMessage
 
     public override void ReceivedOnServer(BaseServer server)
     {
+        Debug.Log("here");
         deathRunGameLoop.ReachedGoal(playerId);
     }
 }

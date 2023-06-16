@@ -99,7 +99,7 @@ public class DeathRunGameLoop : MonoBehaviour
 
     public void StartRound()
     {
-        // stage reset
+        foreach (var player in playerScore.Values) player.finished = false;
         roundTime = Time.time;
         if (SessionVariables.instance.server != null) SessionVariables.instance.server.BroadCast(new Net_OpenBarriers());
     }
@@ -168,11 +168,15 @@ public class DeathRunGameLoop : MonoBehaviour
         if (SessionVariables.instance.server != null)
         {
             if (!sessionPlayers.Contains(playerId)) return;
-            playersReachedGoal++;
-            playerScore[playerId].AddScore(roundTime - Time.time);
-            if (playersReachedGoal == sessionPlayers.Count)
+            if (!playerScore[playerId].finished)
             {
-                EndRound();
+                playerScore[playerId].finished = true;
+                playersReachedGoal++;
+                playerScore[playerId].AddScore(roundTime - Time.time);
+                if (playersReachedGoal >= sessionPlayers.Count)
+                {
+                    EndRound();
+                }
             }
         }
     }
@@ -224,11 +228,13 @@ public class Score
 {
     public int playerId;
     public float score;
+    public bool finished;
 
     public Score(int playerId, float score)
     {
         this.playerId = playerId;
         this.score = score;
+        finished = false;
     }
 
     public void AddScore(float time)
