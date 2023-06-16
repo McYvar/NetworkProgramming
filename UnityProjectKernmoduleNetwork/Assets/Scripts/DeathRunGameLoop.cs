@@ -29,6 +29,7 @@ public class DeathRunGameLoop : MonoBehaviour
     private float roundTime;
 
     private int gameId;
+    private int currentDeath;
 
     private void Start()
     {
@@ -87,6 +88,7 @@ public class DeathRunGameLoop : MonoBehaviour
         }
 
         int deathPlayer = FindNextPlayer();
+        currentDeath = deathPlayer;
         foreach (var player in sessionPlayers)
         {
             if (player == deathPlayer) continue;
@@ -129,7 +131,7 @@ public class DeathRunGameLoop : MonoBehaviour
     public void EndGame()
     {
         if (SessionVariables.instance.server == null) return;
-        gameTime -= Time.time;
+        gameTime = Time.time - gameTime;
         inSession = false;
         foreach (var player in sessionPlayers)
         {
@@ -141,7 +143,12 @@ public class DeathRunGameLoop : MonoBehaviour
             StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={score.playerId}", null));
         }
 
-        Score firstPlace = playerScore[0];
+        foreach (var player in playerScore)
+        {
+            Debug.Log($"{player.Key}({player.Value.playerId}): {player.Value.score}");
+        }
+
+        Score firstPlace = playerScore[sessionPlayers[0]];
         foreach (var score in playerScore.Values)
         {
             if (score.score < firstPlace.score)
@@ -150,7 +157,7 @@ public class DeathRunGameLoop : MonoBehaviour
             }
         }
 
-        Score secondPlace = playerScore[0];
+        Score secondPlace = playerScore[sessionPlayers[0]];
         playerScore.Remove(firstPlace.playerId);
         foreach (var score in playerScore.Values)
         {
@@ -172,7 +179,7 @@ public class DeathRunGameLoop : MonoBehaviour
             {
                 playerScore[playerId].finished = true;
                 playersReachedGoal++;
-                playerScore[playerId].AddScore(roundTime - Time.time);
+                if (playerId != currentDeath) playerScore[playerId].AddScore(Time.time - roundTime);
                 if (playersReachedGoal >= sessionPlayers.Count)
                 {
                     EndRound();
