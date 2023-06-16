@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1262,25 +1262,13 @@ PrefabInstance:
     - target: {fileID: 6590672135043698833, guid: 1d17af74f03c88842b13ea66ef4dcf04,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d17af74f03c88842b13ea66ef4dcf04, type: 3}
---- !u!114 &529087678 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -5308014825883664904, guid: 1d17af74f03c88842b13ea66ef4dcf04,
-    type: 3}
-  m_PrefabInstance: {fileID: 529087677}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0050b8c3c5dacb24fa0270c9d50c0f31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &531450036
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,7 +1576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &619178259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1602,11 +1590,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myGameClient: {fileID: 1953265978}
-  server: {fileID: 529087678}
+  server: {fileID: 0}
   connected: 0
   serverId: 10
-  myPlayerId: 17
-  myPlayerName: Mac
+  myPlayerId: 15
+  myPlayerName: McYvar
 --- !u!4 &619178260
 Transform:
   m_ObjectHideFlags: 0
@@ -2731,7 +2719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1349585584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2842,7 +2830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1457534713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3606,6 +3594,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Client
+      objectReference: {fileID: 0}
+    - target: {fileID: 1938792803689949035, guid: 7ba883917c3cdc746aa0d27aead43611,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3536414913005610637, guid: 7ba883917c3cdc746aa0d27aead43611,
         type: 3}
