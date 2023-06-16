@@ -136,7 +136,7 @@ public class DeathRunGameLoop : MonoBehaviour
             SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(player, normalSpawn.position.x, normalSpawn.position.y, normalSpawn.position.z));
         }
 
-        foreach (var score in playerScore)
+        foreach (var score in playerScore.Values)
         {
             StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={score.playerId}", null));
         }
