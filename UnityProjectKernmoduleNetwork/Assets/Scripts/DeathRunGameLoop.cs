@@ -22,7 +22,7 @@ public class DeathRunGameLoop : MonoBehaviour
     private bool inSession = false;
     private List<int> playersWhoNotPlayedDeathThisSession = new List<int>();
     private int playersReachedGoal;
-    private List<Score> playerScore = new List<Score>();
+    private Dictionary<int, Score> playerScore = new Dictionary<int, Score>();
     private List<int> sessionPlayers = new List<int>();
 
     private float gameTime;
@@ -54,7 +54,7 @@ public class DeathRunGameLoop : MonoBehaviour
         foreach (int player in players)
         {
             playersWhoNotPlayedDeathThisSession.Add(player);
-            playerScore.Add(new Score(player, 0));
+            playerScore.Add(player, new Score(player, 0));
             sessionPlayers.Add(player);
         }
         playersReachedGoal = 0;
@@ -142,7 +142,7 @@ public class DeathRunGameLoop : MonoBehaviour
         }
 
         Score firstPlace = playerScore[0];
-        foreach (var score in playerScore)
+        foreach (var score in playerScore.Values)
         {
             if (score.score < firstPlace.score)
             {
@@ -151,8 +151,8 @@ public class DeathRunGameLoop : MonoBehaviour
         }
 
         Score secondPlace = playerScore[0];
-        playerScore.Remove(firstPlace);
-        foreach (var score in playerScore)
+        playerScore.Remove(firstPlace.playerId);
+        foreach (var score in playerScore.Values)
         {
             if (score.score < secondPlace.score)
             {
