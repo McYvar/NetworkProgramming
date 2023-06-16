@@ -187,12 +187,14 @@ public class DeathRunGameLoop : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.name);
         if (players.Count >= maxPlayers) return;
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
             foreach (var player in SessionVariables.instance.playerDictionary.Values)
             {
+                Debug.Log($"{player.playerObject.name} . {other.gameObject.name}");
                 if (player.playerObject == other.gameObject)
                 {
                     if (!players.Contains(player.playerId)) players.Add(player.playerId);
