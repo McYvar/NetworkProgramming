@@ -30,7 +30,6 @@ public class TrapButton : MonoBehaviour
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
-            Debug.Log("detected player");
             inputHandler.pressInteractFirst += ActivateTrapButton;
         }
     }
