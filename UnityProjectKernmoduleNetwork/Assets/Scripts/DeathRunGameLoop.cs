@@ -23,6 +23,7 @@ public class DeathRunGameLoop : MonoBehaviour
     private List<int> playersWhoNotPlayedDeathThisSession = new List<int>();
     private int playersReachedGoal;
     private List<Score> playerScore = new List<Score>();
+    private List<int> sessionPlayers = new List<int>();
 
     private float gameTime;
     private float roundTime;
@@ -54,6 +55,7 @@ public class DeathRunGameLoop : MonoBehaviour
         {
             playersWhoNotPlayedDeathThisSession.Add(player);
             playerScore.Add(new Score(player, 0));
+            sessionPlayers.Add(player);
         }
         playersReachedGoal = 0;
         StartCoroutine(webRequest.Request<Game>("https://studenthome.hku.nl/~yvar.toorop/php/history_add_game", (request) =>
@@ -85,7 +87,7 @@ public class DeathRunGameLoop : MonoBehaviour
         }
 
         int deathPlayer = FindNextPlayer();
-        foreach (var player in players)
+        foreach (var player in sessionPlayers)
         {
             if (player == deathPlayer) continue;
             SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(player, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
@@ -129,7 +131,7 @@ public class DeathRunGameLoop : MonoBehaviour
         if (SessionVariables.instance.server == null) return;
         gameTime -= Time.time;
         inSession = false;
-        foreach (var player in players)
+        foreach (var player in sessionPlayers)
         {
             SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(player, normalSpawn.position.x, normalSpawn.position.y, normalSpawn.position.z));
         }
@@ -165,10 +167,10 @@ public class DeathRunGameLoop : MonoBehaviour
     {
         if (SessionVariables.instance.server != null)
         {
-            if (!players.Contains(playerId)) return;
+            if (!sessionPlayers.Contains(playerId)) return;
             playersReachedGoal++;
             playerScore[playerId].AddScore(roundTime - Time.time);
-            if (playersReachedGoal == players.Count)
+            if (playersReachedGoal == sessionPlayers.Count)
             {
                 EndRound();
             }
