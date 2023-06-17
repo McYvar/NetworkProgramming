@@ -181,7 +181,6 @@ public class Net_ReachedGoal : NetMessage
 
     public override void ReceivedOnServer(BaseServer server)
     {
-        Debug.Log("here");
         deathRunGameLoop.ReachedGoal(playerId);
     }
 }

@@ -97,6 +97,7 @@ public class DeathRunGameLoop : MonoBehaviour
 
         SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(deathPlayer, deathSpawn.position.x, deathSpawn.position.y, deathSpawn.position.z));
         SessionVariables.instance.server.BroadCast(new Net_StartRound());
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage("New game starting now!"));
     }
 
     public void StartRound()
