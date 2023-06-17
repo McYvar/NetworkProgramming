@@ -277,12 +277,12 @@ public class DeathRunGameLoop : MonoBehaviour
                 SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, deathSpawn.position.x, deathSpawn.position.y, deathSpawn.position.z));
                 return;
             }
-            if (playerScore[playerId].currentcheckpoint == 0) SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
-            else
+            if (playerScore[playerId].currentcheckpoint != -1)
             {
                 Vector3 checkpoint = checkpoints[playerScore[playerId].currentcheckpoint].spawnPoint;
                 SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, checkpoint.x, checkpoint.y, checkpoint.z));
             }
+            else SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
             playerScore[playerId].score += fallPenalty;
         }
         else

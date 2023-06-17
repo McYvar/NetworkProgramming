@@ -1080,6 +1080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathRunGameLoop: {fileID: 822942478}
+  spawnPoint: {x: 0, y: 2, z: 0}
 --- !u!65 &439366290
 BoxCollider:
   m_ObjectHideFlags: 0
