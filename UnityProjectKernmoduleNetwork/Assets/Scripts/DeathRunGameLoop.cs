@@ -145,6 +145,7 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void EndGame()
     {
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage("Game ended! Results:"));
         gameTime = Time.time - gameTime;
         inSession = false;
         foreach (var player in players)
@@ -170,6 +171,7 @@ public class DeathRunGameLoop : MonoBehaviour
                 firstPlace = score;
             }
         }
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[firstPlace.playerId]} in first place! Final time: {firstPlace.score}"));
 
         Score secondPlace = playerScore[players[0]];
         playerScore.Remove(firstPlace.playerId);
@@ -180,6 +182,7 @@ public class DeathRunGameLoop : MonoBehaviour
                 secondPlace = score;
             }
         }
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[secondPlace.playerId]} in second place! Final time: {secondPlace.score}"));
 
         StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
     }
