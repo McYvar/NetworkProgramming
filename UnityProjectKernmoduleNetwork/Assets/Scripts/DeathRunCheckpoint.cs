@@ -4,7 +4,7 @@ public class DeathRunCheckpoint : MonoBehaviour
 {
     [SerializeField] private DeathRunGameLoop deathRunGameLoop;
     [SerializeField] public Vector3 spawnPoint;
-    [SerializeField] private int checkpointId;
+    [SerializeField] public int checkpointId;
 
     private void Start()
     {
