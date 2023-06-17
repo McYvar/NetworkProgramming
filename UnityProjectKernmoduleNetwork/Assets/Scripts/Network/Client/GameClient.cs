@@ -7,6 +7,7 @@ public class GameClient : BaseClient
     public ChatBehaviour chatBehaviour;
     public PlayerSpawner playerSpawner;
     public PlayerTransformer playerTransformer;
+    public PlayerRotator playerRotator;
     public TrapsHandler trapsHandler;
     public PlayerTeleporter playerTeleporter;
     public DeathRunGameLoop deathRunGameLoop;
@@ -50,6 +51,9 @@ public class GameClient : BaseClient
                 break;
             case OpCode.LEAVE_GAME:
                 // only send by client, not received
+                break;
+            case OpCode.PLAYER_GRAVITY:
+                msg = new Net_PlayerGravity(stream, playerRotator);
                 break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");

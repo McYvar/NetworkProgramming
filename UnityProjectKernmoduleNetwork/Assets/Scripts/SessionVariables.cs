@@ -38,8 +38,7 @@ public class Player
     public Vector3 position;
     public Vector3 smoothTransformVelocity;
 
-    public Vector3 eulerAngles;
-    public Vector3 smoothRotationVelocity;
+    public Vector3 gravityDirection;
 
     public Player(int playerId, string playerName)
     {

@@ -44,6 +44,9 @@ public class GameServer : BaseServer
             case OpCode.LEAVE_GAME:
                 msg = new Net_LeaveGame(stream, deathRunGameLoop);
                 break;
+            case OpCode.PLAYER_GRAVITY:
+                msg = new Net_PlayerGravity(stream);
+                break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");
                 break;

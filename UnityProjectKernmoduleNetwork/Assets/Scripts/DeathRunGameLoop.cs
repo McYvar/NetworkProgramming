@@ -39,6 +39,7 @@ public class DeathRunGameLoop : MonoBehaviour
     private void RequestGameStart()
     {
         SessionVariables.instance.myGameClient.SendToServer(new Net_StartGame());
+        SessionVariables.instance.server.BroadCast(new Net_PlayerGravity(15, Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f)));
     }
 
     // client only

@@ -11,5 +11,6 @@
     CLOSE_BARRIERS = 9,
     JOIN_GAME = 10,
     LEAVE_GAME = 11,
+    PLAYER_GRAVITY = 12,
 
 }

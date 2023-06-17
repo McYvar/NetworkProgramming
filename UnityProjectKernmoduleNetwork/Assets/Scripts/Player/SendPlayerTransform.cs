@@ -12,7 +12,7 @@ public class SendPlayerTransform : MonoBehaviour
         if (Time.time - lastSend > sendInterval)
         {
             lastSend = Time.time;
-            Net_PlayerTransform pt = new Net_PlayerTransform(SessionVariables.instance.myPlayerId, transform.position.x, transform.position.y, transform.position.z, transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
+            Net_PlayerTransform pt = new Net_PlayerTransform(SessionVariables.instance.myPlayerId, transform.position.x, transform.position.y, transform.position.z);
             SessionVariables.instance.myGameClient.SendToServer(pt);
         }
     }
