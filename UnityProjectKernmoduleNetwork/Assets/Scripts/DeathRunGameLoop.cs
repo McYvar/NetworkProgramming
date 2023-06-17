@@ -81,12 +81,6 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void NextPlayer()
     {
-        if (playersWhoNotPlayedDeathThisSession.Count == 0)
-        {
-            EndGame();
-            return;
-        }
-
         int deathPlayer = FindNextPlayer();
         currentDeath = deathPlayer;
         foreach (var player in players)
@@ -120,6 +114,12 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void EndRound()
     {
+        if (playersWhoNotPlayedDeathThisSession.Count == 0)
+        {
+            EndGame();
+            return;
+        }
+
         SessionVariables.instance.server.BroadCast(new Net_CloseBarriers());
         StartCoroutine(WaitForNextTurn(5));
     }
@@ -195,7 +195,7 @@ public class DeathRunGameLoop : MonoBehaviour
             if (playersReachedGoal == 2) SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish 2nd place!"));
             else SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish {playersReachedGoal}th place!"));
             if (playerId != currentDeath) playerScore[playerId].AddScore(Time.time - roundTime);
-            if (playersReachedGoal >= players.Count)
+            if (playersReachedGoal >= players.Count - 1)
             {
                 EndRound();
             }
