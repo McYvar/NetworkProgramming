@@ -10,7 +10,7 @@ public class DeathRunCheckpoint : MonoBehaviour
     {
         spawnPoint += transform.position;
         checkpointId = deathRunGameLoop.checkpoints.Count;
-        deathRunGameLoop.checkpoints.Add(this);
+        deathRunGameLoop.checkpoints.Add(checkpointId, this);
     }
 
     private void OnTriggerEnter(Collider other)

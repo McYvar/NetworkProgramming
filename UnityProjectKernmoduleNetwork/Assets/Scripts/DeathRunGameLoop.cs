@@ -13,7 +13,7 @@ public class DeathRunGameLoop : MonoBehaviour
 
     [SerializeField] private WebRequest webRequest;
     public List<Barriers> allBarriers = new List<Barriers>();
-    public List<DeathRunCheckpoint> checkpoints = new List<DeathRunCheckpoint>();
+    public Dictionary<int,DeathRunCheckpoint> checkpoints = new Dictionary<int, DeathRunCheckpoint>();
 
     [SerializeField] private InteractionButton interactionButton;
     [SerializeField] private float fallPenalty;
@@ -211,7 +211,7 @@ public class DeathRunGameLoop : MonoBehaviour
         if (players.Contains(playerId))
         {
             SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached checkpoint {checkpointId}!"));
-            playerScore[playerId].currentcheckpoint = checkpointId;
+            playerScore[playerId].currentcheckpoint = checkpoints[checkpointId];
         }
     }
 
@@ -277,9 +277,9 @@ public class DeathRunGameLoop : MonoBehaviour
                 SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, deathSpawn.position.x, deathSpawn.position.y, deathSpawn.position.z));
                 return;
             }
-            if (playerScore[playerId].currentcheckpoint != -1)
+            if (playerScore[playerId].currentcheckpoint != null)
             {
-                Vector3 checkpoint = checkpoints[playerScore[playerId].currentcheckpoint].spawnPoint;
+                Vector3 checkpoint = playerScore[playerId].currentcheckpoint.spawnPoint;
                 SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, checkpoint.x, checkpoint.y, checkpoint.z));
             }
             else SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
@@ -320,14 +320,14 @@ public class Score
     public int playerId;
     public float score;
     public bool finished;
-    public int currentcheckpoint;
+    public DeathRunCheckpoint currentcheckpoint;
 
     public Score(int playerId, float score)
     {
         this.playerId = playerId;
         this.score = score;
         finished = false;
-        currentcheckpoint = -1;
+        currentcheckpoint = null;
     }
 
     public void AddScore(float time)
