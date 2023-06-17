@@ -206,6 +206,7 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void ReachedCheckpoint(int playerId, int checkpointId)
     {
+        Debug.Log(playerScore[playerId].ToString());
         if (playerId == currentDeath) return;
         if (players.Contains(playerId))
         {
@@ -270,6 +271,7 @@ public class DeathRunGameLoop : MonoBehaviour
     {
         if (players.Contains(playerId))
         {
+            Debug.Log(playerScore[playerId].ToString());
             if (playerId == currentDeath)
             {
                 SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, deathSpawn.position.x, deathSpawn.position.y, deathSpawn.position.z));
@@ -278,7 +280,7 @@ public class DeathRunGameLoop : MonoBehaviour
             if (playerScore[playerId].currentcheckpoint == 0) SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
             else
             {
-                Vector3 checkpoint = checkpoints[playerScore[playerId].currentcheckpoint].transform.position;
+                Vector3 checkpoint = checkpoints[playerScore[playerId].currentcheckpoint].spawnPoint;
                 SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, checkpoint.x, checkpoint.y, checkpoint.z));
             }
             playerScore[playerId].score += fallPenalty;
@@ -331,6 +333,11 @@ public class Score
     public void AddScore(float time)
     {
         score += time;
+    }
+
+    public override string ToString()
+    {
+        return $"{playerId}, {score}, {currentcheckpoint}";
     }
 }
 
