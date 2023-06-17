@@ -155,33 +155,28 @@ public class DeathRunGameLoop : MonoBehaviour
 
         foreach (var score in playerScore.Values)
         {
-            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={score.playerId}", null));
+            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={gameId}", null));
         }
 
+        Score firstPlace = null;
         foreach (var player in playerScore)
         {
             Debug.Log($"{player.Key}({player.Value.playerId}): {player.Value.score}");
+            if (firstPlace == null) firstPlace = playerScore[player.Key];
+            if (player.Value.score < firstPlace.score) firstPlace = playerScore[player.Key];
         }
 
-        Score firstPlace = playerScore[players[0]];
-        foreach (var score in playerScore.Values)
+        Score secondPlace = null;
+        foreach (var player in playerScore)
         {
-            if (score.score < firstPlace.score)
+            if (secondPlace == null) secondPlace = playerScore[player.Key];
+            if (player.Value.score < secondPlace.score)
             {
-                firstPlace = score;
+                if (firstPlace == playerScore[player.Key]) continue;
+                secondPlace = playerScore[player.Key];
             }
         }
         SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[firstPlace.playerId]} in first place! Final time: {firstPlace.score}"));
-
-        Score secondPlace = playerScore[players[0]];
-        playerScore.Remove(firstPlace.playerId);
-        foreach (var score in playerScore.Values)
-        {
-            if (score.score < secondPlace.score)
-            {
-                secondPlace = score;
-            }
-        }
         SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[secondPlace.playerId]} in second place! Final time: {secondPlace.score}"));
 
         StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
