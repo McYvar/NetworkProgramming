@@ -134,7 +134,7 @@ PrefabInstance:
     - target: {fileID: 3326398172008726990, guid: 6ee98a067f729f04b8a0988fc87d4776,
         type: 3}
       propertyPath: m_RootOrder
-      value: 26
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3326398172008726990, guid: 6ee98a067f729f04b8a0988fc87d4776,
         type: 3}
@@ -189,7 +189,12 @@ PrefabInstance:
     - target: {fileID: 3782401934545014784, guid: 6ee98a067f729f04b8a0988fc87d4776,
         type: 3}
       propertyPath: m_Name
-      value: DeathRunCheckpoint (1)
+      value: DeathRunCheckpoint1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756980300091329876, guid: 6ee98a067f729f04b8a0988fc87d4776,
+        type: 3}
+      propertyPath: checkpointId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7756980300091329876, guid: 6ee98a067f729f04b8a0988fc87d4776,
         type: 3}
@@ -1311,7 +1316,7 @@ PrefabInstance:
     - target: {fileID: 1113865538739657246, guid: 1d17af74f03c88842b13ea66ef4dcf04,
         type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1113865538739657246, guid: 1d17af74f03c88842b13ea66ef4dcf04,
         type: 3}
@@ -1716,7 +1721,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &680815898
 GameObject:
@@ -2014,7 +2019,6 @@ MonoBehaviour:
   normalSpawn: {fileID: 2129691631}
   webRequest: {fileID: 1395389681}
   allBarriers: []
-  checkpoints: []
   interactionButton: {fileID: 2099972886349758580}
   fallPenalty: 0
 --- !u!4 &822942479
@@ -2218,7 +2222,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &911707822
 GameObject:
@@ -2398,7 +2402,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1090139971
 GameObject:
@@ -2976,7 +2980,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349585583
 GameObject:
@@ -3154,7 +3158,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591483565
 GameObject:
@@ -3378,7 +3382,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1629415087
 GameObject:
@@ -3782,7 +3786,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1861098821
 GameObject:
@@ -4090,7 +4094,7 @@ PrefabInstance:
     - target: {fileID: 4760871854477706500, guid: 7ba883917c3cdc746aa0d27aead43611,
         type: 3}
       propertyPath: m_RootOrder
-      value: 24
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 4760871854477706500, guid: 7ba883917c3cdc746aa0d27aead43611,
         type: 3}
@@ -4756,7 +4760,12 @@ PrefabInstance:
     - target: {fileID: 3782401934545014784, guid: 6ee98a067f729f04b8a0988fc87d4776,
         type: 3}
       propertyPath: m_Name
-      value: DeathRunCheckpoint
+      value: DeathRunCheckpoint2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756980300091329876, guid: 6ee98a067f729f04b8a0988fc87d4776,
+        type: 3}
+      propertyPath: checkpointId
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7756980300091329876, guid: 6ee98a067f729f04b8a0988fc87d4776,
         type: 3}
@@ -4779,7 +4788,7 @@ PrefabInstance:
     - target: {fileID: 5948811691018500531, guid: d88249fb2829b9e4c9ba4f3078ec97e9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5948811691018500531, guid: d88249fb2829b9e4c9ba4f3078ec97e9,
         type: 3}
@@ -4872,7 +4881,7 @@ PrefabInstance:
     - target: {fileID: 6682244605782394879, guid: aa59d6fe7e7b31547a5a74347f4e93c1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6682244605782394879, guid: aa59d6fe7e7b31547a5a74347f4e93c1,
         type: 3}

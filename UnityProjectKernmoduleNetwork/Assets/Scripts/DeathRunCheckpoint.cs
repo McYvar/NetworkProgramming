@@ -4,12 +4,11 @@ public class DeathRunCheckpoint : MonoBehaviour
 {
     [SerializeField] private DeathRunGameLoop deathRunGameLoop;
     [SerializeField] public Vector3 spawnPoint;
-    private int checkpointId;
+    [SerializeField] private int checkpointId;
 
     private void Start()
     {
         spawnPoint += transform.position;
-        checkpointId = deathRunGameLoop.checkpoints.Count;
         deathRunGameLoop.checkpoints.Add(checkpointId, this);
     }
 
