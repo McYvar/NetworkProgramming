@@ -13,12 +13,13 @@ public class ChatBehaviour : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private GameObject messagePrefab;
     [SerializeField] private int maxMessageCount = 10; // Maximum number of messages in the chat
-    [SerializeField] private float messagesFadoutTimer;
-    private float timer;
-    private LinkedList<RectTransform> messageList = new LinkedList<RectTransform>();
+    [SerializeField] private float messageFadoutTime;
+    [SerializeField] private float messageHeight;
+    private LinkedList<Message> messageList = new LinkedList<Message>();
 
     [SerializeField] private TMP_InputField chatInput;
     [SerializeField] private float gapSize;
+    [SerializeField] private Image handle;
 
     private bool active = false;
 
@@ -43,20 +44,20 @@ public class ChatBehaviour : MonoBehaviour
         GameObject newMessage = Instantiate(messagePrefab, content);
 
         // Set the text of the message
-        TMP_Text newMessageText = newMessage.GetComponent<TMP_Text>();
+        TMP_Text newMessageText = newMessage.GetComponentInChildren<TMP_Text>();
         if (newMessageText != null)
         {
             newMessageText.text = messageText;
         }
 
         // Add the message to the list
-        RectTransform messageTransform = newMessage.GetComponent<RectTransform>();
-        if (messageTransform != null)
+        Message message = newMessage.GetComponent<Message>();
+        if (message != null)
         {
             // If the message list is full, remove the oldest message
             if (messageList.Count >= maxMessageCount)
             {
-                RectTransform oldestMessage = messageList.First.Value;
+                Message oldestMessage = messageList.First.Value;
                 messageList.RemoveFirst();
                 Destroy(oldestMessage.gameObject);
             }
@@ -64,23 +65,26 @@ public class ChatBehaviour : MonoBehaviour
         }
 
         // Update the layout of the chat content
-        StartCoroutine(UpdateChatLayout(messageTransform, newMessageText));
+        StartCoroutine(UpdateChatLayout(message, newMessageText));
     }
 
-    private IEnumerator UpdateChatLayout(RectTransform messageTransform, TMP_Text text)
+    private IEnumerator UpdateChatLayout(Message message, TMP_Text text)
     {
         // Wait for the next frame to ensure the layout is updated correctly
         yield return null;
 
-        messageTransform.sizeDelta = new Vector2(messageTransform.sizeDelta.x, text.bounds.size.y);
-        messageList.AddLast(messageTransform);
+        float bound = (text.bounds.size.y - (text.bounds.size.y % messageHeight));
+        if (bound < messageHeight) bound = messageHeight;
+        message.rectTransform.sizeDelta = new Vector2(message.rectTransform.sizeDelta.x, bound + 16);
+        messageList.AddLast(message);
+        message.SetInactive(messageFadoutTime);
 
-        LinkedListNode<RectTransform> current = messageList.Last;
+        LinkedListNode<Message> current = messageList.Last;
         float currentHeight = 0;
         while (current != null)
         {
-            current.Value.localPosition = new Vector2(current.Value.localPosition.x, currentHeight);
-            currentHeight += current.Value.sizeDelta.y + gapSize;
+            current.Value.rectTransform.localPosition = new Vector2(current.Value.rectTransform.localPosition.x, currentHeight);
+            currentHeight += current.Value.rectTransform.sizeDelta.y + gapSize;
             current = current.Previous;
         }
 
@@ -89,27 +93,21 @@ public class ChatBehaviour : MonoBehaviour
 
     public void OpenChat()
     {
-        scrollView.SetActive(true);
+        handle.enabled = true;
         eventSystem.SetSelectedGameObject(chatInput.gameObject);
-        active = true;
+        foreach (var message in messageList)
+        {
+            message.SetActive();
+        }
     }
 
     public void CloseChat()
     {
+        handle.enabled = false;
         eventSystem.SetSelectedGameObject(null);
-        timer = messagesFadoutTimer;
-        active = false;
-    }
-
-    private void Update()
-    {
-        if (!active)
+        foreach (var message in messageList)
         {
-            if (timer > 0)
-            {
-                timer -= Time.deltaTime;
-            }
-            else scrollView.SetActive(false);
+            message.SetInactive(messageFadoutTime);
         }
     }
 }
