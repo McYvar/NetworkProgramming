@@ -27,7 +27,7 @@ public class PlayerTransformer : MonoBehaviour
             if (player.playerId == SessionVariables.instance.myPlayerId) continue;
             if (player.playerObject == null) continue;
             player.playerObject.transform.position = Vector3.SmoothDamp(player.playerObject.transform.position, player.position, ref player.smoothTransformVelocity, smoothTransformTime);
-            player.playerObject.transform.eulerAngles = Vector3.SmoothDamp(player.playerObject.transform.eulerAngles, player.eulerAngles, ref player.smoothRotationVelocity, smoothRotationTime);
+            player.playerObject.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.FromToRotation(Vector3.down, player.playerObject.transform.eulerAngles), smoothRotationTime);
         }
     }
 }
