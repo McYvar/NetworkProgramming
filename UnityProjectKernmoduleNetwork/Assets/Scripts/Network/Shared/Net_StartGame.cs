@@ -39,107 +39,6 @@ public class Net_StartGame : NetMessage
     }
 }
 
-
-public class Net_StartRound : NetMessage
-{
-    private DeathRunGameLoop deathRunGameLoop;
-    public Net_StartRound()
-    {
-        code = OpCode.START_ROUND;
-    }
-
-    public Net_StartRound(DataStreamReader reader)
-    {
-        code = OpCode.START_ROUND;
-        Deserialize(reader);
-    }
-
-    public Net_StartRound(DataStreamReader reader, DeathRunGameLoop deathRunGameLoop)
-    {
-        code = OpCode.START_ROUND;
-        this.deathRunGameLoop = deathRunGameLoop;
-        Deserialize(reader);
-    }
-
-    public override void Serialize(ref DataStreamWriter writer)
-    {
-        writer.WriteByte((byte)code);
-    }
-
-    public override void ReceivedOnClient()
-    {
-        deathRunGameLoop.StartRound();
-    }
-}
-
-public class Net_EndRound : NetMessage
-{
-    private DeathRunGameLoop deathRunGameLoop;
-    public Net_EndRound()
-    {
-        code = OpCode.END_ROUND;
-    }
-
-    public Net_EndRound(DataStreamReader reader)
-    {
-        code = OpCode.END_ROUND;
-        Deserialize(reader);
-    }
-
-    public Net_EndRound(DataStreamReader reader, DeathRunGameLoop deathRunGameLoop)
-    {
-        code = OpCode.END_ROUND;
-        this.deathRunGameLoop = deathRunGameLoop;
-        Deserialize(reader);
-    }
-
-    public override void Serialize(ref DataStreamWriter writer)
-    {
-        writer.WriteByte((byte)code);
-    }
-
-    public override void ReceivedOnClient()
-    {
-        deathRunGameLoop.EndRound();
-    }
-}
-
-public class Net_EndGame : NetMessage
-{
-    private DeathRunGameLoop deathRunGameLoop;
-    public Net_EndGame()
-    {
-        code = OpCode.END_GAME;
-    }
-
-    public Net_EndGame(DataStreamReader reader)
-    {
-        code = OpCode.END_GAME;
-        Deserialize(reader);
-    }
-
-    public Net_EndGame(DataStreamReader reader, DeathRunGameLoop deathRunGameLoop)
-    {
-        code = OpCode.END_GAME;
-        this.deathRunGameLoop = deathRunGameLoop;
-        Deserialize(reader);
-    }
-
-    public override void Serialize(ref DataStreamWriter writer)
-    {
-        writer.WriteByte((byte)code);
-    }
-
-    public override void ReceivedOnServer(BaseServer server)
-    {
-        deathRunGameLoop.EndGame();
-    }
-
-    public override void ReceivedOnClient()
-    {
-    }
-}
-
 public class Net_ReachedGoal : NetMessage
 {
     public int playerId { get; set; }
@@ -259,7 +158,7 @@ public class Net_JoinGame : NetMessage
     }
     public Net_JoinGame(int playerId)
     {
-        code = OpCode.LEAVE_GAME;
+        code = OpCode.JOIN_GAME;
         this.playerId = playerId;
     }
 

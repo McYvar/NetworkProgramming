@@ -29,15 +29,6 @@ public class GameServer : BaseServer
             case OpCode.START_GAME:
                 msg = new Net_StartGame(stream, deathRunGameLoop);
                 break;
-            case OpCode.START_ROUND:
-                // only send by server, not received
-                break;
-            case OpCode.END_ROUND:
-                // only send by server, not received
-                break;
-            case OpCode.END_GAME:
-                msg = new Net_EndGame(stream, deathRunGameLoop);
-                break;
             case OpCode.OPEN_BARRIERS:
                 // only send by server, not received
                 break;

@@ -36,15 +36,6 @@ public class GameClient : BaseClient
             case OpCode.START_GAME:
                 // only send by client, not received
                 break;
-            case OpCode.START_ROUND:
-                msg = new Net_StartRound(stream, deathRunGameLoop);
-                break;
-            case OpCode.END_ROUND:
-                msg = new Net_EndRound(stream, deathRunGameLoop);
-                break;
-            case OpCode.END_GAME:
-                // only send by client, not received
-                break;
             case OpCode.OPEN_BARRIERS:
                 msg = new Net_OpenBarriers(stream, deathRunGameLoop);
                 break;

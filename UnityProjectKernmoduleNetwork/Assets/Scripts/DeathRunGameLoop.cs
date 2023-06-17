@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DeathRunGameLoop : MonoBehaviour
 {
-    // first we have 2/4 players
     [SerializeField] private int maxPlayers = 4;
     private List<int> players = new List<int>();
 
@@ -36,14 +35,21 @@ public class DeathRunGameLoop : MonoBehaviour
         interactionButton.SubScribeAction(RequestGameStart);
     }
 
+    // client only
     private void RequestGameStart()
     {
-        if (players.Count < 1) return;
         SessionVariables.instance.myGameClient.SendToServer(new Net_StartGame());
     }
 
+    // server only
     public void StartGame()
     {
+        if (players.Count < 2)
+        {
+            SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"Not enough players to start the round! Requires at least two players! ({players.Count}/{maxPlayers})"));
+            return;
+        }
+
         if (inSession) return;
         gameTime = Time.time;
         inSession = true;
@@ -60,23 +66,14 @@ public class DeathRunGameLoop : MonoBehaviour
             if (request != null)
             {
                 gameId = request.game_id;
-                NextPlayer();
+                StartCoroutine(WaitForNextTurn(5));
             }
         }));
     }
 
-    private int FindNextPlayer()
-    {
-        int random = UnityEngine.Random.Range(0, playersWhoNotPlayedDeathThisSession.Count);
-        int result = playersWhoNotPlayedDeathThisSession[random];
-        playersWhoNotPlayedDeathThisSession.RemoveAt(random);
-        return result;
-    }
-
+    // server only
     public void NextPlayer()
     {
-        if (SessionVariables.instance.server == null) return;
-
         if (playersWhoNotPlayedDeathThisSession.Count == 0)
         {
             EndGame();
@@ -92,17 +89,35 @@ public class DeathRunGameLoop : MonoBehaviour
         }
 
         SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(deathPlayer, deathSpawn.position.x, deathSpawn.position.y, deathSpawn.position.z));
-        SessionVariables.instance.server.BroadCast(new Net_StartRound());
+        StartRound();
         SessionVariables.instance.server.BroadCast(new Net_ChatMessage("New game starting now!"));
     }
 
+    // server only
+    private int FindNextPlayer()
+    {
+        int random = UnityEngine.Random.Range(0, playersWhoNotPlayedDeathThisSession.Count);
+        int result = playersWhoNotPlayedDeathThisSession[random];
+        playersWhoNotPlayedDeathThisSession.RemoveAt(random);
+        return result;
+    }
+
+    // server only
     public void StartRound()
     {
         foreach (var player in playerScore.Values) player.finished = false;
         roundTime = Time.time;
-        if (SessionVariables.instance.server != null) SessionVariables.instance.server.BroadCast(new Net_OpenBarriers());
+        SessionVariables.instance.server.BroadCast(new Net_OpenBarriers());
     }
 
+    // server only
+    public void EndRound()
+    {
+        SessionVariables.instance.server.BroadCast(new Net_CloseBarriers());
+        StartCoroutine(WaitForNextTurn(5));
+    }
+
+    // client only
     public void OpenBarriers()
     {
         foreach (Barriers barrier in allBarriers)
@@ -111,12 +126,7 @@ public class DeathRunGameLoop : MonoBehaviour
         }
     }
 
-    public void EndRound()
-    {
-        SessionVariables.instance.server.BroadCast(new Net_CloseBarriers());
-        StartCoroutine(WaitForNextTurn(5));
-    }
-
+    // client only
     public void CloseBarriers()
     {
         foreach (Barriers barrier in allBarriers)
@@ -125,9 +135,9 @@ public class DeathRunGameLoop : MonoBehaviour
         }
     }
 
+    // server only
     public void EndGame()
     {
-        if (SessionVariables.instance.server == null) return;
         gameTime = Time.time - gameTime;
         inSession = false;
         foreach (var player in players)
@@ -167,61 +177,79 @@ public class DeathRunGameLoop : MonoBehaviour
         StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
     }
 
+    // server only
     public void ReachedGoal(int playerId)
     {
-        if (SessionVariables.instance.server != null)
+        if (!players.Contains(playerId)) return;
+        if (!playerScore[playerId].finished)
         {
-            if (!players.Contains(playerId)) return;
-            if (!playerScore[playerId].finished)
+            playerScore[playerId].finished = true;
+            playersReachedGoal++;
+            if (playersReachedGoal == 2) SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish 2nd place!"));
+            else SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish {playersReachedGoal}th place!"));
+            if (playerId != currentDeath) playerScore[playerId].AddScore(Time.time - roundTime);
+            if (playersReachedGoal >= players.Count)
             {
-                playerScore[playerId].finished = true;
-                playersReachedGoal++;
-                if (playersReachedGoal == 2) SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish 2nd place!"));
-                else SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish {playersReachedGoal}th place!"));
-                if (playerId != currentDeath) playerScore[playerId].AddScore(Time.time - roundTime);
-                if (playersReachedGoal >= players.Count)
-                {
-                    EndRound();
-                }
+                EndRound();
             }
         }
     }
 
-    private IEnumerator WaitForNextTurn(float waitTime)
+    // server only
+    private IEnumerator WaitForNextTurn(int waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        while (waitTime > 0)
+        {
+            SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"Game starts in {waitTime}..."));
+            yield return new WaitForSeconds(1);
+        }
         NextPlayer();
     }
 
+    // server only
     public void JoinPlayer(int playerId)
     {
-        if (!players.Contains(playerId)) players.Add(playerId);
-        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} is ready for the next round! Ready players: {players.Count}"));
+        if (!players.Contains(playerId))
+        {
+            if (players.Count >= maxPlayers)
+            {
+                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} can't join, lobby full! Ready players: ({players.Count}/{maxPlayers})"));
+            }
+            else
+            {
+                players.Add(playerId);
+                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} is ready for the next round! Ready players: ({players.Count}/{maxPlayers})"));
+            }
+        }
     }
 
+    // server only
     public void LeavePlayer(int playerId)
     {
-        if (players.Contains(playerId)) players.Remove(playerId);
-        int random = Random.Range(0, 3);
-        switch (random)
+        if (players.Contains(playerId))
         {
-            case 0:
-                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} chickend out! Ready players: {players.Count}"));
-                break;
-            case 1:
-                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} didn't feel like losing! Ready players: {players.Count}"));
-                break;
-            case 2:
-                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} is afraid of heights! Ready players: {players.Count}"));
-                break;
+            players.Remove(playerId);
+            int random = Random.Range(0, 3);
+            switch (random)
+            {
+                case 0:
+                    SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} chickend out! Ready players: ({players.Count}/{maxPlayers})"));
+                    break;
+                case 1:
+                    SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} didn't feel like losing! Ready players: ({players.Count}/{maxPlayers})"));
+                    break;
+                case 2:
+                    SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} is afraid of heights! Ready players: ({players.Count}/{maxPlayers})"));
+                    break;
+            }
         }
 
     }
 
+    // client only
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
-        if (players.Count >= maxPlayers) return;
+        if (inSession) return;
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
@@ -229,6 +257,7 @@ public class DeathRunGameLoop : MonoBehaviour
         }
     }
 
+    // client only
     private void OnTriggerExit(Collider other)
     {
         if (inSession) return;

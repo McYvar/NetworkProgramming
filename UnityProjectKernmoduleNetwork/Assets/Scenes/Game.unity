@@ -1590,7 +1590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myGameClient: {fileID: 1953265978}
-  server: {fileID: 0}
+  server: {fileID: 716034709}
   connected: 0
   serverId: 10
   myPlayerId: 17
@@ -1715,6 +1715,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680815898}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &716034709 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -5308014825883664904, guid: 1d17af74f03c88842b13ea66ef4dcf04,
+    type: 3}
+  m_PrefabInstance: {fileID: 529087677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0050b8c3c5dacb24fa0270c9d50c0f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &752651982
 GameObject:
   m_ObjectHideFlags: 0
