@@ -12,6 +12,7 @@ public class Barriers : MonoBehaviour
     private void Start()
     {
         deathRunGameLoop.allBarriers.Add(this);
+        nextPos += transform.position;
     }
 
     private void Update()
