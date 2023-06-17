@@ -55,6 +55,12 @@ public class GameClient : BaseClient
             case OpCode.PLAYER_GRAVITY:
                 msg = new Net_PlayerGravity(stream, playerRotator);
                 break;
+            case OpCode.PLAYER_DIED:
+                // only send by client, not received
+                break;
+            case OpCode.REACHED_CHECKPOINT:
+                // only send by client, not received
+                break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");
                 break;

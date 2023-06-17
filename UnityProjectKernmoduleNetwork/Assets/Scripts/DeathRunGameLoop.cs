@@ -13,8 +13,10 @@ public class DeathRunGameLoop : MonoBehaviour
 
     [SerializeField] private WebRequest webRequest;
     [SerializeField] private Barriers[] allBarriers;
+    public List<DeathRunCheckpoint> checkpoints = new List<DeathRunCheckpoint>();
 
     [SerializeField] private InteractionButton interactionButton;
+    [SerializeField] private float fallPenalty;
 
     private bool inSession = false;
     private List<int> playersWhoNotPlayedDeathThisSession = new List<int>();
@@ -39,7 +41,6 @@ public class DeathRunGameLoop : MonoBehaviour
     private void RequestGameStart()
     {
         SessionVariables.instance.myGameClient.SendToServer(new Net_StartGame());
-        SessionVariables.instance.server.BroadCast(new Net_PlayerGravity(15, Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f)));
     }
 
     // client only
@@ -202,6 +203,15 @@ public class DeathRunGameLoop : MonoBehaviour
     }
 
     // server only
+    public void ReachedCheckpoint(int playerId, int checkpointId)
+    {
+        if (players.Contains(playerId))
+        {
+            playerScore[playerId].currentcheckpoint = checkpointId;
+        }
+    }
+
+    // server only
     private IEnumerator WaitForNextTurn(int waitTime)
     {
         while (waitTime > 0)
@@ -250,7 +260,25 @@ public class DeathRunGameLoop : MonoBehaviour
                     break;
             }
         }
+    }
 
+    // server only
+    public void PlayerDied(int playerId)
+    {
+        if (players.Contains(playerId))
+        {
+            if (playerScore[playerId].currentcheckpoint == 0) SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
+            else
+            {
+                Vector3 checkpoint = checkpoints[playerScore[playerId].currentcheckpoint].transform.position;
+                SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, checkpoint.x, checkpoint.y, checkpoint.z));
+            }
+            playerScore[playerId].score += fallPenalty;
+        }
+        else
+        {
+            SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, normalSpawn.position.x, normalSpawn.position.y, normalSpawn.position.z));
+        }
     }
 
     // client only
@@ -282,12 +310,14 @@ public class Score
     public int playerId;
     public float score;
     public bool finished;
+    public int currentcheckpoint;
 
     public Score(int playerId, float score)
     {
         this.playerId = playerId;
         this.score = score;
         finished = false;
+        currentcheckpoint = 0;
     }
 
     public void AddScore(float time)

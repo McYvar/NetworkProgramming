@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class DeathRunGoal : MonoBehaviour
+public class PlayerDied : MonoBehaviour
 {
     [SerializeField] private DeathRunGameLoop deathRunGameLoop;
 
@@ -9,7 +11,7 @@ public class DeathRunGoal : MonoBehaviour
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
-            SessionVariables.instance.myGameClient.SendToServer(new Net_ReachedGoal(SessionVariables.instance.myPlayerId));
+            SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerDied(SessionVariables.instance.myPlayerId));
             return;
         }
     }

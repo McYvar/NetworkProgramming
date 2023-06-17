@@ -47,6 +47,12 @@ public class GameServer : BaseServer
             case OpCode.PLAYER_GRAVITY:
                 msg = new Net_PlayerGravity(stream);
                 break;
+            case OpCode.PLAYER_DIED:
+                msg = new Net_PlayerDied(stream, deathRunGameLoop);
+                break;
+            case OpCode.REACHED_CHECKPOINT:
+                msg = new Net_ReachedCheckpoint(stream, deathRunGameLoop);
+                break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");
                 break;
