@@ -179,6 +179,8 @@ public class DeathRunGameLoop : MonoBehaviour
             {
                 playerScore[playerId].finished = true;
                 playersReachedGoal++;
+                if (playersReachedGoal == 2) SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish 2nd place!"));
+                else SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish {playersReachedGoal}th place!"));
                 if (playerId != currentDeath) playerScore[playerId].AddScore(Time.time - roundTime);
                 if (playersReachedGoal >= sessionPlayers.Count)
                 {
