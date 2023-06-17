@@ -211,7 +211,7 @@ public class DeathRunGameLoop : MonoBehaviour
         if (players.Contains(playerId))
         {
             if (checkpoints[checkpointId] == playerScore[playerId].currentcheckpoint) return;
-            if (checkpointId <= playerScore[playerId].currentcheckpoint.checkpointId) return;
+            if (playerScore[playerId].currentcheckpoint != null) if (checkpointId <= playerScore[playerId].currentcheckpoint.checkpointId) return;
             SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached a checkpoint!"));
             playerScore[playerId].currentcheckpoint = checkpoints[checkpointId];
         }

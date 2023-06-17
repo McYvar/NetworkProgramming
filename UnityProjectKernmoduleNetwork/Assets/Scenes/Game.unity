@@ -2893,7 +2893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387097f16ce503c49a8cf5421a322b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathRunGameLoop: {fileID: 0}
+  deathRunGameLoop: {fileID: 822942478}
   displacement: {x: 0, y: -1, z: 0}
   smoothTime: 0.1
 --- !u!65 &1290480988
@@ -3295,7 +3295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387097f16ce503c49a8cf5421a322b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathRunGameLoop: {fileID: 0}
+  deathRunGameLoop: {fileID: 822942478}
   displacement: {x: 0, y: -1, z: 0}
   smoothTime: 0.1
 --- !u!65 &1596338154
