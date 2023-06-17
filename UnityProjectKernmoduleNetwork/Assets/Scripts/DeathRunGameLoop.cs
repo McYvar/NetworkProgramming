@@ -12,7 +12,7 @@ public class DeathRunGameLoop : MonoBehaviour
     [SerializeField] private Transform normalSpawn;
 
     [SerializeField] private WebRequest webRequest;
-    [SerializeField] private Barriers[] allBarriers;
+    public List<Barriers> allBarriers = new List<Barriers>();
     public List<DeathRunCheckpoint> checkpoints = new List<DeathRunCheckpoint>();
 
     [SerializeField] private InteractionButton interactionButton;
