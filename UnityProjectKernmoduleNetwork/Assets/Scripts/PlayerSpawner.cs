@@ -25,5 +25,7 @@ public class PlayerSpawner : MonoBehaviour
             SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
         }
         else SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;
+
+        SessionVariables.instance.myGameClient.SendToServer(new Net_ChatMessage($"{playerName} has joined the server!"));
     }
 }

@@ -488,6 +488,8 @@ MonoBehaviour:
   pressOpenChatValue: 0
   isPressedEscape: 0
   pressEscapeValue: 0
+  isPressedInteract: 0
+  pressInteractValue: 0
   mouseDelta: {x: 0, y: 0}
 --- !u!114 &4265083858042504470
 MonoBehaviour:
@@ -502,7 +504,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startState: {fileID: 2855596271291776271}
-  mySession: {fileID: 0}
 --- !u!114 &2855596271291776271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,7 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35345b9a6c6a5446a67c80f723fac8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sendInterval: 0.1
+  sendInterval: 0.05
 --- !u!1 &6815253861526478284
 GameObject:
   m_ObjectHideFlags: 0
