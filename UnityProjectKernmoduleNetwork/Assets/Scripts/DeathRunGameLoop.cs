@@ -178,8 +178,8 @@ public class DeathRunGameLoop : MonoBehaviour
                 secondPlace = playerScore[player.Key];
             }
         }
-        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[firstPlace.playerId]} in first place! Final time: {firstPlace.score}"));
-        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[secondPlace.playerId]} in second place! Final time: {secondPlace.score}"));
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[firstPlace.playerId].playerName} in first place! Final time: {firstPlace.score}"));
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[secondPlace.playerId].playerName} in second place! Final time: {secondPlace.score}"));
 
         StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
     }
@@ -270,6 +270,11 @@ public class DeathRunGameLoop : MonoBehaviour
     {
         if (players.Contains(playerId))
         {
+            if (playerId == currentDeath)
+            {
+                SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, deathSpawn.position.x, deathSpawn.position.y, deathSpawn.position.z));
+                return;
+            }
             if (playerScore[playerId].currentcheckpoint == 0) SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(playerId, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
             else
             {
@@ -320,7 +325,7 @@ public class Score
         this.playerId = playerId;
         this.score = score;
         finished = false;
-        currentcheckpoint = 0;
+        currentcheckpoint = -1;
     }
 
     public void AddScore(float time)
