@@ -34,7 +34,7 @@ public class GameClient : BaseClient
                 msg = new Net_TeleportPlayer(stream, playerTeleporter);
                 break;
             case OpCode.START_GAME:
-                // only send by client, not received
+                msg = new Net_StartGame(stream, deathRunGameLoop);
                 break;
             case OpCode.OPEN_BARRIERS:
                 msg = new Net_OpenBarriers(stream, deathRunGameLoop);

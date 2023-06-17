@@ -41,6 +41,12 @@ public class DeathRunGameLoop : MonoBehaviour
         SessionVariables.instance.myGameClient.SendToServer(new Net_StartGame());
     }
 
+    // client only
+    public void StartAttempt()
+    {
+        inSession = true;
+    }
+
     // server only
     public void StartGame()
     {
@@ -51,8 +57,9 @@ public class DeathRunGameLoop : MonoBehaviour
         }
 
         if (inSession) return;
-        gameTime = Time.time;
+        SessionVariables.instance.server.BroadCast(new Net_StartGame());
         inSession = true;
+        gameTime = Time.time;
         playersWhoNotPlayedDeathThisSession.Clear();
         playerScore.Clear();
         foreach (int player in players)
@@ -202,6 +209,7 @@ public class DeathRunGameLoop : MonoBehaviour
         {
             SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"Game starts in {waitTime}..."));
             yield return new WaitForSeconds(1);
+            waitTime--;
         }
         NextPlayer();
     }

@@ -36,6 +36,7 @@ public class Net_StartGame : NetMessage
 
     public override void ReceivedOnClient()
     {
+        deathRunGameLoop.StartAttempt();
     }
 }
 
