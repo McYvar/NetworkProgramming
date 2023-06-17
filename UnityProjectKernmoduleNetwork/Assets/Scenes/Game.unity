@@ -1061,7 +1061,7 @@ GameObject:
   - component: {fileID: 439366290}
   - component: {fileID: 439366289}
   m_Layer: 0
-  m_Name: DeathRunGoal (1)
+  m_Name: DeathRunCheckpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1080,7 +1080,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathRunGameLoop: {fileID: 822942478}
-  checkpointId: 0
 --- !u!65 &439366290
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1110,7 +1109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439366288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.09, y: 0.88, z: -10.18}
+  m_LocalPosition: {x: 15.76, y: 0.88, z: 0.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1704,7 +1703,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2261aadb7b24d78438596e5a015f68e6, type: 2}
+  - {fileID: 2100000, guid: a923f7bf741d29d448e057e970a59639, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2968,7 +2967,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a923f7bf741d29d448e057e970a59639, type: 2}
+  - {fileID: 2100000, guid: 0dce931d924c7ea409524ecac29497c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3622,7 +3621,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 2261aadb7b24d78438596e5a015f68e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3894,7 +3893,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2261aadb7b24d78438596e5a015f68e6, type: 2}
+  - {fileID: 2100000, guid: a923f7bf741d29d448e057e970a59639, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4067,6 +4066,11 @@ PrefabInstance:
       propertyPath: chatBehaviour
       value: 
       objectReference: {fileID: 1256771626}
+    - target: {fileID: 3536414913005610637, guid: 7ba883917c3cdc746aa0d27aead43611,
+        type: 3}
+      propertyPath: playerRotator
+      value: 
+      objectReference: {fileID: 1629415088}
     - target: {fileID: 3536414913005610637, guid: 7ba883917c3cdc746aa0d27aead43611,
         type: 3}
       propertyPath: playerSpawner
