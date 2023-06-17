@@ -187,6 +187,7 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void ReachedGoal(int playerId)
     {
+        if (playerId == currentDeath) return;
         if (!players.Contains(playerId)) return;
         if (!playerScore[playerId].finished)
         {
@@ -205,8 +206,10 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void ReachedCheckpoint(int playerId, int checkpointId)
     {
+        if (playerId == currentDeath) return;
         if (players.Contains(playerId))
         {
+            SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached checkpoint {checkpointId}!"));
             playerScore[playerId].currentcheckpoint = checkpointId;
         }
     }
