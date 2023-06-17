@@ -30,18 +30,28 @@ public class GameServer : BaseServer
                 msg = new Net_StartGame(stream, deathRunGameLoop);
                 break;
             case OpCode.START_ROUND:
+                // only send by server, not received
                 break;
             case OpCode.END_ROUND:
+                // only send by server, not received
                 break;
             case OpCode.END_GAME:
                 msg = new Net_EndGame(stream, deathRunGameLoop);
                 break;
             case OpCode.OPEN_BARRIERS:
+                // only send by server, not received
                 break;
             case OpCode.CLOSE_BARRIERS:
+                // only send by server, not received
                 break;
             case OpCode.REACHED_GOAL:
                 msg = new Net_ReachedGoal(stream, deathRunGameLoop);
+                break;
+            case OpCode.JOIN_GAME:
+                msg = new Net_JoinGame(stream, deathRunGameLoop);
+                break;
+            case OpCode.LEAVE_GAME:
+                msg = new Net_LeaveGame(stream, deathRunGameLoop);
                 break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");

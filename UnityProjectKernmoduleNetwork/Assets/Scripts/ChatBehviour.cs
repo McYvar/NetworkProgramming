@@ -21,8 +21,6 @@ public class ChatBehaviour : MonoBehaviour
     [SerializeField] private float gapSize;
     [SerializeField] private Image handle;
 
-    private bool active = false;
-
     private void Start()
     {
         SessionVariables.instance.myGameClient.chatBehaviour = this;

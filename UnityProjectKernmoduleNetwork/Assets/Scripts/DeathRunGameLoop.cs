@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeathRunGameLoop : MonoBehaviour
@@ -23,7 +21,6 @@ public class DeathRunGameLoop : MonoBehaviour
     private List<int> playersWhoNotPlayedDeathThisSession = new List<int>();
     private int playersReachedGoal;
     private Dictionary<int, Score> playerScore = new Dictionary<int, Score>();
-    private List<int> sessionPlayers = new List<int>();
 
     private float gameTime;
     private float roundTime;
@@ -56,7 +53,6 @@ public class DeathRunGameLoop : MonoBehaviour
         {
             playersWhoNotPlayedDeathThisSession.Add(player);
             playerScore.Add(player, new Score(player, 0));
-            sessionPlayers.Add(player);
         }
         playersReachedGoal = 0;
         StartCoroutine(webRequest.Request<Game>("https://studenthome.hku.nl/~yvar.toorop/php/history_add_game", (request) =>
@@ -89,7 +85,7 @@ public class DeathRunGameLoop : MonoBehaviour
 
         int deathPlayer = FindNextPlayer();
         currentDeath = deathPlayer;
-        foreach (var player in sessionPlayers)
+        foreach (var player in players)
         {
             if (player == deathPlayer) continue;
             SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(player, runnersSpawn.position.x, runnersSpawn.position.y, runnersSpawn.position.z));
@@ -134,7 +130,7 @@ public class DeathRunGameLoop : MonoBehaviour
         if (SessionVariables.instance.server == null) return;
         gameTime = Time.time - gameTime;
         inSession = false;
-        foreach (var player in sessionPlayers)
+        foreach (var player in players)
         {
             SessionVariables.instance.server.BroadCast(new Net_TeleportPlayer(player, normalSpawn.position.x, normalSpawn.position.y, normalSpawn.position.z));
         }
@@ -149,7 +145,7 @@ public class DeathRunGameLoop : MonoBehaviour
             Debug.Log($"{player.Key}({player.Value.playerId}): {player.Value.score}");
         }
 
-        Score firstPlace = playerScore[sessionPlayers[0]];
+        Score firstPlace = playerScore[players[0]];
         foreach (var score in playerScore.Values)
         {
             if (score.score < firstPlace.score)
@@ -158,7 +154,7 @@ public class DeathRunGameLoop : MonoBehaviour
             }
         }
 
-        Score secondPlace = playerScore[sessionPlayers[0]];
+        Score secondPlace = playerScore[players[0]];
         playerScore.Remove(firstPlace.playerId);
         foreach (var score in playerScore.Values)
         {
@@ -175,7 +171,7 @@ public class DeathRunGameLoop : MonoBehaviour
     {
         if (SessionVariables.instance.server != null)
         {
-            if (!sessionPlayers.Contains(playerId)) return;
+            if (!players.Contains(playerId)) return;
             if (!playerScore[playerId].finished)
             {
                 playerScore[playerId].finished = true;
@@ -183,7 +179,7 @@ public class DeathRunGameLoop : MonoBehaviour
                 if (playersReachedGoal == 2) SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish 2nd place!"));
                 else SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} reached the finish {playersReachedGoal}th place!"));
                 if (playerId != currentDeath) playerScore[playerId].AddScore(Time.time - roundTime);
-                if (playersReachedGoal >= sessionPlayers.Count)
+                if (playersReachedGoal >= players.Count)
                 {
                     EndRound();
                 }
@@ -197,6 +193,31 @@ public class DeathRunGameLoop : MonoBehaviour
         NextPlayer();
     }
 
+    public void JoinPlayer(int playerId)
+    {
+        if (!players.Contains(playerId)) players.Add(playerId);
+        SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} is ready for the next round! Ready players: {players.Count}"));
+    }
+
+    public void LeavePlayer(int playerId)
+    {
+        if (players.Contains(playerId)) players.Remove(playerId);
+        int random = Random.Range(0, 3);
+        switch (random)
+        {
+            case 0:
+                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} chickend out! Ready players: {players.Count}"));
+                break;
+            case 1:
+                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} didn't feel like losing! Ready players: {players.Count}"));
+                break;
+            case 2:
+                SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[playerId].playerName} is afraid of heights! Ready players: {players.Count}"));
+                break;
+        }
+
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name);
@@ -204,31 +225,17 @@ public class DeathRunGameLoop : MonoBehaviour
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
-            foreach (var player in SessionVariables.instance.playerDictionary.Values)
-            {
-                Debug.Log($"{player.playerObject.name} . {other.gameObject.name}");
-                if (player.playerObject == other.gameObject)
-                {
-                    if (!players.Contains(player.playerId)) players.Add(player.playerId);
-                    return;
-                }
-            }
+            SessionVariables.instance.myGameClient.SendToServer(new Net_JoinGame(SessionVariables.instance.myPlayerId));
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (inSession) return;
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
-            foreach (var player in SessionVariables.instance.playerDictionary.Values)
-            {
-                if (player.playerObject == other.gameObject)
-                {
-                    if (players.Contains(player.playerId)) players.Remove(player.playerId);
-                    return;
-                }
-            }
+            SessionVariables.instance.myGameClient.SendToServer(new Net_LeaveGame(SessionVariables.instance.myPlayerId));
         }
     }
 }

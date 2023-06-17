@@ -34,7 +34,7 @@ public class GameClient : BaseClient
                 msg = new Net_TeleportPlayer(stream, playerTeleporter);
                 break;
             case OpCode.START_GAME:
-                // nothing happens here client sided
+                // only send by client, not received
                 break;
             case OpCode.START_ROUND:
                 msg = new Net_StartRound(stream, deathRunGameLoop);
@@ -43,13 +43,22 @@ public class GameClient : BaseClient
                 msg = new Net_EndRound(stream, deathRunGameLoop);
                 break;
             case OpCode.END_GAME:
-                // nothing happens here client sided
+                // only send by client, not received
                 break;
             case OpCode.OPEN_BARRIERS:
                 msg = new Net_OpenBarriers(stream, deathRunGameLoop);
                 break;
             case OpCode.CLOSE_BARRIERS:
                 msg = new Net_CloseBarriers(stream, deathRunGameLoop);
+                break;
+            case OpCode.REACHED_GOAL:
+                // only send by client, not received
+                break;
+            case OpCode.JOIN_GAME:
+                // only send by client, not received
+                break;
+            case OpCode.LEAVE_GAME:
+                // only send by client, not received
                 break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");

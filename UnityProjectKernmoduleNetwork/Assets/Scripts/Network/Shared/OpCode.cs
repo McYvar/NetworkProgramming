@@ -12,5 +12,7 @@
     TELEPORT_PLAYER = 8,
     OPEN_BARRIERS = 11,
     CLOSE_BARRIERS = 12,
+    JOIN_GAME = 13,
+    LEAVE_GAME = 14,
 
 }
