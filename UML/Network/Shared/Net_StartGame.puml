@@ -7,16 +7,5 @@ class Net_StartGame {
     + <<override>> ReceivedOnServer(server:BaseServer) : void
     + <<override>> ReceivedOnClient() : void
 }
-class Net_PlayerDied {
-    + playerId : int <<get>> <<set>>
-    + Net_PlayerDied()
-    + Net_PlayerDied(playerId:int)
-    + Net_PlayerDied(reader:DataStreamReader)
-    + Net_PlayerDied(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
-    + <<override>> Serialize(writer:DataStreamWriter) : void
-    + <<override>> Deserialize(reader:DataStreamReader) : void
-    + <<override>> ReceivedOnServer(server:BaseServer) : void
-}
 NetMessage <|-- Net_StartGame
-NetMessage <|-- Net_PlayerDied
 @enduml

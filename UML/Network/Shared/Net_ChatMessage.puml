@@ -10,5 +10,5 @@ class Net_ChatMessage {
     + <<override>> ReceivedOnClient() : void
 }
 NetMessage <|-- Net_ChatMessage
-Net_ChatMessage --> "chatMessage" FixedString128Bytes
+Net_ChatMessage --> "chatMessage" FixedString512Bytes
 @enduml
