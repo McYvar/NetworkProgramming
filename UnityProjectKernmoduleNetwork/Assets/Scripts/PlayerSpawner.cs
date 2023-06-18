@@ -12,21 +12,28 @@ public class PlayerSpawner : MonoBehaviour
         SessionVariables.instance.myGameClient.playerSpawner = this;
     }
 
-    public void SpawnPlayer(int playerId, string playerName, Vector3 spawnLocation)
+    public void SpawnRemotePlayer(int playerId, string playerName, Vector3 spawnLocation)
     {
-        GameObject newPlayerObject;
-        if (playerId == SessionVariables.instance.myPlayerId) newPlayerObject = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
-        else newPlayerObject = Instantiate(playerPrefabNonControlable, spawnLocation, Quaternion.identity);
-        newPlayerObject.name = $"{playerName} (ID: {playerId})";
-        if (!SessionVariables.instance.playerDictionary.ContainsKey(playerId))
+        if (playerId == SessionVariables.instance.myPlayerId)
         {
-            Player newPlayer = new Player(playerId, playerName);
-            newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
-            SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
+            SpawnLocalPlayer(playerId, playerName, spawnLocation);
+            return;
         }
-        else SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;
+        GameObject newPlayerObject = Instantiate(playerPrefabNonControlable, spawnLocation, Quaternion.identity);
+        newPlayerObject.name = $"{playerName} (ID: {playerId})";
+        Player newPlayer = new Player(playerId, playerName);
+        newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
+        SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
+    }
 
+    public void SpawnLocalPlayer(int playerId, string playerName, Vector3 spawnLocation)
+    {
+        GameObject newPlayerObject = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
         SessionVariables.instance.myGameClient.SendToServer(new Net_ChatMessage($"{playerName} has joined the server!"));
+        newPlayerObject.name = $"{playerName} (ID: {playerId})";
+        Player newPlayer = new Player(playerId, playerName);
+        newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
+        SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
     }
 
     public void DespawnPlayer(int playerId)

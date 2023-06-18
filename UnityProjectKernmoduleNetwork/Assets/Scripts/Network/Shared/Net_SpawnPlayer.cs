@@ -66,6 +66,6 @@ public class Net_SpawnPlayer : NetMessage
 
     public override void ReceivedOnClient()
     {
-        playerSpawner.SpawnPlayer(playerId, playerName.ToString(), new Vector3(xPos, yPos, zPos));
+        playerSpawner.SpawnRemotePlayer(playerId, playerName.ToString(), new Vector3(xPos, yPos, zPos));
     }
 }

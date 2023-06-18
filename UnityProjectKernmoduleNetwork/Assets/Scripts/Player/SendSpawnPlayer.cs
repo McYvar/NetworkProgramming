@@ -31,8 +31,9 @@ public class SendSpawnPlayer : MonoBehaviour
         foreach (var player in SessionVariables.instance.playerDictionary.Values)
         {
             if (player.playerId == SessionVariables.instance.myPlayerId) continue;
-            playerSpawner.SpawnPlayer(player.playerId, player.playerName, player.position);
+            playerSpawner.SpawnRemotePlayer(player.playerId, player.playerName, player.position);
         }
+
         // then spawn self with a request
         int myPlayerId = SessionVariables.instance.myPlayerId;
         Net_SpawnPlayer spawnPlayer = new Net_SpawnPlayer(myPlayerId, SessionVariables.instance.playerDictionary[myPlayerId].playerName,

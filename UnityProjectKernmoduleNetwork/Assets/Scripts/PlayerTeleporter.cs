@@ -11,6 +11,7 @@ public class PlayerTeleporter : MonoBehaviour
     {
         SessionVariables.instance.playerDictionary[playerId].position = location;
         SessionVariables.instance.playerDictionary[playerId].playerObject.transform.position = location;
-        SessionVariables.instance.playerDictionary[playerId].playerObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        Rigidbody rb = SessionVariables.instance.playerDictionary[playerId].playerObject.GetComponent<Rigidbody>();
+        if (rb != null) rb.velocity = Vector3.zero;
     }
 }
