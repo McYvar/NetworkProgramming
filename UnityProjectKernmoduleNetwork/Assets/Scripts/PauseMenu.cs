@@ -41,7 +41,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnSliderValueChanged(float value)
     {
-        GlobalSettings.sensitivity = value;
+        GlobalSettings.SetSensitivity(value);
         inputField.text = Math.Round(value, 2).ToString();
     }
 
@@ -49,7 +49,7 @@ public class PauseMenu : MonoBehaviour
     {
         float value = float.Parse(text);
         slider.value = value;
-        GlobalSettings.sensitivity = value; 
+        GlobalSettings.SetSensitivity(value);
     }
 
     public void SubscribeToButton(Action callback)

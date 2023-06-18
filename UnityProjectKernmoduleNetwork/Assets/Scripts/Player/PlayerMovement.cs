@@ -11,6 +11,8 @@ public class PlayerMovement : BaseState, IGravity
     [SerializeField] protected Transform head;
     [SerializeField, Range(0, 0.2f)] private float slerpSpeed;
     [SerializeField] private LayerMask groundLayers;
+    private Vector3 cameraTranslateVelocity;
+    protected bool isSprinting;
 
     protected Rigidbody rb;
     protected bool isGrounded;
@@ -21,11 +23,14 @@ public class PlayerMovement : BaseState, IGravity
 
     private float smoothVelocity = 0;
 
+    private Vector3 myGravityDirection;
+
     public override void Init()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         inputHandler = GetComponent<InputHandler>();
+        myGravityDirection = Physics.gravity;
     }
 
     public override void OnEnter() 
@@ -47,12 +52,13 @@ public class PlayerMovement : BaseState, IGravity
     public override void OnUpdate()
     {
         GroundDetection();
-        if (rb.useGravity) RotateTowardsGravity(Physics.gravity);
+        SprintDetect();
+        if (rb.useGravity) FallTowardsGravity(myGravityDirection);
     }
 
     public override void OnLateUpdate()
     {
-        CameraMovement();
+        CameraMovement(GlobalSettings.sensitivity);
     }
 
     protected void Movement(float speed)
@@ -69,10 +75,15 @@ public class PlayerMovement : BaseState, IGravity
         rb.AddForce(transform.rotation * rotatedInputVelocity, ForceMode.VelocityChange);
     }
 
+    private void SprintDetect()
+    {
+        if (inputHandler.vertical >= 0.1f && inputHandler.isPressedSprint) isSprinting = true;
+        if (inputHandler.vertical < 0.1f) isSprinting = false;
+    }
+
     protected void ReduceSpeed(float maxSpeed, float smoothTimeMoving, float smoothTimeNotMoving)
     {
         Vector3 rotatedVelocity = Quaternion.Inverse(transform.rotation) * rb.velocity;
-
         if (new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude > maxSpeed && (inputHandler.horizontal != 0 || inputHandler.vertical != 0))
         {
             float newMagnitude = Mathf.SmoothDamp(new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude, maxSpeed, ref smoothVelocity, smoothTimeMoving);
@@ -132,13 +143,13 @@ public class PlayerMovement : BaseState, IGravity
         }
     }
 
-    private void CameraMovement()
+    protected void CameraMovement(float sensitivity)
     {
-        cameraPivot.position = head.position;
-        cameraPivot.rotation = transform.rotation;
+        cameraPivot.position = Vector3.SmoothDamp(cameraPivot.position, head.position, ref cameraTranslateVelocity, playerSheet.cameraTranslateSmoothTime);
+        cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, transform.rotation, playerSheet.cameraRotateSmoothTime);
 
-        Vector3 horizontalMouse = new Vector3(0, inputHandler.mouseDelta.x * GlobalSettings.sensitivity, 0);
-        Vector3 verticalMouse = new Vector3(-inputHandler.mouseDelta.y * GlobalSettings.sensitivity, 0);
+        Vector3 horizontalMouse = new Vector3(0, inputHandler.mouseDelta.x * sensitivity, 0);
+        Vector3 verticalMouse = new Vector3(-inputHandler.mouseDelta.y * sensitivity, 0);
 
         head.localEulerAngles += horizontalMouse;
         float xRot = mainCamera.localEulerAngles.x + verticalMouse.x;
@@ -157,13 +168,13 @@ public class PlayerMovement : BaseState, IGravity
     public void SetGravity(Vector3 direction)
     {
         rb.useGravity = false;
-        rb.AddForce(direction);
-        RotateTowardsGravity(direction);
+        myGravityDirection = direction;
     }
 
     public void OnExitZone()
     {
         rb.useGravity = true;
+        myGravityDirection = Physics.gravity;
     }
 
     public Vector3 GetPosition()
@@ -171,8 +182,9 @@ public class PlayerMovement : BaseState, IGravity
         return transform.position;
     }
 
-    protected void RotateTowardsGravity(Vector3 direction)
+    protected void FallTowardsGravity(Vector3 direction)
     {
+        if (!rb.useGravity) rb.AddForce(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.FromToRotation(Vector3.down, direction),
             slerpSpeed);

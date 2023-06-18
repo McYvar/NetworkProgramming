@@ -24,6 +24,6 @@ public class OnGround : PlayerMovement
     {
         base.OnFixedUpdate();
         Movement(playerSheet.groundForce);
-        ReduceSpeed(playerSheet.groundMaxSpeed, playerSheet.groundMoveSmoothTime, playerSheet.groundMoveSmoothTime);
+        ReduceSpeed(isSprinting ? playerSheet.groundMaxSprintSpeed : playerSheet.groundMaxSpeed, playerSheet.groundMoveSmoothTime, playerSheet.groundMoveSmoothTime);
     }
 }

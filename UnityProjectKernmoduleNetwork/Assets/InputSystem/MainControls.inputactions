@@ -202,6 +202,24 @@
                     "processors": "",
                     "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PressSprint",
+                    "type": "Button",
+                    "id": "71c51936-d8fc-46aa-a743-cf80dad50e1a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ReleaseSprint",
+                    "type": "Button",
+                    "id": "adc71e59-77b1-4158-b92a-e448269b5e49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -444,6 +462,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ReleaseInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "233ca2ad-f85e-490b-8ca5-0fff0460bd49",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PressSprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "066ed340-490d-4c85-96f1-57bf92be70af",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReleaseSprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

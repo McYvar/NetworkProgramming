@@ -12,6 +12,6 @@ public class InAir : PlayerMovement
     {
         base.OnFixedUpdate();
         Movement(playerSheet.airForce);
-        ReduceSpeed(playerSheet.airMaxSpeed, playerSheet.airMoveSmoothTime, playerSheet.airNonMoveSmoothTime);
+        ReduceSpeed(isSprinting ? playerSheet.airMaxSprintSpeed : playerSheet.airMaxSpeed, playerSheet.airMoveSmoothTime, playerSheet.airNonMoveSmoothTime);
     }
 }

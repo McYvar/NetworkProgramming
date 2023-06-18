@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpStrength: 10
   groundForce: 1
-  groundMaxSpeed: 3
-  groundMoveSmoothTime: 0.08
-  groundNonMoveSmoothTime: 0.06
+  groundMaxSpeed: 2.3
+  groundMaxSprintSpeed: 5
+  groundMoveSmoothTime: 0.02
+  groundNonMoveSmoothTime: 4
   airForce: 0.2
-  airMaxSpeed: 2.8
-  airMoveSmoothTime: 0.7
-  airNonMoveSmoothTime: 0.7
-  sensitivity: 1
+  airMaxSpeed: 1.5
+  airMaxSprintSpeed: 2
+  airMoveSmoothTime: 0.3
+  airNonMoveSmoothTime: 1
+  cameraRotateSmoothTime: 0.02
+  cameraTranslateSmoothTime: 0.015

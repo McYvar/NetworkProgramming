@@ -203,6 +203,22 @@ public class InputHandler : MonoBehaviour
         pressInteractValue = 0;
         pressInteractLast?.Invoke();
     }
+    public bool isPressedSprint;
+    public int pressSprintValue;
+    public Action pressSprintFirst;
+    public Action pressSprintLast;
+    private void OnPressSprint()
+    {
+        isPressedSprint = true;
+        pressSprintValue = 1;
+        pressSprintFirst?.Invoke();
+    }
+    private void OnReleaseSprint()
+    {
+        isPressedSprint = false;
+        pressSprintValue = 0;
+        pressInteractLast?.Invoke();
+    }
 
     public Vector2 mouseDelta;
     private void OnEnable() => InputSystem.EnableDevice(Mouse.current);

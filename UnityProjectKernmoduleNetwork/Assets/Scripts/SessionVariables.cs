@@ -20,7 +20,7 @@ public class SessionVariables : MonoBehaviour
     {
         if (instance != null)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 

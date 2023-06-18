@@ -31,7 +31,7 @@ public class InChat : PlayerMovement
     public override void OnUpdate()
     {
         GroundDetection();
-        if (rb.useGravity) RotateTowardsGravity(Physics.gravity);
+        if (rb.useGravity) FallTowardsGravity(Physics.gravity);
     }
 
     public override void OnFixedUpdate()
@@ -41,7 +41,7 @@ public class InChat : PlayerMovement
         else ReduceSpeed(playerSheet.airMaxSpeed, playerSheet.airMoveSmoothTime, playerSheet.airNonMoveSmoothTime);
     }
 
-    public override void OnLateUpdate() { }
+    public override void OnLateUpdate() => CameraMovement(0);
 
     private void CloseChatWithMessageSend()
     {
