@@ -1,0 +1,7 @@
+@startuml
+class Barriers {
+    + OpenBarriers() : void
+    + CloseBarriers() : void
+}
+MonoBehaviour <|-- Barriers
+@enduml

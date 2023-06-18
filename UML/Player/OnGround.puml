@@ -1,0 +1,9 @@
+@startuml
+class OnGround {
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+}
+PlayerMovement <|-- OnGround
+@enduml

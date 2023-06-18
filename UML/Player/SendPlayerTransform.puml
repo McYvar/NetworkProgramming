@@ -1,0 +1,5 @@
+@startuml
+class SendPlayerTransform {
+}
+MonoBehaviour <|-- SendPlayerTransform
+@enduml

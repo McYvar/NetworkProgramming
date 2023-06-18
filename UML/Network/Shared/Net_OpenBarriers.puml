@@ -1,0 +1,22 @@
+@startuml
+class Net_OpenBarriers {
+    + Net_OpenBarriers()
+    + Net_OpenBarriers(reader:DataStreamReader)
+    + Net_OpenBarriers(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnClient() : void
+}
+class Net_Disconnect {
+    + playerId : int <<get>> <<set>>
+    + Net_Disconnect()
+    + Net_Disconnect(playerId:int)
+    + Net_Disconnect(reader:DataStreamReader)
+    + Net_Disconnect(reader:DataStreamReader, playerSpawner:PlayerSpawner)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_OpenBarriers
+NetMessage <|-- Net_Disconnect
+@enduml

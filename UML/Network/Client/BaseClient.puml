@@ -1,0 +1,10 @@
+@startuml
+class BaseClient {
+    + ip : string = "127.0.0.1"
+    + port : ushort = 9000
+    + <<virtual>> OnData(stream:DataStreamReader) : void
+    + SendToServer(msg:NetMessage) : void
+}
+MonoBehaviour <|-- BaseClient
+BaseClient --> "driver" NetworkDriver
+@enduml

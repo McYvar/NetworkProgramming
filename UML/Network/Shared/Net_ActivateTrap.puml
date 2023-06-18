@@ -1,0 +1,14 @@
+@startuml
+class Net_ActivateTrap {
+    + trapId : int
+    + Net_ActivateTrap()
+    + Net_ActivateTrap(trapId:int)
+    + Net_ActivateTrap(reader:DataStreamReader)
+    + Net_ActivateTrap(reader:DataStreamReader, trapsHandler:TrapsHandler)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_ActivateTrap
+@enduml

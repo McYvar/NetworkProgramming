@@ -1,0 +1,8 @@
+@startuml
+class Message {
+    + SetActive() : void
+    + SetInactive(time:float) : void
+}
+MonoBehaviour <|-- Message
+Message --> "rectTransform" RectTransform
+@enduml

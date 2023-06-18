@@ -1,0 +1,13 @@
+@startuml
+class Net_JoinGame {
+    + playerId : int
+    + Net_JoinGame()
+    + Net_JoinGame(playerId:int)
+    + Net_JoinGame(reader:DataStreamReader)
+    + Net_JoinGame(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_JoinGame
+@enduml

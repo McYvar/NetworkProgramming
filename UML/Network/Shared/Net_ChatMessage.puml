@@ -1,0 +1,14 @@
+@startuml
+class Net_ChatMessage {
+    + Net_ChatMessage()
+    + Net_ChatMessage(reader:DataStreamReader)
+    + Net_ChatMessage(reader:DataStreamReader, chatBehaviour:ChatBehaviour)
+    + Net_ChatMessage(msg:string)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_ChatMessage
+Net_ChatMessage --> "chatMessage" FixedString128Bytes
+@enduml

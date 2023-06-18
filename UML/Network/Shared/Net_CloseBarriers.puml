@@ -1,0 +1,10 @@
+@startuml
+class Net_CloseBarriers {
+    + Net_CloseBarriers()
+    + Net_CloseBarriers(reader:DataStreamReader)
+    + Net_CloseBarriers(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_CloseBarriers
+@enduml

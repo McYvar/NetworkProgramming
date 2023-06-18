@@ -1,0 +1,8 @@
+@startuml
+class Trap {
+    trapId : int
+    + ActivateTrap() : void
+    + ResetTrap() : void
+}
+MonoBehaviour <|-- Trap
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class InAir {
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+}
+PlayerMovement <|-- InAir
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class ValidationMessage {
+    + ActivateMessage() : void
+    + ForceCancelMessage() : void
+    + SetMessage(message:string) : void
+}
+MonoBehaviour <|-- ValidationMessage
+@enduml

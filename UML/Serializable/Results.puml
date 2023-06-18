@@ -1,0 +1,17 @@
+@startuml
+class Results {
+    + <<override>> ToString() : string
+}
+class Result {
+    + code : int
+    + session_id : string
+    + user_id : int
+    + email : string
+    + username : string
+    + Result()
+    + <<override>> ToString() : string
+}
+class "List`1"<T> {
+}
+Results --> "results<Result>" "List`1"
+@enduml

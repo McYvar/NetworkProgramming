@@ -1,0 +1,6 @@
+@startuml
+class PlayerTeleporter {
+    + TeleportplayerTo(playerId:int, location:Vector3) : void
+}
+MonoBehaviour <|-- PlayerTeleporter
+@enduml

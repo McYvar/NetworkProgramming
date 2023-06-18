@@ -1,0 +1,56 @@
+@startuml
+class InputHandler {
+    + vertical : int = 0
+    + horizontal : int = 0
+    + isPressedForward : bool
+    + pressForwardValue : int
+    + isPressedBackward : bool
+    + pressBackwardValue : int
+    + isPressedLeft : bool
+    + pressLeftValue : int
+    + isPressedRight : bool
+    + pressRightValue : int
+    + isPressedJump : bool
+    + pressJumpValue : int
+    + isPressedAnyKey : bool
+    + pressAnyKeyValue : int
+    + isPressedMouseLeft : bool
+    + pressMouseLeftValue : int
+    + isPressedMouseRight : bool
+    + pressMouseRightValue : int
+    + isPressedOpenChat : bool
+    + pressOpenChatValue : int
+    + isPressedEscape : bool
+    + pressEscapeValue : int
+    + isPressedInteract : bool
+    + pressInteractValue : int
+    + isPressedSprint : bool
+    + pressSprintValue : int
+}
+MonoBehaviour <|-- InputHandler
+InputHandler --> "pressForwardFirst" Action
+InputHandler --> "pressForwardLast" Action
+InputHandler --> "pressBackwardFirst" Action
+InputHandler --> "pressBackwardLast" Action
+InputHandler --> "pressLeftFirst" Action
+InputHandler --> "pressLeftLast" Action
+InputHandler --> "pressRightFirst" Action
+InputHandler --> "pressRightLast" Action
+InputHandler --> "pressJumpFirst" Action
+InputHandler --> "pressJumpLast" Action
+InputHandler --> "pressAnyKeyFirst" Action
+InputHandler --> "pressAnyKeyLast" Action
+InputHandler --> "pressMouseLeftFirst" Action
+InputHandler --> "pressMouseLeftLast" Action
+InputHandler --> "pressMouseRightFirst" Action
+InputHandler --> "pressMouseRightLast" Action
+InputHandler --> "pressOpenChatFirst" Action
+InputHandler --> "pressOpenChatLast" Action
+InputHandler --> "pressEscapeFirst" Action
+InputHandler --> "pressEscapeLast" Action
+InputHandler --> "pressInteractFirst" Action
+InputHandler --> "pressInteractLast" Action
+InputHandler --> "pressSprintFirst" Action
+InputHandler --> "pressSprintLast" Action
+InputHandler --> "mouseDelta" Vector2
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class ClientBehaviourExample {
+    + Done : bool
+}
+MonoBehaviour <|-- ClientBehaviourExample
+ClientBehaviourExample --> "driver" NetworkDriver
+ClientBehaviourExample --> "connection" NetworkConnection
+@enduml

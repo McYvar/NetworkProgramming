@@ -1,0 +1,7 @@
+@startuml
+class InteractionButton {
+    + SubScribeAction(callback:Action) : void
+    + UnsubScribeAction(callback:Action) : void
+}
+MonoBehaviour <|-- InteractionButton
+@enduml

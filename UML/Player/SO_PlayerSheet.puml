@@ -1,0 +1,19 @@
+@startuml
+class SO_PlayerSheet {
+    + jumpStrength : float
+    + groundForce : float
+    + groundMaxSpeed : float
+    + groundMaxSprintSpeed : float
+    + groundMoveSmoothTime : float
+    + groundNonMoveSmoothTime : float
+    + airForce : float
+    + airMaxSpeed : float
+    + airMaxSprintSpeed : float
+    + airMoveSmoothTime : float
+    + airNonMoveSmoothTime : float
+    + cameraRotateSmoothTime : float
+    + cameraTranslateSmoothTime : float
+    + rotateSlerpSpeed : float
+}
+ScriptableObject <|-- SO_PlayerSheet
+@enduml

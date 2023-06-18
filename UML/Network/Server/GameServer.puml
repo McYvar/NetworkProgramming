@@ -1,0 +1,7 @@
+@startuml
+class GameServer {
+    + <<override>> OnData(stream:DataStreamReader) : void
+}
+BaseServer <|-- GameServer
+GameServer --> "deathRunGameLoop" DeathRunGameLoop
+@enduml

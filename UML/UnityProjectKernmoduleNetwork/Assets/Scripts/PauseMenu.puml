@@ -1,0 +1,11 @@
+@startuml
+class PauseMenu {
+    + OnSliderValueChanged(value:float) : void
+    + OnDirectValueChanged(text:string) : void
+    + SubscribeToButton(callback:Action) : void
+    + UnsubscribeFromButton(callback:Action) : void
+    + OnClickDisconnect(scene:int) : void
+}
+MonoBehaviour <|-- PauseMenu
+PauseMenu --> "instance" PauseMenu
+@enduml

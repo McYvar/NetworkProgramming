@@ -1,0 +1,9 @@
+@startuml
+class ButtonVisual {
+    + OnPointerEnter(eventData:PointerEventData) : void
+    + OnPointerExit(eventData:PointerEventData) : void
+}
+MonoBehaviour <|-- ButtonVisual
+IPointerEnterHandler <|-- ButtonVisual
+IPointerExitHandler <|-- ButtonVisual
+@enduml

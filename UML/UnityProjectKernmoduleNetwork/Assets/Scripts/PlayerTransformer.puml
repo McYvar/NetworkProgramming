@@ -1,0 +1,6 @@
+@startuml
+class PlayerTransformer {
+    + TransformPlayer(playerId:int, xPos:float, yPos:float, zPos:float) : void
+}
+MonoBehaviour <|-- PlayerTransformer
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class Net_ReachedGoal {
+    + playerId : int <<get>> <<set>>
+    + Net_ReachedGoal()
+    + Net_ReachedGoal(playerId:int)
+    + Net_ReachedGoal(reader:DataStreamReader)
+    + Net_ReachedGoal(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_ReachedGoal
+@enduml

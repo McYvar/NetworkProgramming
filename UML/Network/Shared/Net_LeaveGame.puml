@@ -1,0 +1,13 @@
+@startuml
+class Net_LeaveGame {
+    + playerId : int
+    + Net_LeaveGame()
+    + Net_LeaveGame(playerId:int)
+    + Net_LeaveGame(reader:DataStreamReader)
+    + Net_LeaveGame(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_LeaveGame
+@enduml

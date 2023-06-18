@@ -1,0 +1,11 @@
+@startuml
+class BaseServer {
+    + port : ushort = 9000
+    + ip : string = "0.0.0.0"
+    + <<virtual>> OnData(stream:DataStreamReader) : void
+    + <<virtual>> BroadCast(msg:NetMessage) : void
+    + SendToClient(connection:NetworkConnection, msg:NetMessage) : void
+}
+MonoBehaviour <|-- BaseServer
+BaseServer --> "driver" NetworkDriver
+@enduml

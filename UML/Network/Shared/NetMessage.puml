@@ -1,0 +1,9 @@
+@startuml
+class NetMessage {
+    + <<virtual>> Serialize(writer:DataStreamWriter) : void
+    + <<virtual>> Deserialize(reader:DataStreamReader) : void
+    + <<virtual>> ReceivedOnClient() : void
+    + <<virtual>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage --> "code" OpCode
+@enduml

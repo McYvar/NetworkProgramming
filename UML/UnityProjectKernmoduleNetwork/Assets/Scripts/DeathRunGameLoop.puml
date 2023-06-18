@@ -1,0 +1,36 @@
+@startuml
+class DeathRunGameLoop {
+    + StartAttempt() : void
+    + StartGame() : void
+    + NextPlayer() : void
+    + StartRound() : void
+    + EndRound() : void
+    + OpenBarriers() : void
+    + CloseBarriers() : void
+    + EndGame() : void
+    + ReachedGoal(playerId:int) : void
+    + ReachedCheckpoint(playerId:int, checkpointId:int) : void
+    + JoinPlayer(playerId:int) : void
+    + LeavePlayer(playerId:int) : void
+    + PlayerDied(playerId:int) : void
+}
+class Score {
+    + playerId : int
+    + score : float
+    + finished : bool
+    + Score(playerId:int, score:float)
+    + AddScore(time:float) : void
+    + <<override>> ToString() : string
+}
+class Game {
+    + game_id : int
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+MonoBehaviour <|-- DeathRunGameLoop
+DeathRunGameLoop o-> "allBarriers<Barriers>" "List`1"
+DeathRunGameLoop o-> "checkpoints<int,DeathRunCheckpoint>" "Dictionary`2"
+Score --> "currentcheckpoint" DeathRunCheckpoint
+@enduml

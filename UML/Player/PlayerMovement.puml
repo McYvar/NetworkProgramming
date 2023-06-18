@@ -1,0 +1,17 @@
+@startuml
+class PlayerMovement {
+    + <<override>> Init() : void
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnFixedUpdate() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnLateUpdate() : void
+    + OnEnterZone() : void
+    + SetGravity(direction:Vector3) : void
+    + OnExitZone() : void
+    + GetPosition() : Vector3
+    + GetBounds() : Bounds
+}
+BaseState <|-- PlayerMovement
+IGravity <|-- PlayerMovement
+@enduml

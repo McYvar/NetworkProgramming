@@ -1,0 +1,6 @@
+@startuml
+class WebRequest {
+    + Request(uri:string, callback:Action<T>) : IEnumerator
+}
+MonoBehaviour <|-- WebRequest
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class SceneBehaviour {
+    + GoToScene(sceneId:int) : void
+}
+MonoBehaviour <|-- SceneBehaviour
+@enduml

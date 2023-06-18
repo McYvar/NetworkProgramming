@@ -1,0 +1,6 @@
+@startuml
+class ServerList {
+    + UpdateServerList() : IEnumerator
+}
+MonoBehaviour <|-- ServerList
+@enduml

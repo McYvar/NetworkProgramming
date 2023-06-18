@@ -1,0 +1,13 @@
+@startuml
+class GameClient {
+    + <<override>> OnData(stream:DataStreamReader) : void
+}
+BaseClient <|-- GameClient
+GameClient --> "chatBehaviour" ChatBehaviour
+GameClient --> "playerSpawner" PlayerSpawner
+GameClient --> "playerTransformer" PlayerTransformer
+GameClient --> "playerRotator" PlayerRotator
+GameClient --> "trapsHandler" TrapsHandler
+GameClient --> "playerTeleporter" PlayerTeleporter
+GameClient --> "deathRunGameLoop" DeathRunGameLoop
+@enduml

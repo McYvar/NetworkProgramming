@@ -1,0 +1,18 @@
+@startuml
+class Servers {
+    + <<override>> ToString() : string
+}
+class Server {
+    + code : int
+    + server_id : int
+    + server_name : string
+    + ip : string
+    + port : int
+    + local : int
+    + Server()
+    + <<override>> ToString() : string
+}
+class "List`1"<T> {
+}
+Servers --> "servers<Server>" "List`1"
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class ButtonAction {
+    + OnPointerClick(eventData:PointerEventData) : void
+    + PredicateAction(predicate:bool) : void
+}
+MonoBehaviour <|-- ButtonAction
+IPointerClickHandler <|-- ButtonAction
+ButtonAction --> "OnClickButton" Action
+@enduml

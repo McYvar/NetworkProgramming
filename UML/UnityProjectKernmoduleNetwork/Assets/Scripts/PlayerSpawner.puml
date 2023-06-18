@@ -1,0 +1,8 @@
+@startuml
+class PlayerSpawner {
+    + SpawnRemotePlayer(playerId:int, playerName:string, spawnLocation:Vector3) : void
+    + SpawnLocalPlayer(playerId:int, playerName:string, spawnLocation:Vector3) : void
+    + DespawnPlayer(playerId:int) : void
+}
+MonoBehaviour <|-- PlayerSpawner
+@enduml

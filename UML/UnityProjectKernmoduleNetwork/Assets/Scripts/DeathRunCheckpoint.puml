@@ -1,0 +1,7 @@
+@startuml
+class DeathRunCheckpoint {
+    + checkpointId : int
+}
+MonoBehaviour <|-- DeathRunCheckpoint
+DeathRunCheckpoint --> "spawnPoint" Vector3
+@enduml

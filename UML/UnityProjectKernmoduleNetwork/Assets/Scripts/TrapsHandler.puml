@@ -1,0 +1,7 @@
+@startuml
+class TrapsHandler {
+    + AddToTraps(trapId:int, trap:Trap) : void
+    + ActivateTrap(trapId:int) : void
+}
+MonoBehaviour <|-- TrapsHandler
+@enduml

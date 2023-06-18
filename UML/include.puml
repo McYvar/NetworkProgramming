@@ -1,0 +1,645 @@
+@startuml
+class ButtonVisual {
+    + OnPointerEnter(eventData:PointerEventData) : void
+    + OnPointerExit(eventData:PointerEventData) : void
+}
+MonoBehaviour <|-- ButtonVisual
+IPointerEnterHandler <|-- ButtonVisual
+IPointerExitHandler <|-- ButtonVisual
+class DeathRunCheckpoint {
+    + checkpointId : int
+}
+MonoBehaviour <|-- DeathRunCheckpoint
+DeathRunCheckpoint --> "spawnPoint" Vector3
+class PlayerRotator {
+    + RotatePlayer(playerId:int, xDir:float, yDir:float, zDir:float) : void
+}
+MonoBehaviour <|-- PlayerRotator
+class TrapsHandler {
+    + AddToTraps(trapId:int, trap:Trap) : void
+    + ActivateTrap(trapId:int) : void
+}
+MonoBehaviour <|-- TrapsHandler
+class GlobalSettings {
+    + {static} sensitivity : float = 1
+    + {static} startingSensitivity : float
+    + {static} SetSensitivity(newSens:float) : void
+}
+MonoBehaviour <|-- GlobalSettings
+class TrapButton {
+    + ActivateTrapButton() : void
+}
+MonoBehaviour <|-- TrapButton
+class FiniteStateMachine {
+    + FiniteStateMachine(startState:BaseState, states:BaseState[])
+    + OnUpdate() : void
+    + OnFixedUpdate() : void
+    + OnLateUpdate() : void
+    + SwitchState(newStateStype:System.Type) : void
+    + DebugCurrentState() : void
+    + GetLastState() : BaseState
+}
+class PlayerTeleporter {
+    + TeleportplayerTo(playerId:int, location:Vector3) : void
+}
+MonoBehaviour <|-- PlayerTeleporter
+class GravityBehaviour {
+    gravityStrenght : float = 9.81f
+    zoneRadius : float = 10
+}
+enum GravityType {
+    STATIC_ZONE= 0,
+    GRAVITY_POINT_PULL= 1,
+    GRAVITY_POINT_PUSH= 2,
+}
+MonoBehaviour <|-- GravityBehaviour
+GravityBehaviour o-> "gravityType" GravityType
+GravityBehaviour o-> "gravityDirection" Vector3
+class SessionVariables {
+    + connected : bool = false
+    + serverId : int
+    + myPlayerId : int
+    + myPlayerName : string
+}
+class Player {
+    + playerId : int
+    + playerName : string
+    + Player(playerId:int, playerName:string)
+}
+class "Dictionary`2"<T1,T2> {
+}
+MonoBehaviour <|-- SessionVariables
+SessionVariables o-> "playerDictionary<int,Player>" "Dictionary`2"
+SessionVariables --> "myGameClient" GameClient
+SessionVariables --> "server" GameServer
+SessionVariables --> "instance" SessionVariables
+Player --> "playerObject" GameObject
+Player --> "position" Vector3
+Player --> "smoothTransformVelocity" Vector3
+Player --> "gravityDirection" Vector3
+class PlayerDied {
+}
+MonoBehaviour <|-- PlayerDied
+class PauseMenu {
+    + OnSliderValueChanged(value:float) : void
+    + OnDirectValueChanged(text:string) : void
+    + SubscribeToButton(callback:Action) : void
+    + UnsubscribeFromButton(callback:Action) : void
+    + OnClickDisconnect(scene:int) : void
+}
+MonoBehaviour <|-- PauseMenu
+PauseMenu --> "instance" PauseMenu
+class Trap {
+    trapId : int
+    + ActivateTrap() : void
+    + ResetTrap() : void
+}
+MonoBehaviour <|-- Trap
+class WebRequest {
+    + Request(uri:string, callback:Action<T>) : IEnumerator
+}
+MonoBehaviour <|-- WebRequest
+class DeathRunGameLoop {
+    + StartAttempt() : void
+    + StartGame() : void
+    + NextPlayer() : void
+    + StartRound() : void
+    + EndRound() : void
+    + OpenBarriers() : void
+    + CloseBarriers() : void
+    + EndGame() : void
+    + ReachedGoal(playerId:int) : void
+    + ReachedCheckpoint(playerId:int, checkpointId:int) : void
+    + JoinPlayer(playerId:int) : void
+    + LeavePlayer(playerId:int) : void
+    + PlayerDied(playerId:int) : void
+}
+class Score {
+    + playerId : int
+    + score : float
+    + finished : bool
+    + Score(playerId:int, score:float)
+    + AddScore(time:float) : void
+    + <<override>> ToString() : string
+}
+class Game {
+    + game_id : int
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+MonoBehaviour <|-- DeathRunGameLoop
+DeathRunGameLoop o-> "allBarriers<Barriers>" "List`1"
+DeathRunGameLoop o-> "checkpoints<int,DeathRunCheckpoint>" "Dictionary`2"
+Score --> "currentcheckpoint" DeathRunCheckpoint
+class HostServer {
+    + OnHostButton() : void
+    + SetHostLocal(value:bool) : void
+}
+MonoBehaviour <|-- HostServer
+class ChatBehaviour {
+    + SendMessageToServer() : void
+    + SendChatMessage(messageText:string) : void
+    + OpenChat() : void
+    + CloseChat() : void
+}
+MonoBehaviour <|-- ChatBehaviour
+abstract class BaseState {
+    + Initialize(stateManager:FiniteStateMachine) : void
+    + {abstract} Init() : void
+    + {abstract} OnEnter() : void
+    + {abstract} OnExit() : void
+    + {abstract} OnUpdate() : void
+    + {abstract} OnFixedUpdate() : void
+    + {abstract} OnLateUpdate() : void
+}
+MonoBehaviour <|-- BaseState
+class SceneBehaviour {
+    + GoToScene(sceneId:int) : void
+}
+MonoBehaviour <|-- SceneBehaviour
+class Message {
+    + SetActive() : void
+    + SetInactive(time:float) : void
+}
+MonoBehaviour <|-- Message
+Message --> "rectTransform" RectTransform
+class UIController {
+    + OnClickLogin() : void
+    + OnClickSignUp() : void
+    + OnClickUserLogout() : void
+    + OnClickServerLogout() : void
+    + OnClickCompleteLogout() : void
+    + OpenNew(newWindow:GameObject) : void
+    + CloseOld(oldWindow:GameObject) : void
+}
+MonoBehaviour <|-- UIController
+class ServerList {
+    + UpdateServerList() : IEnumerator
+}
+MonoBehaviour <|-- ServerList
+class InteractionButton {
+    + SubScribeAction(callback:Action) : void
+    + UnsubScribeAction(callback:Action) : void
+}
+MonoBehaviour <|-- InteractionButton
+class PlayerTransformer {
+    + TransformPlayer(playerId:int, xPos:float, yPos:float, zPos:float) : void
+}
+MonoBehaviour <|-- PlayerTransformer
+class ButtonAction {
+    + OnPointerClick(eventData:PointerEventData) : void
+    + PredicateAction(predicate:bool) : void
+}
+MonoBehaviour <|-- ButtonAction
+IPointerClickHandler <|-- ButtonAction
+ButtonAction --> "OnClickButton" Action
+class Barriers {
+    + OpenBarriers() : void
+    + CloseBarriers() : void
+}
+MonoBehaviour <|-- Barriers
+class DeathRunGoal {
+}
+MonoBehaviour <|-- DeathRunGoal
+class ValidationMessage {
+    + ActivateMessage() : void
+    + ForceCancelMessage() : void
+    + SetMessage(message:string) : void
+}
+MonoBehaviour <|-- ValidationMessage
+class PlayerSpawner {
+    + SpawnRemotePlayer(playerId:int, playerName:string, spawnLocation:Vector3) : void
+    + SpawnLocalPlayer(playerId:int, playerName:string, spawnLocation:Vector3) : void
+    + DespawnPlayer(playerId:int) : void
+}
+MonoBehaviour <|-- PlayerSpawner
+class SO_PlayerSheet {
+    + jumpStrength : float
+    + groundForce : float
+    + groundMaxSpeed : float
+    + groundMaxSprintSpeed : float
+    + groundMoveSmoothTime : float
+    + groundNonMoveSmoothTime : float
+    + airForce : float
+    + airMaxSpeed : float
+    + airMaxSprintSpeed : float
+    + airMoveSmoothTime : float
+    + airNonMoveSmoothTime : float
+    + cameraRotateSmoothTime : float
+    + cameraTranslateSmoothTime : float
+    + rotateSlerpSpeed : float
+}
+ScriptableObject <|-- SO_PlayerSheet
+class SendSpawnPlayer {
+    SpawnWhenConnected() : IEnumerator
+}
+MonoBehaviour <|-- SendSpawnPlayer
+interface IGravity {
+    OnEnterZone() : void
+    SetGravity(direction:Vector3) : void
+    OnExitZone() : void
+    GetPosition() : Vector3
+    GetBounds() : Bounds
+}
+class PlayerController {
+}
+MonoBehaviour <|-- PlayerController
+class InPause {
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+    + <<override>> OnLateUpdate() : void
+}
+PlayerMovement <|-- InPause
+class InAir {
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+}
+PlayerMovement <|-- InAir
+class PlayerMovement {
+    + <<override>> Init() : void
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnFixedUpdate() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnLateUpdate() : void
+    + OnEnterZone() : void
+    + SetGravity(direction:Vector3) : void
+    + OnExitZone() : void
+    + GetPosition() : Vector3
+    + GetBounds() : Bounds
+}
+BaseState <|-- PlayerMovement
+IGravity <|-- PlayerMovement
+class SendPlayerTransform {
+}
+MonoBehaviour <|-- SendPlayerTransform
+class OnGround {
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+}
+PlayerMovement <|-- OnGround
+class InChat {
+    + <<override>> Init() : void
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+    + <<override>> OnLateUpdate() : void
+}
+PlayerMovement <|-- InChat
+class MovingPlatform {
+    + Update() : void
+    UpdateDelta() : void
+}
+MonoBehaviour <|-- MovingPlatform
+MovingPlatform --> "moveVector" Vector3
+MovingPlatform --> "lastPos" Vector3
+MovingPlatform --> "deltaPos" Vector3
+MovingPlatform --> "rotateVector" Vector3
+MovingPlatform --> "lastEuler" Vector3
+MovingPlatform --> "deltaEuler" Vector3
+class InputHandler {
+    + vertical : int = 0
+    + horizontal : int = 0
+    + isPressedForward : bool
+    + pressForwardValue : int
+    + isPressedBackward : bool
+    + pressBackwardValue : int
+    + isPressedLeft : bool
+    + pressLeftValue : int
+    + isPressedRight : bool
+    + pressRightValue : int
+    + isPressedJump : bool
+    + pressJumpValue : int
+    + isPressedAnyKey : bool
+    + pressAnyKeyValue : int
+    + isPressedMouseLeft : bool
+    + pressMouseLeftValue : int
+    + isPressedMouseRight : bool
+    + pressMouseRightValue : int
+    + isPressedOpenChat : bool
+    + pressOpenChatValue : int
+    + isPressedEscape : bool
+    + pressEscapeValue : int
+    + isPressedInteract : bool
+    + pressInteractValue : int
+    + isPressedSprint : bool
+    + pressSprintValue : int
+}
+MonoBehaviour <|-- InputHandler
+InputHandler --> "pressForwardFirst" Action
+InputHandler --> "pressForwardLast" Action
+InputHandler --> "pressBackwardFirst" Action
+InputHandler --> "pressBackwardLast" Action
+InputHandler --> "pressLeftFirst" Action
+InputHandler --> "pressLeftLast" Action
+InputHandler --> "pressRightFirst" Action
+InputHandler --> "pressRightLast" Action
+InputHandler --> "pressJumpFirst" Action
+InputHandler --> "pressJumpLast" Action
+InputHandler --> "pressAnyKeyFirst" Action
+InputHandler --> "pressAnyKeyLast" Action
+InputHandler --> "pressMouseLeftFirst" Action
+InputHandler --> "pressMouseLeftLast" Action
+InputHandler --> "pressMouseRightFirst" Action
+InputHandler --> "pressMouseRightLast" Action
+InputHandler --> "pressOpenChatFirst" Action
+InputHandler --> "pressOpenChatLast" Action
+InputHandler --> "pressEscapeFirst" Action
+InputHandler --> "pressEscapeLast" Action
+InputHandler --> "pressInteractFirst" Action
+InputHandler --> "pressInteractLast" Action
+InputHandler --> "pressSprintFirst" Action
+InputHandler --> "pressSprintLast" Action
+InputHandler --> "mouseDelta" Vector2
+class Results {
+    + <<override>> ToString() : string
+}
+class Result {
+    + code : int
+    + session_id : string
+    + user_id : int
+    + email : string
+    + username : string
+    + Result()
+    + <<override>> ToString() : string
+}
+class "List`1"<T> {
+}
+Results --> "results<Result>" "List`1"
+class Servers {
+    + <<override>> ToString() : string
+}
+class Server {
+    + code : int
+    + server_id : int
+    + server_name : string
+    + ip : string
+    + port : int
+    + local : int
+    + Server()
+    + <<override>> ToString() : string
+}
+class "List`1"<T> {
+}
+Servers --> "servers<Server>" "List`1"
+class GameServer {
+    + <<override>> OnData(stream:DataStreamReader) : void
+}
+BaseServer <|-- GameServer
+GameServer --> "deathRunGameLoop" DeathRunGameLoop
+class CreateServer {
+    + CreateServerObject(ip:string, port:ushort) : void
+}
+MonoBehaviour <|-- CreateServer
+class ServerBehaviourExample {
+}
+MonoBehaviour <|-- ServerBehaviourExample
+ServerBehaviourExample --> "driver" NetworkDriver
+class BaseServer {
+    + port : ushort = 9000
+    + ip : string = "0.0.0.0"
+    + <<virtual>> OnData(stream:DataStreamReader) : void
+    + <<virtual>> BroadCast(msg:NetMessage) : void
+    + SendToClient(connection:NetworkConnection, msg:NetMessage) : void
+}
+MonoBehaviour <|-- BaseServer
+BaseServer --> "driver" NetworkDriver
+class Net_CloseBarriers {
+    + Net_CloseBarriers()
+    + Net_CloseBarriers(reader:DataStreamReader)
+    + Net_CloseBarriers(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_CloseBarriers
+class Net_JoinGame {
+    + playerId : int
+    + Net_JoinGame()
+    + Net_JoinGame(playerId:int)
+    + Net_JoinGame(reader:DataStreamReader)
+    + Net_JoinGame(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_JoinGame
+class Net_StartGame {
+    + Net_StartGame()
+    + Net_StartGame(reader:DataStreamReader)
+    + Net_StartGame(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+class Net_PlayerDied {
+    + playerId : int <<get>> <<set>>
+    + Net_PlayerDied()
+    + Net_PlayerDied(playerId:int)
+    + Net_PlayerDied(reader:DataStreamReader)
+    + Net_PlayerDied(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_StartGame
+NetMessage <|-- Net_PlayerDied
+class Net_OpenBarriers {
+    + Net_OpenBarriers()
+    + Net_OpenBarriers(reader:DataStreamReader)
+    + Net_OpenBarriers(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnClient() : void
+}
+class Net_Disconnect {
+    + playerId : int <<get>> <<set>>
+    + Net_Disconnect()
+    + Net_Disconnect(playerId:int)
+    + Net_Disconnect(reader:DataStreamReader)
+    + Net_Disconnect(reader:DataStreamReader, playerSpawner:PlayerSpawner)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_OpenBarriers
+NetMessage <|-- Net_Disconnect
+class Net_ActivateTrap {
+    + trapId : int
+    + Net_ActivateTrap()
+    + Net_ActivateTrap(trapId:int)
+    + Net_ActivateTrap(reader:DataStreamReader)
+    + Net_ActivateTrap(reader:DataStreamReader, trapsHandler:TrapsHandler)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_ActivateTrap
+class Net_ReachedCheckpoint {
+    + playerId : int <<get>> <<set>>
+    + checkpointId : int <<get>> <<set>>
+    + Net_ReachedCheckpoint()
+    + Net_ReachedCheckpoint(playerId:int, checkpointId:int)
+    + Net_ReachedCheckpoint(reader:DataStreamReader)
+    + Net_ReachedCheckpoint(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_ReachedCheckpoint
+class Net_ChatMessage {
+    + Net_ChatMessage()
+    + Net_ChatMessage(reader:DataStreamReader)
+    + Net_ChatMessage(reader:DataStreamReader, chatBehaviour:ChatBehaviour)
+    + Net_ChatMessage(msg:string)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_ChatMessage
+Net_ChatMessage --> "chatMessage" FixedString128Bytes
+class Net_SpawnPlayer {
+    + playerId : int <<get>> <<set>>
+    + xPos : float <<get>> <<set>>
+    + yPos : float <<get>> <<set>>
+    + zPos : float <<get>> <<set>>
+    + Net_SpawnPlayer()
+    + Net_SpawnPlayer(playerId:int, playerName:string, xPos:float, yPos:float, zPos:float)
+    + Net_SpawnPlayer(reader:DataStreamReader)
+    + Net_SpawnPlayer(reader:DataStreamReader, playerSpawner:PlayerSpawner)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_SpawnPlayer
+Net_SpawnPlayer --> "playerName" FixedString128Bytes
+class Net_PlayerTransform {
+    + playerId : int <<get>> <<set>>
+    + xPos : float <<get>> <<set>>
+    + yPos : float <<get>> <<set>>
+    + zPos : float <<get>> <<set>>
+    + Net_PlayerTransform()
+    + Net_PlayerTransform(playerId:int, xPos:float, yPos:float, zPos:float)
+    + Net_PlayerTransform(reader:DataStreamReader)
+    + Net_PlayerTransform(reader:DataStreamReader, playerTransformer:PlayerTransformer)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+class Net_PlayerGravity {
+    + playerId : int <<get>> <<set>>
+    + xDir : float <<get>> <<set>>
+    + yDir : float <<get>> <<set>>
+    + zDir : float <<get>> <<set>>
+    + Net_PlayerGravity()
+    + Net_PlayerGravity(playerId:int, xDir:float, yDir:float, zDir:float)
+    + Net_PlayerGravity(reader:DataStreamReader)
+    + Net_PlayerGravity(reader:DataStreamReader, playerRotator:PlayerRotator)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_PlayerTransform
+NetMessage <|-- Net_PlayerGravity
+class Net_ReachedGoal {
+    + playerId : int <<get>> <<set>>
+    + Net_ReachedGoal()
+    + Net_ReachedGoal(playerId:int)
+    + Net_ReachedGoal(reader:DataStreamReader)
+    + Net_ReachedGoal(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_ReachedGoal
+class Net_LeaveGame {
+    + playerId : int
+    + Net_LeaveGame()
+    + Net_LeaveGame(playerId:int)
+    + Net_LeaveGame(reader:DataStreamReader)
+    + Net_LeaveGame(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_LeaveGame
+enum OpCode {
+    CHAT_MESSAGE= 1,
+    SPAWN_PLAYER= 2,
+    PLAYER_TRANSFORM= 3,
+    START_GAME= 4,
+    REACHED_GOAL= 5,
+    ACTIVATE_TRAP= 6,
+    TELEPORT_PLAYER= 7,
+    OPEN_BARRIERS= 8,
+    CLOSE_BARRIERS= 9,
+    JOIN_GAME= 10,
+    LEAVE_GAME= 11,
+    PLAYER_GRAVITY= 12,
+    PLAYER_DIED= 13,
+    REACHED_CHECKPOINT= 14,
+    PLAYER_DISCONNECT= 15,
+}
+class NetMessage {
+    + <<virtual>> Serialize(writer:DataStreamWriter) : void
+    + <<virtual>> Deserialize(reader:DataStreamReader) : void
+    + <<virtual>> ReceivedOnClient() : void
+    + <<virtual>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage --> "code" OpCode
+class Net_TeleportPlayer {
+    + playerId : int <<get>> <<set>>
+    + xPos : float <<get>> <<set>>
+    + yPos : float <<get>> <<set>>
+    + zPos : float <<get>> <<set>>
+    + Net_TeleportPlayer()
+    + Net_TeleportPlayer(reader:DataStreamReader)
+    + Net_TeleportPlayer(reader:DataStreamReader, playerTeleporter:PlayerTeleporter)
+    + Net_TeleportPlayer(playerId:int, xPos:float, yPos:float, zPos:float)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_TeleportPlayer
+class ClientBehaviourExample {
+    + Done : bool
+}
+MonoBehaviour <|-- ClientBehaviourExample
+ClientBehaviourExample --> "driver" NetworkDriver
+ClientBehaviourExample --> "connection" NetworkConnection
+class CreateClient {
+    + CreateClientObject(ip:string, port:ushort) : void
+}
+MonoBehaviour <|-- CreateClient
+class BaseClient {
+    + ip : string = "127.0.0.1"
+    + port : ushort = 9000
+    + <<virtual>> OnData(stream:DataStreamReader) : void
+    + SendToServer(msg:NetMessage) : void
+}
+MonoBehaviour <|-- BaseClient
+BaseClient --> "driver" NetworkDriver
+class GameClient {
+    + <<override>> OnData(stream:DataStreamReader) : void
+}
+BaseClient <|-- GameClient
+GameClient --> "chatBehaviour" ChatBehaviour
+GameClient --> "playerSpawner" PlayerSpawner
+GameClient --> "playerTransformer" PlayerTransformer
+GameClient --> "playerRotator" PlayerRotator
+GameClient --> "trapsHandler" TrapsHandler
+GameClient --> "playerTeleporter" PlayerTeleporter
+GameClient --> "deathRunGameLoop" DeathRunGameLoop
+@enduml

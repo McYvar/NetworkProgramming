@@ -1,0 +1,17 @@
+@startuml
+class Net_TeleportPlayer {
+    + playerId : int <<get>> <<set>>
+    + xPos : float <<get>> <<set>>
+    + yPos : float <<get>> <<set>>
+    + zPos : float <<get>> <<set>>
+    + Net_TeleportPlayer()
+    + Net_TeleportPlayer(reader:DataStreamReader)
+    + Net_TeleportPlayer(reader:DataStreamReader, playerTeleporter:PlayerTeleporter)
+    + Net_TeleportPlayer(playerId:int, xPos:float, yPos:float, zPos:float)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_TeleportPlayer
+@enduml

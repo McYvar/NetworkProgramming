@@ -1,0 +1,11 @@
+@startuml
+class InChat {
+    + <<override>> Init() : void
+    + <<override>> OnEnter() : void
+    + <<override>> OnExit() : void
+    + <<override>> OnUpdate() : void
+    + <<override>> OnFixedUpdate() : void
+    + <<override>> OnLateUpdate() : void
+}
+PlayerMovement <|-- InChat
+@enduml

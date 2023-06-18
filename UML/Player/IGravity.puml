@@ -1,0 +1,9 @@
+@startuml
+interface IGravity {
+    OnEnterZone() : void
+    SetGravity(direction:Vector3) : void
+    OnExitZone() : void
+    GetPosition() : Vector3
+    GetBounds() : Bounds
+}
+@enduml

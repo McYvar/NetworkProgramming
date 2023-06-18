@@ -1,0 +1,6 @@
+@startuml
+class PlayerRotator {
+    + RotatePlayer(playerId:int, xDir:float, yDir:float, zDir:float) : void
+}
+MonoBehaviour <|-- PlayerRotator
+@enduml

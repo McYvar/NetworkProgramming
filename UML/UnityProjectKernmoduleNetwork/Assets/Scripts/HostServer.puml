@@ -1,0 +1,7 @@
+@startuml
+class HostServer {
+    + OnHostButton() : void
+    + SetHostLocal(value:bool) : void
+}
+MonoBehaviour <|-- HostServer
+@enduml

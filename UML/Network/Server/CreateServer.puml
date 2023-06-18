@@ -1,0 +1,6 @@
+@startuml
+class CreateServer {
+    + CreateServerObject(ip:string, port:ushort) : void
+}
+MonoBehaviour <|-- CreateServer
+@enduml

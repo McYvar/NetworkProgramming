@@ -1,0 +1,6 @@
+@startuml
+class CreateClient {
+    + CreateClientObject(ip:string, port:ushort) : void
+}
+MonoBehaviour <|-- CreateClient
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class Net_ReachedCheckpoint {
+    + playerId : int <<get>> <<set>>
+    + checkpointId : int <<get>> <<set>>
+    + Net_ReachedCheckpoint()
+    + Net_ReachedCheckpoint(playerId:int, checkpointId:int)
+    + Net_ReachedCheckpoint(reader:DataStreamReader)
+    + Net_ReachedCheckpoint(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_ReachedCheckpoint
+@enduml

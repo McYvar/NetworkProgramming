@@ -1,0 +1,6 @@
+@startuml
+class ServerBehaviourExample {
+}
+MonoBehaviour <|-- ServerBehaviourExample
+ServerBehaviourExample --> "driver" NetworkDriver
+@enduml

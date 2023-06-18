@@ -1,0 +1,9 @@
+@startuml
+class ChatBehaviour {
+    + SendMessageToServer() : void
+    + SendChatMessage(messageText:string) : void
+    + OpenChat() : void
+    + CloseChat() : void
+}
+MonoBehaviour <|-- ChatBehaviour
+@enduml

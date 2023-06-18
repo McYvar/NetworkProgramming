@@ -1,0 +1,18 @@
+@startuml
+class Net_SpawnPlayer {
+    + playerId : int <<get>> <<set>>
+    + xPos : float <<get>> <<set>>
+    + yPos : float <<get>> <<set>>
+    + zPos : float <<get>> <<set>>
+    + Net_SpawnPlayer()
+    + Net_SpawnPlayer(playerId:int, playerName:string, xPos:float, yPos:float, zPos:float)
+    + Net_SpawnPlayer(reader:DataStreamReader)
+    + Net_SpawnPlayer(reader:DataStreamReader, playerSpawner:PlayerSpawner)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_SpawnPlayer
+Net_SpawnPlayer --> "playerName" FixedString128Bytes
+@enduml

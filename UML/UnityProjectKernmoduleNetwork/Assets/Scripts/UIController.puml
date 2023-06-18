@@ -1,0 +1,12 @@
+@startuml
+class UIController {
+    + OnClickLogin() : void
+    + OnClickSignUp() : void
+    + OnClickUserLogout() : void
+    + OnClickServerLogout() : void
+    + OnClickCompleteLogout() : void
+    + OpenNew(newWindow:GameObject) : void
+    + CloseOld(oldWindow:GameObject) : void
+}
+MonoBehaviour <|-- UIController
+@enduml

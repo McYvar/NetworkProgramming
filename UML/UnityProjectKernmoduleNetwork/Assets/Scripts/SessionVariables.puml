@@ -1,0 +1,24 @@
+@startuml
+class SessionVariables {
+    + connected : bool = false
+    + serverId : int
+    + myPlayerId : int
+    + myPlayerName : string
+}
+class Player {
+    + playerId : int
+    + playerName : string
+    + Player(playerId:int, playerName:string)
+}
+class "Dictionary`2"<T1,T2> {
+}
+MonoBehaviour <|-- SessionVariables
+SessionVariables o-> "playerDictionary<int,Player>" "Dictionary`2"
+SessionVariables --> "myGameClient" GameClient
+SessionVariables --> "server" GameServer
+SessionVariables --> "instance" SessionVariables
+Player --> "playerObject" GameObject
+Player --> "position" Vector3
+Player --> "smoothTransformVelocity" Vector3
+Player --> "gravityDirection" Vector3
+@enduml

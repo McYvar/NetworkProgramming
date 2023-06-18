@@ -1,0 +1,8 @@
+@startuml
+class GlobalSettings {
+    + {static} sensitivity : float = 1
+    + {static} startingSensitivity : float
+    + {static} SetSensitivity(newSens:float) : void
+}
+MonoBehaviour <|-- GlobalSettings
+@enduml
