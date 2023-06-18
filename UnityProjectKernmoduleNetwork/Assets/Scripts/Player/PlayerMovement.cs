@@ -53,8 +53,8 @@ public class PlayerMovement : BaseState, IGravity
     {
         GroundDetection();
         SprintDetect();
-        if (rb.useGravity) FallTowardsGravity(myGravityDirection);
-        else FallTowardsGravity(Physics.gravity);
+        if (rb.useGravity) FallTowardsGravity(Physics.gravity);
+        else FallTowardsGravity(myGravityDirection);
     }
 
     public override void OnLateUpdate()
