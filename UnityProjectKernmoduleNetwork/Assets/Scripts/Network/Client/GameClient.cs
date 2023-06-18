@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.Networking.Transport;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 public class GameClient : BaseClient
 {
@@ -60,6 +61,9 @@ public class GameClient : BaseClient
                 break;
             case OpCode.REACHED_CHECKPOINT:
                 // only send by client, not received
+                break;
+            case OpCode.PLAYER_DISCONNECT:
+                msg = new Net_Disconnect(stream, playerSpawner);
                 break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");

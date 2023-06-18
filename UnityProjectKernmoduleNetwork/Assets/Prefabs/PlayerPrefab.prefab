@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 2855596271291776271}
   - component: {fileID: 5487392833224406887}
   - component: {fileID: 5261158972560270855}
+  - component: {fileID: 8812900107592710620}
   - component: {fileID: 8631429702681643307}
   m_Layer: 7
   m_Name: PlayerController
@@ -565,6 +566,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 768
   chatBehaviour: {fileID: 0}
+--- !u!114 &8812900107592710620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5569706899670070386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e27cf0a6c471444882913a7ebc08fb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSheet: {fileID: 11400000, guid: c4d314b571cc4e74d8d5c9d9640694bb, type: 2}
+  cameraPivot: {fileID: 6123317160625252122}
+  mainCamera: {fileID: 1588699752264636000}
+  head: {fileID: 1249994340886646398}
+  slerpSpeed: 0.04
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  pauseMenu: {fileID: 0}
 --- !u!114 &8631429702681643307
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -31,18 +31,21 @@ public class PlayerMovement : BaseState, IGravity
     public override void OnEnter() 
     {
         inputHandler.pressOpenChatFirst += OpenChat;
+        inputHandler.pressEscapeFirst += OpenPauseMenu;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public override void OnExit() 
     {
         inputHandler.pressOpenChatFirst -= OpenChat;
+        inputHandler.pressEscapeFirst -= OpenPauseMenu;
     }
 
     public override void OnFixedUpdate() { }
 
     public override void OnUpdate()
     {
-        InputDetection();
         GroundDetection();
         if (rb.useGravity) RotateTowardsGravity(Physics.gravity);
     }
@@ -50,10 +53,6 @@ public class PlayerMovement : BaseState, IGravity
     public override void OnLateUpdate()
     {
         CameraMovement();
-    }
-
-    private void InputDetection()
-    {
     }
 
     protected void Movement(float speed)
@@ -70,13 +69,19 @@ public class PlayerMovement : BaseState, IGravity
         rb.AddForce(transform.rotation * rotatedInputVelocity, ForceMode.VelocityChange);
     }
 
-    protected void ReduceToMaxSpeed(float maxSpeed, float smoothTime)
+    protected void ReduceSpeed(float maxSpeed, float smoothTimeMoving, float smoothTimeNotMoving)
     {
         Vector3 rotatedVelocity = Quaternion.Inverse(transform.rotation) * rb.velocity;
 
-        if (new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude > maxSpeed)
+        if (new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude > maxSpeed && (inputHandler.horizontal != 0 || inputHandler.vertical != 0))
         {
-            float newMagnitude = Mathf.SmoothDamp(new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude, maxSpeed, ref smoothVelocity, smoothTime);
+            float newMagnitude = Mathf.SmoothDamp(new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude, maxSpeed, ref smoothVelocity, smoothTimeMoving);
+            Vector3 speedReductor = new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).normalized * newMagnitude + new Vector3(0, rotatedVelocity.y, 0);
+            rb.velocity = transform.rotation * speedReductor;
+        }
+        else if (inputHandler.horizontal == 0 && inputHandler.vertical == 0)
+        {
+            float newMagnitude = Mathf.SmoothDamp(new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).magnitude, 0, ref smoothVelocity, smoothTimeNotMoving);
             Vector3 speedReductor = new Vector3(rotatedVelocity.x, 0, rotatedVelocity.z).normalized * newMagnitude + new Vector3(0, rotatedVelocity.y, 0);
             rb.velocity = transform.rotation * speedReductor;
         }
@@ -132,8 +137,8 @@ public class PlayerMovement : BaseState, IGravity
         cameraPivot.position = head.position;
         cameraPivot.rotation = transform.rotation;
 
-        Vector3 horizontalMouse = new Vector3(0, inputHandler.mouseDelta.x * playerSheet.sensitivity, 0);
-        Vector3 verticalMouse = new Vector3(-inputHandler.mouseDelta.y * playerSheet.sensitivity, 0);
+        Vector3 horizontalMouse = new Vector3(0, inputHandler.mouseDelta.x * GlobalSettings.sensitivity, 0);
+        Vector3 verticalMouse = new Vector3(-inputHandler.mouseDelta.y * GlobalSettings.sensitivity, 0);
 
         head.localEulerAngles += horizontalMouse;
         float xRot = mainCamera.localEulerAngles.x + verticalMouse.x;
@@ -176,5 +181,10 @@ public class PlayerMovement : BaseState, IGravity
     private void OpenChat()
     {
         stateManager.SwitchState(typeof(InChat));
+    }
+
+    private void OpenPauseMenu()
+    {
+        stateManager.SwitchState(typeof(InPause));
     }
 }

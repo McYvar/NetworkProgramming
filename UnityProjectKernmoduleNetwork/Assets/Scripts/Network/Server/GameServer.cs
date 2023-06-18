@@ -53,6 +53,9 @@ public class GameServer : BaseServer
             case OpCode.REACHED_CHECKPOINT:
                 msg = new Net_ReachedCheckpoint(stream, deathRunGameLoop);
                 break;
+            case OpCode.PLAYER_DISCONNECT:
+                msg = new Net_Disconnect(stream);
+                break;
             default:
                 Debug.Log("Message recieved had no existing OpCode");
                 break;

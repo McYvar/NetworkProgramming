@@ -28,4 +28,12 @@ public class PlayerSpawner : MonoBehaviour
 
         SessionVariables.instance.myGameClient.SendToServer(new Net_ChatMessage($"{playerName} has joined the server!"));
     }
+
+    public void DespawnPlayer(int playerId)
+    {
+        if (!SessionVariables.instance.playerDictionary.ContainsKey(playerId)) return;
+        if (SessionVariables.instance.playerDictionary[playerId].playerObject == null) return;
+        Destroy(SessionVariables.instance.playerDictionary[playerId].playerObject);
+        SessionVariables.instance.playerDictionary.Remove(playerId);
+    }
 }

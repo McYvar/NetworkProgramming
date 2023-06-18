@@ -6,8 +6,6 @@ public class OnGround : PlayerMovement
     {
         base.OnEnter();
         inputHandler.pressJumpFirst += Jump;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public override void OnExit()
@@ -26,6 +24,6 @@ public class OnGround : PlayerMovement
     {
         base.OnFixedUpdate();
         Movement(playerSheet.groundForce);
-        ReduceToMaxSpeed(playerSheet.groundMaxSpeed, playerSheet.groundSmoothTime);
+        ReduceSpeed(playerSheet.groundMaxSpeed, playerSheet.groundMoveSmoothTime, playerSheet.groundMoveSmoothTime);
     }
 }

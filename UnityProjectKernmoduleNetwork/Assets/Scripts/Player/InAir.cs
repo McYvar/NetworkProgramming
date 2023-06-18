@@ -6,14 +6,12 @@ public class InAir : PlayerMovement
     {
         base.OnUpdate();
         if (isGrounded) stateManager.SwitchState(typeof(OnGround));
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
         Movement(playerSheet.airForce);
-        ReduceToMaxSpeed(playerSheet.airMaxSpeed, playerSheet.airSmoothTime);
+        ReduceSpeed(playerSheet.airMaxSpeed, playerSheet.airMoveSmoothTime, playerSheet.airNonMoveSmoothTime);
     }
 }
