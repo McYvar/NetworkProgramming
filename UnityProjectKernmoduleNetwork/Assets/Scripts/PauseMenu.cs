@@ -83,6 +83,12 @@ public class PauseMenu : MonoBehaviour
                             Destroy(SessionVariables.instance.myGameClient.gameObject);
                             SessionVariables.instance.myGameClient = null;
                         }
+                        SessionVariables.instance.playerDictionary.Clear();
+                        SessionVariables.instance.myGameClient = null;
+                        SessionVariables.instance.connected = false;
+                        SessionVariables.instance.serverId = -1;
+                        SessionVariables.instance.myPlayerId = -1;
+                        SessionVariables.instance.myPlayerName = null;
                         SceneManager.LoadScene(scene);
                     }
                 }));

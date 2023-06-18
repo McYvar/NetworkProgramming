@@ -6,7 +6,7 @@ public class Net_ChatMessage : NetMessage
 {
     // 0 - 8 bits reserved for OpCode
     // 8 - 128 bits for string msg
-    public FixedString128Bytes chatMessage { get; set; }
+    public FixedString512Bytes chatMessage { get; set; }
     private ChatBehaviour chatBehaviour;
 
     public Net_ChatMessage()
@@ -36,13 +36,13 @@ public class Net_ChatMessage : NetMessage
     public override void Serialize(ref DataStreamWriter writer)
     {
         writer.WriteByte((byte) code);
-        writer.WriteFixedString128(chatMessage);
+        writer.WriteFixedString512(chatMessage);
     }
 
     public override void Deserialize(DataStreamReader reader) 
     {
         // First byte handled already
-        chatMessage = reader.ReadFixedString128();
+        chatMessage = reader.ReadFixedString512();
     }
 
     public override void ReceivedOnServer(BaseServer server)

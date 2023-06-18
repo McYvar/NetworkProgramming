@@ -157,13 +157,12 @@ public class DeathRunGameLoop : MonoBehaviour
 
         foreach (var score in playerScore.Values)
         {
-            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={gameId}", null));
+            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={gameId}&user_id={score.playerId}", null));
         }
 
         Score firstPlace = null;
         foreach (var player in playerScore)
         {
-            Debug.Log($"{player.Key}({player.Value.playerId}): {player.Value.score}");
             if (firstPlace == null) firstPlace = playerScore[player.Key];
             if (player.Value.score < firstPlace.score) firstPlace = playerScore[player.Key];
         }
@@ -171,10 +170,10 @@ public class DeathRunGameLoop : MonoBehaviour
         Score secondPlace = null;
         foreach (var player in playerScore)
         {
+            if (firstPlace == playerScore[player.Key]) continue;
             if (secondPlace == null) secondPlace = playerScore[player.Key];
             if (player.Value.score < secondPlace.score)
             {
-                if (firstPlace == playerScore[player.Key]) continue;
                 secondPlace = playerScore[player.Key];
             }
         }
