@@ -116,13 +116,13 @@ public class DeathRunGameLoop : MonoBehaviour
     // server only
     public void EndRound()
     {
+        SessionVariables.instance.server.BroadCast(new Net_CloseBarriers());
         if (playersWhoNotPlayedDeathThisSession.Count == 0)
         {
             EndGame();
             return;
         }
 
-        SessionVariables.instance.server.BroadCast(new Net_CloseBarriers());
         StartCoroutine(WaitForNextTurn(5));
     }
 
