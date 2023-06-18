@@ -9,7 +9,6 @@ public class PlayerMovement : BaseState, IGravity
     [SerializeField] protected Transform cameraPivot;
     [SerializeField] protected Transform mainCamera;
     [SerializeField] protected Transform head;
-    [SerializeField, Range(0, 0.2f)] private float slerpSpeed;
     [SerializeField] private LayerMask groundLayers;
     private Vector3 cameraTranslateVelocity;
     protected bool isSprinting;
@@ -22,15 +21,14 @@ public class PlayerMovement : BaseState, IGravity
     protected InputHandler inputHandler;
 
     private float smoothVelocity = 0;
-
-    private Vector3 myGravityDirection;
+    private Collider myCollider;
 
     public override void Init()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         inputHandler = GetComponent<InputHandler>();
-        myGravityDirection = Physics.gravity;
+        myCollider = GetComponent<Collider>();
     }
 
     public override void OnEnter() 
@@ -53,8 +51,7 @@ public class PlayerMovement : BaseState, IGravity
     {
         GroundDetection();
         SprintDetect();
-        if (rb.useGravity) FallTowardsGravity(Physics.gravity);
-        else FallTowardsGravity(myGravityDirection);
+        if (rb.useGravity) RotateTowardsGravity(Physics.gravity, playerSheet.rotateSlerpSpeed);
     }
 
     public override void OnLateUpdate()
@@ -169,13 +166,13 @@ public class PlayerMovement : BaseState, IGravity
     public void SetGravity(Vector3 direction)
     {
         rb.useGravity = false;
-        myGravityDirection = direction;
+        rb.AddForce(direction);
+        RotateTowardsGravity(direction, playerSheet.rotateSlerpSpeed);
     }
 
     public void OnExitZone()
     {
         rb.useGravity = true;
-        myGravityDirection = Physics.gravity;
     }
 
     public Vector3 GetPosition()
@@ -183,9 +180,8 @@ public class PlayerMovement : BaseState, IGravity
         return transform.position;
     }
 
-    protected void FallTowardsGravity(Vector3 direction)
+    protected void RotateTowardsGravity(Vector3 direction, float slerpSpeed)
     {
-        if (!rb.useGravity) rb.AddForce(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.FromToRotation(Vector3.down, direction),
             slerpSpeed);
@@ -199,5 +195,10 @@ public class PlayerMovement : BaseState, IGravity
     private void OpenPauseMenu()
     {
         stateManager.SwitchState(typeof(InPause));
+    }
+
+    public Bounds GetBounds()
+    {
+        return myCollider.bounds;
     }
 }

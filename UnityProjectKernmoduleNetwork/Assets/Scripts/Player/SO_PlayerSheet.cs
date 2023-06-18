@@ -18,5 +18,5 @@ public class SO_PlayerSheet : ScriptableObject
     [SerializeField] public float airNonMoveSmoothTime;
     [SerializeField] public float cameraRotateSmoothTime;
     [SerializeField] public float cameraTranslateSmoothTime;
-
+    [SerializeField] public float rotateSlerpSpeed;
 }

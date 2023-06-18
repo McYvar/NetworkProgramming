@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityBehaviour : MonoBehaviour
@@ -18,40 +19,80 @@ public class GravityBehaviour : MonoBehaviour
 
     [Space(10), Header("zone radius only applied when gravity point"), SerializeField] float zoneRadius = 10;
 
+    private List<IGravity> gravityObjects = new List<IGravity>();
+
+    private Collider myCollider;
+
     private void Start()
     {
         if (gravityType != GravityType.STATIC_ZONE)
         {
             GetComponent<SphereCollider>().radius = zoneRadius;
         }
+
+        myCollider = GetComponent<Collider>();
+    }
+
+    private void FixedUpdate()
+    {
+        
+        foreach (var obj in gravityObjects)
+        {
+            if (gravityType == GravityType.STATIC_ZONE)
+            {
+                obj.SetGravity(gravityDirection.normalized * gravityStrenght);
+            }
+            if (gravityType == GravityType.GRAVITY_POINT_PULL)
+            {
+                obj.SetGravity((transform.position - obj.GetPosition()).normalized * gravityStrenght);
+            }
+            if (gravityType == GravityType.GRAVITY_POINT_PUSH)
+            {
+                obj.SetGravity((obj.GetPosition() - transform.position).normalized * gravityStrenght);
+            }
+        }
+        
+        for (int i = 0; i < gravityObjects.Count; i++)
+        {
+            if (!CheckBounds(gravityObjects[i].GetBounds()))
+            {
+                gravityObjects[i].OnExitZone();
+                gravityObjects.RemoveAt(i);
+                --i;
+            }
+        }
+    }
+
+    private bool CheckBounds(Bounds obj)
+    {
+        Debug.Log(myCollider.bounds.Intersects(obj));
+        return myCollider.bounds.Intersects(obj);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        InputHandler inputHandler = other.GetComponent<InputHandler>();
-        if (inputHandler != null)
+        IGravity obj = other.GetComponent<IGravity>();
+        if (obj != null)
         {
-            IGravity obj = other.GetComponent<IGravity>();
-            if (obj != null)
+            Vector3 resultDirection = Vector3.down;
+            if (gravityType == GravityType.STATIC_ZONE)
             {
-                if (gravityType == GravityType.STATIC_ZONE)
-                {
-                    Vector3 resultDirection = gravityDirection.normalized * gravityStrenght;
-                    obj.SetGravity(resultDirection);
-                    SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerGravity(SessionVariables.instance.myPlayerId, resultDirection.x, resultDirection.y, resultDirection.z));
-                }
-                if (gravityType == GravityType.GRAVITY_POINT_PULL)
-                {
-                    Vector3 resultDirection = (transform.position - obj.GetPosition()).normalized * gravityStrenght;
-                    obj.SetGravity(resultDirection);
-                    SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerGravity(SessionVariables.instance.myPlayerId, resultDirection.x, resultDirection.y, resultDirection.z));
-                }
-                if (gravityType == GravityType.GRAVITY_POINT_PUSH)
-                {
-                    Vector3 resultDirection = (obj.GetPosition() - transform.position).normalized * gravityStrenght;
-                    obj.SetGravity(resultDirection);
-                    SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerGravity(SessionVariables.instance.myPlayerId, resultDirection.x, resultDirection.y, resultDirection.z));
-                }
+                resultDirection = gravityDirection.normalized * gravityStrenght;
+            }
+            if (gravityType == GravityType.GRAVITY_POINT_PULL)
+            {
+                resultDirection = (transform.position - obj.GetPosition()).normalized * gravityStrenght;
+            }
+            if (gravityType == GravityType.GRAVITY_POINT_PUSH)
+            {
+                resultDirection = (obj.GetPosition() - transform.position).normalized * gravityStrenght;
+            }
+            gravityObjects.Add(obj);
+
+            InputHandler inputHandler = other.GetComponent<InputHandler>();
+            if (inputHandler != null)
+            {
+                SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerGravity(SessionVariables.instance.myPlayerId, resultDirection.x, resultDirection.y, resultDirection.z));
             }
         }
     }
@@ -61,12 +102,7 @@ public class GravityBehaviour : MonoBehaviour
         InputHandler inputHandler = other.GetComponent<InputHandler>();
         if (inputHandler != null)
         {
-            IGravity obj = other.GetComponent<IGravity>();
-            if (obj != null)
-            {
-                obj.OnExitZone();
-                SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerGravity(SessionVariables.instance.myPlayerId, Physics.gravity.x, Physics.gravity.y, Physics.gravity.z));
-            }
+            SessionVariables.instance.myGameClient.SendToServer(new Net_PlayerGravity(SessionVariables.instance.myPlayerId, Physics.gravity.x, Physics.gravity.y, Physics.gravity.z));
         }
     }
 }

@@ -31,7 +31,6 @@ public class InChat : PlayerMovement
     public override void OnUpdate()
     {
         GroundDetection();
-        if (rb.useGravity) FallTowardsGravity(Physics.gravity);
     }
 
     public override void OnFixedUpdate()

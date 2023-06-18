@@ -25,3 +25,4 @@ MonoBehaviour:
   airNonMoveSmoothTime: 1
   cameraRotateSmoothTime: 0.02
   cameraTranslateSmoothTime: 0.015
+  rotateSlerpSpeed: 0.8

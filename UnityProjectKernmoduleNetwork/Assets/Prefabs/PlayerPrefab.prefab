@@ -491,6 +491,8 @@ MonoBehaviour:
   pressEscapeValue: 0
   isPressedInteract: 0
   pressInteractValue: 0
+  isPressedSprint: 0
+  pressSprintValue: 0
   mouseDelta: {x: 0, y: 0}
 --- !u!114 &4265083858042504470
 MonoBehaviour:
@@ -521,7 +523,7 @@ MonoBehaviour:
   cameraPivot: {fileID: 6123317160625252122}
   mainCamera: {fileID: 1588699752264636000}
   head: {fileID: 1249994340886646398}
-  slerpSpeed: 0.04
+  slerpSpeed: 0.0455
   groundLayers:
     serializedVersion: 2
     m_Bits: 768
