@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
@@ -31,9 +29,7 @@ public class PlayerSpawner : MonoBehaviour
         GameObject newPlayerObject = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
         SessionVariables.instance.myGameClient.SendToServer(new Net_ChatMessage($"{playerName} has joined the server!"));
         newPlayerObject.name = $"{playerName} (ID: {playerId})";
-        Player newPlayer = new Player(playerId, playerName);
-        newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
-        SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
+        SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;
     }
 
     public void DespawnPlayer(int playerId)
