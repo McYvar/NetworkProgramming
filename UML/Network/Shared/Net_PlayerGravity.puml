@@ -1,0 +1,17 @@
+@startuml
+class Net_PlayerGravity {
+    + playerId : int <<get>> <<set>>
+    + xDir : float <<get>> <<set>>
+    + yDir : float <<get>> <<set>>
+    + zDir : float <<get>> <<set>>
+    + Net_PlayerGravity()
+    + Net_PlayerGravity(playerId:int, xDir:float, yDir:float, zDir:float)
+    + Net_PlayerGravity(reader:DataStreamReader)
+    + Net_PlayerGravity(reader:DataStreamReader, playerRotator:PlayerRotator)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_PlayerGravity
+@enduml

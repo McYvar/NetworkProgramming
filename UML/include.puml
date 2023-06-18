@@ -411,6 +411,18 @@ class BaseServer {
 }
 MonoBehaviour <|-- BaseServer
 BaseServer --> "driver" NetworkDriver
+class Net_Disconnect {
+    + playerId : int <<get>> <<set>>
+    + Net_Disconnect()
+    + Net_Disconnect(playerId:int)
+    + Net_Disconnect(reader:DataStreamReader)
+    + Net_Disconnect(reader:DataStreamReader, playerSpawner:PlayerSpawner)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_Disconnect
 class Net_CloseBarriers {
     + Net_CloseBarriers()
     + Net_CloseBarriers(reader:DataStreamReader)
@@ -430,6 +442,21 @@ class Net_JoinGame {
     + <<override>> ReceivedOnServer(server:BaseServer) : void
 }
 NetMessage <|-- Net_JoinGame
+class Net_PlayerGravity {
+    + playerId : int <<get>> <<set>>
+    + xDir : float <<get>> <<set>>
+    + yDir : float <<get>> <<set>>
+    + zDir : float <<get>> <<set>>
+    + Net_PlayerGravity()
+    + Net_PlayerGravity(playerId:int, xDir:float, yDir:float, zDir:float)
+    + Net_PlayerGravity(reader:DataStreamReader)
+    + Net_PlayerGravity(reader:DataStreamReader, playerRotator:PlayerRotator)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+    + <<override>> ReceivedOnClient() : void
+}
+NetMessage <|-- Net_PlayerGravity
 class Net_StartGame {
     + Net_StartGame()
     + Net_StartGame(reader:DataStreamReader)
@@ -438,18 +465,7 @@ class Net_StartGame {
     + <<override>> ReceivedOnServer(server:BaseServer) : void
     + <<override>> ReceivedOnClient() : void
 }
-class Net_PlayerDied {
-    + playerId : int <<get>> <<set>>
-    + Net_PlayerDied()
-    + Net_PlayerDied(playerId:int)
-    + Net_PlayerDied(reader:DataStreamReader)
-    + Net_PlayerDied(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
-    + <<override>> Serialize(writer:DataStreamWriter) : void
-    + <<override>> Deserialize(reader:DataStreamReader) : void
-    + <<override>> ReceivedOnServer(server:BaseServer) : void
-}
 NetMessage <|-- Net_StartGame
-NetMessage <|-- Net_PlayerDied
 class Net_OpenBarriers {
     + Net_OpenBarriers()
     + Net_OpenBarriers(reader:DataStreamReader)
@@ -457,19 +473,7 @@ class Net_OpenBarriers {
     + <<override>> Serialize(writer:DataStreamWriter) : void
     + <<override>> ReceivedOnClient() : void
 }
-class Net_Disconnect {
-    + playerId : int <<get>> <<set>>
-    + Net_Disconnect()
-    + Net_Disconnect(playerId:int)
-    + Net_Disconnect(reader:DataStreamReader)
-    + Net_Disconnect(reader:DataStreamReader, playerSpawner:PlayerSpawner)
-    + <<override>> Serialize(writer:DataStreamWriter) : void
-    + <<override>> Deserialize(reader:DataStreamReader) : void
-    + <<override>> ReceivedOnServer(server:BaseServer) : void
-    + <<override>> ReceivedOnClient() : void
-}
 NetMessage <|-- Net_OpenBarriers
-NetMessage <|-- Net_Disconnect
 class Net_ActivateTrap {
     + trapId : int
     + Net_ActivateTrap()
@@ -505,7 +509,7 @@ class Net_ChatMessage {
     + <<override>> ReceivedOnClient() : void
 }
 NetMessage <|-- Net_ChatMessage
-Net_ChatMessage --> "chatMessage" FixedString128Bytes
+Net_ChatMessage --> "chatMessage" FixedString512Bytes
 class Net_SpawnPlayer {
     + playerId : int <<get>> <<set>>
     + xPos : float <<get>> <<set>>
@@ -536,22 +540,7 @@ class Net_PlayerTransform {
     + <<override>> ReceivedOnServer(server:BaseServer) : void
     + <<override>> ReceivedOnClient() : void
 }
-class Net_PlayerGravity {
-    + playerId : int <<get>> <<set>>
-    + xDir : float <<get>> <<set>>
-    + yDir : float <<get>> <<set>>
-    + zDir : float <<get>> <<set>>
-    + Net_PlayerGravity()
-    + Net_PlayerGravity(playerId:int, xDir:float, yDir:float, zDir:float)
-    + Net_PlayerGravity(reader:DataStreamReader)
-    + Net_PlayerGravity(reader:DataStreamReader, playerRotator:PlayerRotator)
-    + <<override>> Serialize(writer:DataStreamWriter) : void
-    + <<override>> Deserialize(reader:DataStreamReader) : void
-    + <<override>> ReceivedOnServer(server:BaseServer) : void
-    + <<override>> ReceivedOnClient() : void
-}
 NetMessage <|-- Net_PlayerTransform
-NetMessage <|-- Net_PlayerGravity
 class Net_ReachedGoal {
     + playerId : int <<get>> <<set>>
     + Net_ReachedGoal()
@@ -591,6 +580,17 @@ enum OpCode {
     REACHED_CHECKPOINT= 14,
     PLAYER_DISCONNECT= 15,
 }
+class Net_PlayerDied {
+    + playerId : int <<get>> <<set>>
+    + Net_PlayerDied()
+    + Net_PlayerDied(playerId:int)
+    + Net_PlayerDied(reader:DataStreamReader)
+    + Net_PlayerDied(reader:DataStreamReader, deathRunGameLoop:DeathRunGameLoop)
+    + <<override>> Serialize(writer:DataStreamWriter) : void
+    + <<override>> Deserialize(reader:DataStreamReader) : void
+    + <<override>> ReceivedOnServer(server:BaseServer) : void
+}
+NetMessage <|-- Net_PlayerDied
 class NetMessage {
     + <<virtual>> Serialize(writer:DataStreamWriter) : void
     + <<virtual>> Deserialize(reader:DataStreamReader) : void
