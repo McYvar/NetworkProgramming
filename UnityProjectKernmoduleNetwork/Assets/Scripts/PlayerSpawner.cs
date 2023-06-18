@@ -19,9 +19,8 @@ public class PlayerSpawner : MonoBehaviour
         }
         GameObject newPlayerObject = Instantiate(playerPrefabNonControlable, spawnLocation, Quaternion.identity);
         newPlayerObject.name = $"{playerName} (ID: {playerId})";
-        Player newPlayer = new Player(playerId, playerName);
-        newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
-        SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
+        
+        SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;
     }
 
     public void SpawnLocalPlayer(int playerId, string playerName, Vector3 spawnLocation)
