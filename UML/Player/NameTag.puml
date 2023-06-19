@@ -1,0 +1,6 @@
+@startuml
+class NameTag {
+    + SetText(text:string) : void
+}
+MonoBehaviour <|-- NameTag
+@enduml
