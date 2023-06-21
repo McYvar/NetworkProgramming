@@ -23,6 +23,7 @@ public class PlayerSpawner : MonoBehaviour
         {
             Player newPlayer = new Player(playerId, playerName);
             newPlayer.playerObject = newPlayerObject.transform.GetChild(0).gameObject;
+            newPlayer.playerObject.GetComponentInChildren<NameTag>().SetText(playerName);
             SessionVariables.instance.playerDictionary.Add(playerId, newPlayer);
         }
         else SessionVariables.instance.playerDictionary[playerId].playerObject = newPlayerObject.transform.GetChild(0).gameObject;

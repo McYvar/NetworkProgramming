@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1813,7 +1813,7 @@ PrefabInstance:
     - target: {fileID: -5308014825883664904, guid: 1d17af74f03c88842b13ea66ef4dcf04,
         type: 3}
       propertyPath: ip
-      value: 192.168.2.30
+      value: 192.168.2.8
       objectReference: {fileID: 0}
     - target: {fileID: -5308014825883664904, guid: 1d17af74f03c88842b13ea66ef4dcf04,
         type: 3}
@@ -2870,8 +2870,8 @@ MonoBehaviour:
   server: {fileID: 716034709}
   connected: 0
   serverId: 10
-  myPlayerId: 17
-  myPlayerName: Mac
+  myPlayerId: 15
+  myPlayerName: McYvar
 --- !u!4 &619178260
 Transform:
   m_ObjectHideFlags: 0
@@ -25260,7 +25260,7 @@ PrefabInstance:
     - target: {fileID: 3536414913005610637, guid: 7ba883917c3cdc746aa0d27aead43611,
         type: 3}
       propertyPath: ip
-      value: 192.168.2.30
+      value: 192.168.2.8
       objectReference: {fileID: 0}
     - target: {fileID: 3536414913005610637, guid: 7ba883917c3cdc746aa0d27aead43611,
         type: 3}

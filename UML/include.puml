@@ -284,6 +284,10 @@ class OnGround {
     + <<override>> OnFixedUpdate() : void
 }
 PlayerMovement <|-- OnGround
+class NameTag {
+    + SetText(text:string) : void
+}
+MonoBehaviour <|-- NameTag
 class InChat {
     + <<override>> Init() : void
     + <<override>> OnEnter() : void

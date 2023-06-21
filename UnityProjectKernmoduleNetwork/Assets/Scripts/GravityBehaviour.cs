@@ -65,7 +65,6 @@ public class GravityBehaviour : MonoBehaviour
 
     private bool CheckBounds(Bounds obj)
     {
-        Debug.Log(myCollider.bounds.Intersects(obj));
         return myCollider.bounds.Intersects(obj);
     }
 

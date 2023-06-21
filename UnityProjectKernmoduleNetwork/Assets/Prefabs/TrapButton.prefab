@@ -387,6 +387,7 @@ MonoBehaviour:
   trapId: 0
   cooldown: 5
   cooldownText: {fileID: 590091224041754715}
+  myCollider: {fileID: 1212921337276929098}
 --- !u!1 &7139416369138593761
 GameObject:
   m_ObjectHideFlags: 0
