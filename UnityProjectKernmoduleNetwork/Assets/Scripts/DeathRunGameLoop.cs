@@ -313,6 +313,16 @@ public class DeathRunGameLoop : MonoBehaviour
             SessionVariables.instance.myGameClient.SendToServer(new Net_LeaveGame(SessionVariables.instance.myPlayerId));
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(normalSpawn.position, 0.3f);
+        Gizmos.color = Color.black;
+        Gizmos.DrawSphere(deathSpawn.position, 0.3f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(runnersSpawn.position, 0.3f);
+    }
 }
 
 [System.Serializable]

@@ -43,4 +43,10 @@ public class PlayerSpawner : MonoBehaviour
         Destroy(SessionVariables.instance.playerDictionary[playerId].playerObject);
         SessionVariables.instance.playerDictionary.Remove(playerId);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 0.3f);
+    }
 }
