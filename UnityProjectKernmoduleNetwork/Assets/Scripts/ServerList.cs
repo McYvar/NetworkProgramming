@@ -101,7 +101,7 @@ public class ServerList : MonoBehaviour
                 loginText.text = $"LOGIN {serverName}";
                 onClickConnectButton.OnClickButton = () =>
                 {
-                    StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?session_id={SessionVariables.instance.sessionId}?server_id={id}&password={passwordInputField.text}",
+                    StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?session_id={SessionVariables.instance.sessionId}&server_id={id}&password={passwordInputField.text}",
                         (request) =>
                         {
                             if (request != null)
