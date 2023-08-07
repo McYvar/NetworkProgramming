@@ -1,6 +1,11 @@
 <?php
 include "connect.php";
 
+if (session_id() != null) {
+    showjson(0);
+    die;
+}
+
 session_start();
 
 if (usercheck()) {
@@ -36,11 +41,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
     $query = "SELECT * FROM Users WHERE username = '$username' LIMIT 1";
 }
 
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 
 // check if user exists
 if (count($row) == 0) {
@@ -60,6 +61,7 @@ $id = $row["id"];
 $games_played = $row["games_played"];
 
 // set session variables
+$_SESSION["session_id"] = session_id();
 $_SESSION["user_id"] = $id;
 $_SESSION["email"] = $row["email"];
 $_SESSION["username"] = $row["username"];

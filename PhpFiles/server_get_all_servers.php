@@ -3,10 +3,7 @@ include "connect.php";
 
 // query to request all server_id's from database
 $query = "SELECT id, ip, port, local, server_name, connected_users FROM Servers";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
+$result = execQuery($query);
 $row = $result->fetch_assoc();
 $did_first = false;
 $to_json = "{\"servers\":[";

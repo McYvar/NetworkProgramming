@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 session_start();
 /*
 if (!usercheck()) {
@@ -13,15 +15,10 @@ if (!servercheck()) {
 }
 */
 $query = "INSERT INTO History(id, winner_user_id, second_user_id, game_duration) VALUES (null, null, null, null)";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 $query = "SELECT * FROM History ORDER BY id DESC LIMIT 1";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 
 $_SESSION["game_id"] = $row["id"];
 

@@ -10,6 +10,7 @@ public class SessionVariables : MonoBehaviour
 
     public bool connected = false;
 
+    public string sessionId;
     public int serverId;
     public int myPlayerId;
     public string myPlayerName;

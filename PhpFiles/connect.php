@@ -67,4 +67,27 @@ function usercheck()
       return false;
    }
 }
+
+function execQuery($query)
+{
+   if (!($result = $GLOBALS['mysqli']->query($query))) {
+      showerror($GLOBALS['mysqli']->errno, $GLOBALS['mysqli']->error);
+   }
+   return $result;
+}
+
+function sessionCheck()
+{
+   if (!isset($_GET["session_id"])) {
+      showjson(0);
+      die;
+   }
+   $session_id = $_GET["session_id"];
+   if (empty($session_id)) {
+      showjson(0);
+      die;
+   }
+   session_id($_GET["session_id"]);
+}
+
 ?>

@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 session_start();
 
 if (!usercheck()) {
@@ -12,16 +14,11 @@ if (servercheck()) {
     // already on a server so log out of that one first
     $old_server_id = $_SESSION["server_id"];
     $query = "SELECT * FROM Servers WHERE id = '$old_server_id' LIMIT 1";
-    if (!($result = $mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
-    $row = $result->fetch_assoc();
+    $row = execQuery($query)->fetch_assoc();
     $fetched_user_amount = $row["connected_users"] - 1;
 
     $query = "UPDATE Servers SET connected_users = $fetched_user_amount WHERE id = $old_server_id";
-    if (!($mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
+    execQuery($query);
 }
 
 // fetch results from url
@@ -30,12 +27,8 @@ $password = $_GET["password"];
 
 // create and apply query
 $query = "SELECT * FROM Servers WHERE id = '$server_id' LIMIT 1";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
 // fetch array from result and fetch server_id from array
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 $fetched_server_id = $row["id"];
 
 // validate if server_id is 0 integer or is an integer at all
@@ -72,7 +65,6 @@ if (!($fetched_password === hash('sha256', $password))) {
 }
 
 // passwords are a match, assign session variables
-$_SESSION["session_id"] = session_id();
 $_SESSION["server_id"] = $fetched_server_id;
 $_SESSION["server_name"] = $row["server_name"];
 $_SESSION["local"] = $row["local"];
@@ -83,16 +75,12 @@ $_SESSION["port"] = $row["port"];
 $fetched_user_amount = $row["connected_users"] + 1;
 
 $query = "UPDATE Servers SET connected_users = $fetched_user_amount WHERE id = $fetched_server_id";
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 // assign user to this server
 $user_id = $_SESSION["user_id"];
 $query = "UPDATE Users SET server_id = '$fetched_server_id' WHERE id = '$user_id' LIMIT 1";
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 showjsonserver($_SESSION);
 ?>
