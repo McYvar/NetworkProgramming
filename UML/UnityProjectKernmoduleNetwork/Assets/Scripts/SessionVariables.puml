@@ -1,6 +1,7 @@
 @startuml
 class SessionVariables {
     + connected : bool = false
+    + sessionId : string
     + serverId : int
     + myPlayerId : int
     + myPlayerName : string
