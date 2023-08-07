@@ -31,7 +31,7 @@ public class HostServer : MonoBehaviour
     {
         // TO DO: when clicking the button request to host server (create a server) on the given ip
         string ip = hostLocal == 1 ? localIpInputField.text : globalIpInputField.text;
-        StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_create_server?ip={ip}&port={portInputField.text}&local={hostLocal}&server_name={serverNameInputField.text}&password={passwordInputField.text}",
+        StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_create_server?session_id={SessionVariables.instance.sessionId}&ip={ip}&port={portInputField.text}&local={hostLocal}&server_name={serverNameInputField.text}&password={passwordInputField.text}",
             (request) =>
             {
                 if (request != null)
@@ -43,7 +43,7 @@ public class HostServer : MonoBehaviour
                         if (predicate)
                         {
                             SessionVariables.instance.serverId = request.servers[0].server_id;
-                            StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?server_id={request.servers[0].server_id}", (request2) =>
+                            StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?session_id={SessionVariables.instance.sessionId}&server_id={request.servers[0].server_id}", (request2) =>
                             {
                                 if (request != null)
                                 {
@@ -66,7 +66,7 @@ public class HostServer : MonoBehaviour
                                         }
                                         else
                                         {
-                                            StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout", null));
+                                            StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}", null));
                                         }
 
                                     }

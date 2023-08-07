@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 session_start();
 
 if (!servercheck()) {
@@ -16,12 +18,7 @@ $server_id = $_SESSION["server_id"];
 
 // retrieve current connected_users
 $query = "SELECT connected_users FROM Servers WHERE id = '$server_id' LIMIT 1";
-
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 $connected_users = $row["connected_users"] - 1;
 
 if ($connected_users == 0) {
@@ -31,18 +28,13 @@ if ($connected_users == 0) {
     // remove user from active server
     $query = "UPDATE Servers SET connected_users = '$connected_users' WHERE id = '$server_id'";
 }
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 // set server from user to -1
 $user_id = $_SESSION["user_id"];
 $query = "UPDATE Users SET server_id = -1 WHERE id = '$user_id'";
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
-unset($_SESSION["session_id"]);
 unset($_SESSION["server_id"]);
 unset($_SESSION["server_name"]);
 unset($_SESSION["local"]);

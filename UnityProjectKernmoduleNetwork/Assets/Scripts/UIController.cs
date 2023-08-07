@@ -56,6 +56,7 @@ public class UIController : MonoBehaviour
                         bool predicate = Convert.ToBoolean(request.results[0].code);
                         if (predicate)
                         {
+                            SessionVariables.instance.sessionId = request.results[0].session_id;
                             SessionVariables.instance.myPlayerId = request.results[0].user_id;
                             SessionVariables.instance.myPlayerName = request.results[0].username;
                         }
@@ -98,6 +99,7 @@ public class UIController : MonoBehaviour
                         bool predicate = Convert.ToBoolean(request.results[0].code);
                         if (predicate)
                         {
+                            SessionVariables.instance.sessionId = request.results[0].session_id;
                             SessionVariables.instance.myPlayerId = request.results[0].user_id;
                             SessionVariables.instance.myPlayerName = request.results[0].username;
                         }
@@ -112,7 +114,7 @@ public class UIController : MonoBehaviour
 
     public void OnClickUserLogout()
     {
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}",
             (request) =>
             {
                 if (request != null)
@@ -128,7 +130,7 @@ public class UIController : MonoBehaviour
 
     public void OnClickServerLogout()
     {
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}",
             (request) =>
             {
                 if (request != null)
@@ -144,10 +146,10 @@ public class UIController : MonoBehaviour
 
     public void OnClickCompleteLogout()
     {
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}",
             (request) =>
             {
-                StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
+                StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}",
                     (request) =>
                     {
                         if (request != null)

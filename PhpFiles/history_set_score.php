@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 session_start();
 
 if (!usercheck()) {
@@ -18,8 +20,6 @@ $second_id = $_GET["second_id"];
 $duration = $_GET["duration"];
 
 $query = "UPDATE History SET winner_user_id = $winner_id, second_user_id = $second_id, game_duration = $duration WHERE id = $history_id LIMIT 1";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 ?>

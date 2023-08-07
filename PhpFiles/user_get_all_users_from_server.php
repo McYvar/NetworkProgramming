@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 // get server_id from url
 if (!isset($_GET["server_id"])) {
     showjson(0);
@@ -14,11 +16,7 @@ if (empty($server_id)) {
 
 // check if server exists in database
 $query = "SELECT id FROM Servers WHERE id = '$server_id'";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 if (!count($row) > 0) {
     showjson(0);
     die;
@@ -26,9 +24,7 @@ if (!count($row) > 0) {
 
 // check database for all players in this server
 $query = "SELECT id, username FROM Users WHERE server_id = '$server_id'";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+$result = execQuery($query);
 
 // loop trough result to register all id's
 $my_json = "{\"results\":[";

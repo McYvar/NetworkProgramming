@@ -1,6 +1,11 @@
 <?php
 include "connect.php";
 
+if (session_id() != null) {
+    showjson(0);
+    die;
+}
+
 session_start();
 
 if (usercheck()) {
@@ -47,7 +52,6 @@ if (!($filtered_username === $username)) {
     die;
 }
 
-
 if (!isset($_GET["password"])) {
     //echo "password not set<br>";
     showjson(0);
@@ -77,11 +81,7 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
 
 // then check if the username/email exists
 $query = "SELECT * FROM Users WHERE (username = '$username' OR email = '$email')";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 
 if (count($row) > 0) {
     if ($row["email"] === $email) {
@@ -99,22 +99,16 @@ $hashed_password = hash('sha256', $password);
 
 // now that we know no such user exists we can add them to the database
 $query = "INSERT INTO Users(id, server_id, email, username, password, games_played) VALUES (NULL, -1, '$email' ,'$username', '$hashed_password', 0)";
-
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery(($query));
 
 // then retrieve the new user_id
 $query = "SELECT * FROM Users WHERE username = '$username'";
 
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 $user_id = $row["id"];
 
 // then set session variables
+$_SESSION["session_id"] = session_id();
 $_SESSION["user_id"] = $user_id;
 $_SESSION["email"] = $email;
 $_SESSION["username"] = $username;

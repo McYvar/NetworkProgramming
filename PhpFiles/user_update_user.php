@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 session_start();
 if (!usercheck()) {
     showjson(0);
@@ -16,12 +18,7 @@ if (!isset($_GET["password"]) || empty($_GET["password"])) {
     //$password = $_GET["password"];
     $password = hash('sha256', $_GET["password"]);
     $query = "SELECT password FROM Users WHERE id = '$user_id' LIMIT 1";
-
-    if (!($result = $mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
-
-    $row = $result->fetch_assoc();
+    $row = execQuery($query)->fetch_assoc();
 
     // check if password is correct
     if (!($row["password"] === $password)) {
@@ -41,10 +38,7 @@ if (isset($_GET["email"]) && !empty($_GET["email"])) {
 
     // check if email exists in database
     $query = "SELECT email FROM Users WHERE email = '$email' LIMIT 1";
-    if (!($result = $mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
-    $row = $result->fetch_assoc();
+    $row = execQuery($query)->fetch_assoc();
     if (count($row) > 0) {
         $can_update = false;
         $reason .= "email already exists<br>";
@@ -69,10 +63,7 @@ if (isset($_GET["username"]) && !empty($_GET["username"])) {
 
     // check if username exists in database
     $query = "SELECT username FROM Users WHERE username = '$username' LIMIT 1";
-    if (!($result = $mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
-    $row = $result->fetch_assoc();
+    $row = execQuery($query)->fetch_assoc();
     if (count($row) > 0) {
         $can_update = false;
         $reason .= "username already exists<br>";
@@ -109,23 +100,17 @@ if ($can_update === false) {
 // update database and session variables
 if (!empty($email)) {
     $query = "UPDATE Users SET email = '$email' WHERE id = '$user_id'";
-    if (!($mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
+    execQuery($query);
     $_SESSION["email"] = $email;
 }
 if (!empty($username)) {
     $query = "UPDATE Users SET username = '$username' WHERE id = '$user_id'";
-    if (!($mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
+    execQuery($query);
     $_SESSION["username"] = $username;
 }
 if (!empty($new_password)) {
     $query = "UPDATE Users SET password = '$hashed_password' WHERE id = '$user_id'";
-    if (!($mysqli->query($query))) {
-        showerror($mysqli->errno, $mysqli->error);
-    }
+    execQuery($query);
 }
 
 showjson(1);

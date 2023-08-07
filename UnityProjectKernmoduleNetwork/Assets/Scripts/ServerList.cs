@@ -27,7 +27,7 @@ public class ServerList : MonoBehaviour
         passwordInputField.contentType = TMP_InputField.ContentType.Password;
 
         // make sure the client is disconnected from everything on startup
-        StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
+        StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}",
             (request) =>
             {
                 if (request != null)
@@ -35,7 +35,7 @@ public class ServerList : MonoBehaviour
                     Debug.Log(request.ToString());
                 }
 
-                StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
+                StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}",
                     (request) =>
                     {
                         if (request != null)
@@ -108,7 +108,7 @@ public class ServerList : MonoBehaviour
                 loginText.text = $"LOGIN {serverName}";
                 onClickConnectButton.OnClickButton = () =>
                 {
-                    StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?server_id={id}&password={passwordInputField.text}",
+                    StartCoroutine(webRequest.Request<Servers>($"https://studenthome.hku.nl/~yvar.toorop/php/server_login?session_id={SessionVariables.instance.sessionId}?server_id={id}&password={passwordInputField.text}",
                         (request) =>
                         {
                             if (request != null)
@@ -120,7 +120,7 @@ public class ServerList : MonoBehaviour
                                     if (predicate)
                                     {
                                         SessionVariables.instance.serverId = request.servers[0].server_id;
-                                        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?server_id={request.servers[0].server_id}", (request2) =>
+                                        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?session_id={SessionVariables.instance.sessionId}?server_id={request.servers[0].server_id}", (request2) =>
                                         {
                                             if (request != null)
                                             {
@@ -141,7 +141,7 @@ public class ServerList : MonoBehaviour
                                                     }
                                                     else
                                                     {
-                                                        StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout", null));
+                                                        StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}", null));
                                                     }
 
                                                 }

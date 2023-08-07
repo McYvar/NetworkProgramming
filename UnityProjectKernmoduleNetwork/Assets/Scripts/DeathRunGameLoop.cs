@@ -70,7 +70,7 @@ public class DeathRunGameLoop : MonoBehaviour
             playerScore.Add(player, new Score(player, 0));
         }
         playersReachedGoal = 0;
-        StartCoroutine(webRequest.Request<Game>("https://studenthome.hku.nl/~yvar.toorop/php/history_add_game", (request) =>
+        StartCoroutine(webRequest.Request<Game>($"https://studenthome.hku.nl/~yvar.toorop/php/history_add_game?session_id={SessionVariables.instance.sessionId}", (request) =>
         {
             if (request != null)
             {
@@ -157,7 +157,7 @@ public class DeathRunGameLoop : MonoBehaviour
 
         foreach (var score in playerScore.Values)
         {
-            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?score={score.score}&history_id={gameId}&user_id={score.playerId}", null));
+            StartCoroutine(webRequest.Request<Results>($"studenthome.hku.nl/~yvar.toorop/php/score_insert_score?session_id={SessionVariables.instance.sessionId}&score={score.score}&history_id={gameId}&user_id={score.playerId}", null));
         }
 
         Score firstPlace = null;
@@ -180,7 +180,7 @@ public class DeathRunGameLoop : MonoBehaviour
         SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[firstPlace.playerId].playerName} in first place! Final time: {firstPlace.score}"));
         SessionVariables.instance.server.BroadCast(new Net_ChatMessage($"{SessionVariables.instance.playerDictionary[secondPlace.playerId].playerName} in second place! Final time: {secondPlace.score}"));
 
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/history_set_score?session_id={SessionVariables.instance.sessionId}&history_id={gameId}&winner_id={firstPlace.playerId}&second_id={secondPlace.playerId}&duration={gameTime}", null));
     }
 
     // server only

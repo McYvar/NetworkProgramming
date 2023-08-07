@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
 
+sessionCheck();
+
 session_start();
 
 if (!usercheck()) {
@@ -59,10 +61,7 @@ if (!($filtered_serever_name === $server_name)) {
 }
 // is server name is unique by checking if it's available
 $query = "SELECT * FROM Servers WHERE server_name = '$server_name' LIMIT 1";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 if (count($row) > 0) {
     showjsonserver(0);
     die;
@@ -87,20 +86,14 @@ if (!($filtered_password === $password)) {
 
 // now add a server to db with details and auto login
 $query = "INSERT INTO Servers(id, ip, port, local, server_name, password, connected_users) VALUES (NULL, '$ip', '$port', '$local', '$server_name', '$password', 1)";
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 // fetch the server id with another query
 $query = "SELECT id FROM Servers WHERE server_name = '$server_name'";
-if (!($result = $mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
-$row = $result->fetch_assoc();
+$row = execQuery($query)->fetch_assoc();
 
 // and set session variables
 $server_id = $row["id"];
-$_SESSION["session_id"] = session_id();
 $_SESSION["server_id"] = $server_id;
 $_SESSION["server_name"] = $server_name;
 $_SESSION["local"] = $local;
@@ -110,9 +103,7 @@ $_SESSION["port"] = $port;
 // assign user to this server
 $user_id = $_SESSION["user_id"];
 $query = "UPDATE Users SET server_id = '$server_id' WHERE id = '$user_id' LIMIT 1";
-if (!($mysqli->query($query))) {
-    showerror($mysqli->errno, $mysqli->error);
-}
+execQuery($query);
 
 showjsonserver($_SESSION);
 ?>
