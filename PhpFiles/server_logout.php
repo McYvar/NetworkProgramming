@@ -1,18 +1,7 @@
 <?php
 include "connect.php";
 
-sessionCheck();
-
 session_start();
-
-if (!servercheck()) {
-    showjsonserver(0);
-    die;
-}
-if (!usercheck()) {
-    showjsonserver(0);
-    die;
-}
 
 $server_id = $_SESSION["server_id"];
 

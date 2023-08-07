@@ -108,6 +108,7 @@ $row = execQuery($query)->fetch_assoc();
 $user_id = $row["id"];
 
 // then set session variables
+//$_SESSION["session_id"] = session_id();
 $_SESSION["session_id"] = session_id();
 $_SESSION["user_id"] = $user_id;
 $_SESSION["email"] = $email;
