@@ -113,7 +113,7 @@ public class ServerList : MonoBehaviour
                                     if (predicate)
                                     {
                                         SessionVariables.instance.serverId = request.servers[0].server_id;
-                                        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?session_id={SessionVariables.instance.sessionId}?server_id={request.servers[0].server_id}", (request2) =>
+                                        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_get_all_users_from_server?session_id={SessionVariables.instance.sessionId}&server_id={request.servers[0].server_id}", (request2) =>
                                         {
                                             if (request != null)
                                             {
