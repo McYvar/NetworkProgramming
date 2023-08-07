@@ -114,7 +114,7 @@ public class UIController : MonoBehaviour
 
     public void OnClickUserLogout()
     {
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}",
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
             (request) =>
             {
                 if (request != null)
@@ -130,7 +130,7 @@ public class UIController : MonoBehaviour
 
     public void OnClickServerLogout()
     {
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}",
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
             (request) =>
             {
                 if (request != null)
@@ -146,10 +146,10 @@ public class UIController : MonoBehaviour
 
     public void OnClickCompleteLogout()
     {
-        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}",
+        StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
             (request) =>
             {
-                StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}",
+                StartCoroutine(webRequest.Request<Results>($"https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
                     (request) =>
                     {
                         if (request != null)

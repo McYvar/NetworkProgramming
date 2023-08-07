@@ -27,7 +27,7 @@ public class ServerList : MonoBehaviour
         passwordInputField.contentType = TMP_InputField.ContentType.Password;
 
         // make sure the client is disconnected from everything on startup
-        StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}",
+        StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout",
             (request) =>
             {
                 if (request != null)
@@ -35,7 +35,7 @@ public class ServerList : MonoBehaviour
                     Debug.Log(request.ToString());
                 }
 
-                StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}",
+                StartCoroutine(webRequest.Request<Results>("https://studenthome.hku.nl/~yvar.toorop/php/user_logout",
                     (request) =>
                     {
                         if (request != null)
@@ -49,13 +49,6 @@ public class ServerList : MonoBehaviour
         StartCoroutine(UpdateServerList());
 
         onClickRefreshButton.OnClickButton += () => StartCoroutine(UpdateServerList());
-    }
-
-    private void OnApplicationQuit()
-    {
-        // TO DO: APPLICATION ACTUALLY HAS TO EXECUTE THESE ON EXIT
-        //InstantRequest("https://studenthome.hku.nl/~yvar.toorop/php/user_logout");
-        //InstantRequest("https://studenthome.hku.nl/~yvar.toorop/php/server_logout");
     }
 
     private void Update()
@@ -141,7 +134,7 @@ public class ServerList : MonoBehaviour
                                                     }
                                                     else
                                                     {
-                                                        StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}", null));
+                                                        StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout}", null));
                                                     }
 
                                                 }

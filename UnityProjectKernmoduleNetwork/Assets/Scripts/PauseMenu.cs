@@ -64,11 +64,11 @@ public class PauseMenu : MonoBehaviour
 
     public void OnClickDisconnect(int scene)
     {
-        StartCoroutine(webRequest.Request<Server>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}", (request) =>
+        StartCoroutine(webRequest.Request<Server>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout", (request) =>
         {
             if (request != null)
             {
-                StartCoroutine(webRequest.Request<Results>("studenthome.hku.nl/~yvar.toorop/php/user_logout?session_id={SessionVariables.instance.sessionId}", (request2) =>
+                StartCoroutine(webRequest.Request<Results>("studenthome.hku.nl/~yvar.toorop/php/user_logout", (request2) =>
                 {
                     if (request2 != null)
                     {

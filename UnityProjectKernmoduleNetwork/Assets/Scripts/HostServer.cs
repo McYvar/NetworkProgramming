@@ -66,7 +66,7 @@ public class HostServer : MonoBehaviour
                                         }
                                         else
                                         {
-                                            StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout?session_id={SessionVariables.instance.sessionId}", null));
+                                            StartCoroutine(webRequest.Request<Servers>("https://studenthome.hku.nl/~yvar.toorop/php/server_logout", null));
                                         }
 
                                     }
